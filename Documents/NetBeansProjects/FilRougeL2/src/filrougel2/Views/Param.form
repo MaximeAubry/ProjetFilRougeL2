@@ -1,0 +1,630 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<Form version="1.3" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
+  <Properties>
+    <Property name="defaultCloseOperation" type="int" value="3"/>
+  </Properties>
+  <SyntheticProperties>
+    <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
+    <SyntheticProperty name="generateCenter" type="boolean" value="false"/>
+  </SyntheticProperties>
+  <AuxValues>
+    <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
+    <AuxValue name="FormSettings_autoSetComponentName" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_generateFQN" type="java.lang.Boolean" value="true"/>
+    <AuxValue name="FormSettings_generateMnemonicsCode" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_i18nAutoMode" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_layoutCodeTarget" type="java.lang.Integer" value="1"/>
+    <AuxValue name="FormSettings_listenerGenerationStyle" type="java.lang.Integer" value="0"/>
+    <AuxValue name="FormSettings_variablesLocal" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_variablesModifier" type="java.lang.Integer" value="2"/>
+  </AuxValues>
+
+  <Layout>
+    <DimensionLayout dim="0">
+      <Group type="103" groupAlignment="0" attributes="0">
+          <Group type="102" alignment="0" attributes="0">
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" alignment="0" attributes="0">
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="jLabelAlgue" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Group type="102" alignment="0" attributes="0">
+                              <EmptySpace min="10" pref="10" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Group type="102" alignment="1" attributes="0">
+                                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                                      <Component id="jLabelAlgueNb" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace min="-2" pref="249" max="-2" attributes="0"/>
+                                  </Group>
+                                  <Group type="102" attributes="0">
+                                      <Group type="103" groupAlignment="0" attributes="0">
+                                          <Group type="102" attributes="0">
+                                              <Group type="103" groupAlignment="0" attributes="0">
+                                                  <Component id="jLabelAlgueTxRepro" alignment="0" min="-2" max="-2" attributes="0"/>
+                                                  <Component id="jLabelAlgueDensiteMax" alignment="0" min="-2" max="-2" attributes="0"/>
+                                                  <Component id="jLabelAlgueTempsSurvie" alignment="0" min="-2" max="-2" attributes="0"/>
+                                              </Group>
+                                              <EmptySpace type="separate" max="-2" attributes="0"/>
+                                              <Group type="103" groupAlignment="0" attributes="0">
+                                                  <Group type="102" attributes="0">
+                                                      <Component id="jTextFieldAlgueTempsSurvie" min="-2" pref="50" max="-2" attributes="0"/>
+                                                      <EmptySpace max="-2" attributes="0"/>
+                                                      <Component id="jLabelAlgueTempsSurvieUnite" min="-2" max="-2" attributes="0"/>
+                                                  </Group>
+                                                  <Group type="102" attributes="0">
+                                                      <Component id="jTextFieldAlgueDensiteMax" min="-2" pref="50" max="-2" attributes="0"/>
+                                                      <EmptySpace max="-2" attributes="0"/>
+                                                      <Component id="jLabelAlgueDensiteMaxUnite" min="-2" max="-2" attributes="0"/>
+                                                  </Group>
+                                                  <Group type="102" attributes="0">
+                                                      <Component id="jTextFieldAlgueTxRepro" min="-2" pref="50" max="-2" attributes="0"/>
+                                                      <EmptySpace max="-2" attributes="0"/>
+                                                      <Component id="jLabelAlgueTxReproUnite" min="-2" max="-2" attributes="0"/>
+                                                  </Group>
+                                                  <Group type="102" alignment="0" attributes="0">
+                                                      <Component id="jTextFieldAlgueDeplacement" min="-2" pref="50" max="-2" attributes="0"/>
+                                                      <EmptySpace max="-2" attributes="0"/>
+                                                      <Component id="jLabelAlgueDeplacementUnite" min="-2" max="-2" attributes="0"/>
+                                                  </Group>
+                                                  <Group type="102" alignment="0" attributes="0">
+                                                      <Component id="jTextFieldAlgueNb" min="-2" pref="50" max="-2" attributes="0"/>
+                                                      <EmptySpace max="-2" attributes="0"/>
+                                                      <Component id="jLabelAlgueNbUnite" min="-2" max="-2" attributes="0"/>
+                                                  </Group>
+                                                  <Group type="102" alignment="0" attributes="0">
+                                                      <Component id="jTextFieldTailleL" min="-2" pref="50" max="-2" attributes="0"/>
+                                                      <EmptySpace max="-2" attributes="0"/>
+                                                      <Component id="jLabelTailleLUnite" min="-2" max="-2" attributes="0"/>
+                                                  </Group>
+                                                  <Group type="102" alignment="0" attributes="0">
+                                                      <Component id="jTextFieldTailleH" min="-2" pref="50" max="-2" attributes="0"/>
+                                                      <EmptySpace max="-2" attributes="0"/>
+                                                      <Component id="jLabelTailleHUnite" min="-2" max="-2" attributes="0"/>
+                                                  </Group>
+                                              </Group>
+                                          </Group>
+                                          <Component id="jLabelAlgueDeplacement" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      </Group>
+                                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                                  </Group>
+                              </Group>
+                          </Group>
+                      </Group>
+                      <EmptySpace min="-2" pref="79" max="-2" attributes="0"/>
+                  </Group>
+                  <Group type="102" alignment="0" attributes="0">
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="jLabelPoisson" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Group type="102" alignment="0" attributes="0">
+                              <EmptySpace min="10" pref="10" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Group type="102" attributes="0">
+                                      <Group type="103" groupAlignment="0" attributes="0">
+                                          <Component id="jLabelPoissonTxRepro" alignment="0" min="-2" max="-2" attributes="0"/>
+                                          <Component id="jLabelPoissonDensiteMax" alignment="0" min="-2" max="-2" attributes="0"/>
+                                          <Component id="jLabelPoissonTempsSurvie" alignment="0" min="-2" max="-2" attributes="0"/>
+                                          <Component id="jLabelPoissonNb" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      </Group>
+                                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                                      <Group type="103" groupAlignment="0" attributes="0">
+                                          <Group type="102" alignment="0" attributes="0">
+                                              <Component id="jTextFieldPoissonTempsSurvie" min="-2" pref="50" max="-2" attributes="0"/>
+                                              <EmptySpace max="-2" attributes="0"/>
+                                              <Component id="jLabelPoissonTempsSurvieUnite" min="-2" max="-2" attributes="0"/>
+                                          </Group>
+                                          <Group type="102" alignment="0" attributes="0">
+                                              <Component id="jTextFieldPoissonDensiteMax" min="-2" pref="50" max="-2" attributes="0"/>
+                                              <EmptySpace max="-2" attributes="0"/>
+                                              <Component id="jLabelPoissonDensiteMaxUnite" min="-2" max="-2" attributes="0"/>
+                                          </Group>
+                                          <Group type="102" alignment="0" attributes="0">
+                                              <Component id="jTextFieldPoissonTxRepro" min="-2" pref="50" max="-2" attributes="0"/>
+                                              <EmptySpace max="-2" attributes="0"/>
+                                              <Component id="jLabelPoissonTxReproUnite" min="-2" max="-2" attributes="0"/>
+                                          </Group>
+                                          <Group type="102" alignment="0" attributes="0">
+                                              <Component id="jTextFieldPoissonDeplacement" min="-2" pref="50" max="-2" attributes="0"/>
+                                              <EmptySpace max="-2" attributes="0"/>
+                                              <Component id="jLabelPoissonDeplacementUnite" min="-2" max="-2" attributes="0"/>
+                                          </Group>
+                                          <Group type="102" alignment="0" attributes="0">
+                                              <Component id="jTextFieldPoissonNb" min="-2" pref="50" max="-2" attributes="0"/>
+                                              <EmptySpace max="-2" attributes="0"/>
+                                              <Component id="jLabelPoissonNbUnite" min="-2" max="-2" attributes="0"/>
+                                          </Group>
+                                      </Group>
+                                  </Group>
+                                  <Component id="jLabelPoissonDeplacement" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                          </Group>
+                      </Group>
+                      <EmptySpace max="32767" attributes="0"/>
+                  </Group>
+                  <Group type="102" attributes="0">
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" alignment="1" attributes="0">
+                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                              <Component id="jButtonValider" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Component id="jLabelTaille" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                          </Group>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                  </Group>
+                  <Group type="102" attributes="0">
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="jLabelRequin" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Group type="102" attributes="0">
+                              <EmptySpace min="10" pref="10" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="jLabelTailleLargeur" min="-2" max="-2" attributes="0"/>
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <Group type="103" groupAlignment="0" attributes="0">
+                                          <Component id="jLabelRequinTxRepro" alignment="0" min="-2" max="-2" attributes="0"/>
+                                          <Component id="jLabelRequinDensiteMax" alignment="0" min="-2" max="-2" attributes="0"/>
+                                          <Component id="jLabelRequinTempsSurvie" alignment="0" min="-2" max="-2" attributes="0"/>
+                                          <Component id="jLabelRequinNb" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      </Group>
+                                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                                      <Group type="103" groupAlignment="0" attributes="0">
+                                          <Group type="102" alignment="0" attributes="0">
+                                              <Component id="jTextFieldRequinTempsSurvie" min="-2" pref="50" max="-2" attributes="0"/>
+                                              <EmptySpace max="-2" attributes="0"/>
+                                              <Component id="jLabelRequinTempsSurvieUnite" min="-2" max="-2" attributes="0"/>
+                                          </Group>
+                                          <Group type="102" alignment="0" attributes="0">
+                                              <Component id="jTextFieldRequinDensiteMax" min="-2" pref="50" max="-2" attributes="0"/>
+                                              <EmptySpace max="-2" attributes="0"/>
+                                              <Component id="jLabelRequinDensiteMaxUnite" min="-2" max="-2" attributes="0"/>
+                                          </Group>
+                                          <Group type="102" alignment="0" attributes="0">
+                                              <Component id="jTextFieldRequinTxRepro" min="-2" pref="50" max="-2" attributes="0"/>
+                                              <EmptySpace max="-2" attributes="0"/>
+                                              <Component id="jLabelRequinTxReproUnite" min="-2" max="-2" attributes="0"/>
+                                          </Group>
+                                          <Group type="102" alignment="0" attributes="0">
+                                              <Component id="jTextFieldRequinDeplacement" min="-2" pref="50" max="-2" attributes="0"/>
+                                              <EmptySpace max="-2" attributes="0"/>
+                                              <Component id="jLabelRequinDeplacementUnite" min="-2" max="-2" attributes="0"/>
+                                          </Group>
+                                          <Group type="102" alignment="0" attributes="0">
+                                              <Component id="jTextFieldRequinNb" min="-2" pref="50" max="-2" attributes="0"/>
+                                              <EmptySpace max="-2" attributes="0"/>
+                                              <Component id="jLabelRequinNbUnite" min="-2" max="-2" attributes="0"/>
+                                          </Group>
+                                      </Group>
+                                  </Group>
+                                  <Component id="jLabelRequinDeplacement" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jLabelTailleHauteur" alignment="0" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                          </Group>
+                      </Group>
+                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                  </Group>
+              </Group>
+          </Group>
+      </Group>
+    </DimensionLayout>
+    <DimensionLayout dim="1">
+      <Group type="103" groupAlignment="0" attributes="0">
+          <Group type="102" alignment="0" attributes="0">
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="jLabelTaille" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="jLabelTailleLargeur" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jTextFieldTailleL" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jLabelTailleLUnite" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="jLabelTailleHauteur" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jTextFieldTailleH" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jLabelTailleHUnite" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace max="32767" attributes="0"/>
+              <Component id="jLabelAlgue" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="jLabelAlgueNb" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jLabelAlgueNbUnite" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jTextFieldAlgueNb" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="jLabelAlgueDeplacement" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jTextFieldAlgueDeplacement" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jLabelAlgueDeplacementUnite" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="jLabelAlgueTempsSurvie" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jTextFieldAlgueTempsSurvie" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jLabelAlgueTempsSurvieUnite" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="jLabelAlgueTxRepro" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jTextFieldAlgueTxRepro" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jLabelAlgueTxReproUnite" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="jLabelAlgueDensiteMax" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jTextFieldAlgueDensiteMax" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jLabelAlgueDensiteMaxUnite" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <Component id="jLabelPoisson" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="jLabelPoissonNb" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jTextFieldPoissonNb" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jLabelPoissonNbUnite" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="jLabelPoissonDeplacement" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jTextFieldPoissonDeplacement" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jLabelPoissonDeplacementUnite" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="jLabelPoissonTempsSurvie" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jTextFieldPoissonTempsSurvie" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jLabelPoissonTempsSurvieUnite" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="jLabelPoissonTxRepro" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jTextFieldPoissonTxRepro" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jLabelPoissonTxReproUnite" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="jLabelPoissonDensiteMax" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jTextFieldPoissonDensiteMax" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jLabelPoissonDensiteMaxUnite" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+              <Component id="jLabelRequin" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="jLabelRequinNb" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jTextFieldRequinNb" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jLabelRequinNbUnite" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="jLabelRequinDeplacement" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jTextFieldRequinDeplacement" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jLabelRequinDeplacementUnite" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="jLabelRequinTempsSurvie" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jTextFieldRequinTempsSurvie" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jLabelRequinTempsSurvieUnite" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="jLabelRequinTxRepro" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jTextFieldRequinTxRepro" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jLabelRequinTxReproUnite" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="jLabelRequinDensiteMax" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jTextFieldRequinDensiteMax" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jLabelRequinDensiteMaxUnite" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="jButtonValider" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+          </Group>
+      </Group>
+    </DimensionLayout>
+  </Layout>
+  <SubComponents>
+    <Component class="javax.swing.JLabel" name="jLabelAlgue">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Algue"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabelAlgueNb">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Nombre :"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabelAlgueDeplacement">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Se deplacer :"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabelAlgueDensiteMax">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Densit&#xe9; max :"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabelAlgueTempsSurvie">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Temps de survie :"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabelAlgueTxRepro">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Taux de reproduction :"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="jTextFieldTailleL">
+      <Properties>
+        <Property name="horizontalAlignment" type="int" value="4"/>
+        <Property name="text" type="java.lang.String" value="120"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="jTextFieldAlgueDeplacement">
+      <Properties>
+        <Property name="horizontalAlignment" type="int" value="4"/>
+        <Property name="text" type="java.lang.String" value="1"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="jTextFieldAlgueTempsSurvie">
+      <Properties>
+        <Property name="horizontalAlignment" type="int" value="4"/>
+        <Property name="text" type="java.lang.String" value="200"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="jTextFieldAlgueDensiteMax">
+      <Properties>
+        <Property name="horizontalAlignment" type="int" value="4"/>
+        <Property name="text" type="java.lang.String" value="80"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="jTextFieldAlgueTxRepro">
+      <Properties>
+        <Property name="horizontalAlignment" type="int" value="4"/>
+        <Property name="text" type="java.lang.String" value="10"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabelAlgueNbUnite">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Algue(s)"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabelAlgueDeplacementUnite">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Case(s)"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabelAlgueTempsSurvieUnite">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Tour(s)"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabelAlgueTxReproUnite">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="%"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabelAlgueDensiteMaxUnite">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="%"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="jTextFieldPoissonTempsSurvie">
+      <Properties>
+        <Property name="horizontalAlignment" type="int" value="4"/>
+        <Property name="text" type="java.lang.String" value="10"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabelPoissonNbUnite">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Poisson(s)"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="jTextFieldPoissonNb">
+      <Properties>
+        <Property name="horizontalAlignment" type="int" value="4"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabelPoissonDeplacementUnite">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Case(s)"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="jTextFieldPoissonDeplacement">
+      <Properties>
+        <Property name="horizontalAlignment" type="int" value="4"/>
+        <Property name="text" type="java.lang.String" value="2"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabelPoissonTempsSurvieUnite">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Tour(s)"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabelPoissonTempsSurvie">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Temps de survie :"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabelPoissonTxReproUnite">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="%"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabelPoissonTxRepro">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Taux de reproduction :"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabelPoissonDensiteMaxUnite">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="%"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabelPoissonDeplacement">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Se deplacer :"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabelPoissonDensiteMax">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Densit&#xe9; max :"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabelPoisson">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Poisson"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabelPoissonNb">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Nombre :"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="jTextFieldPoissonTxRepro">
+      <Properties>
+        <Property name="horizontalAlignment" type="int" value="4"/>
+        <Property name="text" type="java.lang.String" value="50"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="jTextFieldPoissonDensiteMax">
+      <Properties>
+        <Property name="horizontalAlignment" type="int" value="4"/>
+        <Property name="text" type="java.lang.String" value="15"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabelRequinTxRepro">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Taux de reproduction :"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabelRequinDensiteMaxUnite">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="%"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabelRequinTempsSurvie">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Temps de survie :"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabelRequinTxReproUnite">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="%"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabelRequin">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Requin"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabelRequinDeplacement">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Se deplacer :"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabelRequinDensiteMax">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Densit&#xe9; max :"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="jTextFieldRequinDensiteMax">
+      <Properties>
+        <Property name="horizontalAlignment" type="int" value="4"/>
+        <Property name="text" type="java.lang.String" value="5"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="jTextFieldRequinTxRepro">
+      <Properties>
+        <Property name="horizontalAlignment" type="int" value="4"/>
+        <Property name="text" type="java.lang.String" value="30"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabelRequinNb">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Nombre :"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="jTextFieldRequinTempsSurvie">
+      <Properties>
+        <Property name="horizontalAlignment" type="int" value="4"/>
+        <Property name="text" type="java.lang.String" value="15"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabelRequinNbUnite">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Requin(s)"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="jTextFieldRequinNb">
+      <Properties>
+        <Property name="horizontalAlignment" type="int" value="4"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabelRequinDeplacementUnite">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Case(s)"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabelRequinTempsSurvieUnite">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Tour(s)"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="jTextFieldRequinDeplacement">
+      <Properties>
+        <Property name="horizontalAlignment" type="int" value="4"/>
+        <Property name="text" type="java.lang.String" value="3"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JButton" name="jButtonValider">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Valider"/>
+      </Properties>
+      <Events>
+        <EventHandler event="mousePressed" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jButtonValiderMousePressed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabelTaille">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Taille de l&apos;aquarium"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabelTailleLargeur">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Largeur :"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabelTailleHauteur">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Hauteur :"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="jTextFieldAlgueNb">
+      <Properties>
+        <Property name="horizontalAlignment" type="int" value="4"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="jTextFieldTailleH">
+      <Properties>
+        <Property name="horizontalAlignment" type="int" value="4"/>
+        <Property name="text" type="java.lang.String" value="90"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabelTailleLUnite">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Case(s)"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabelTailleHUnite">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Case(s)"/>
+      </Properties>
+    </Component>
+  </SubComponents>
+</Form>
