@@ -97,14 +97,16 @@ public class DAOClient{
             ResultSet resultat = preparedStatement.executeQuery();
             while (resultat.next())
             {
-                client = new Client(resultat.getLong("Id"), 
-                            resultat.getString("reference"), 
-                            resultat.getString("raisonSociale"), 
-                            resultat.getString("adresse"),
-                            resultat.getString("codePostal"),
-                            resultat.getString("ville"),
-                            resultat.getString("pays"),
-                            resultat.getBoolean("actif"));
+                client = new Client(
+                    resultat.getLong("Id"), 
+                    resultat.getString("reference"), 
+                    resultat.getString("raisonSociale"), 
+                    resultat.getString("adresse"),
+                    resultat.getString("codePostal"),
+                    resultat.getString("ville"),
+                    resultat.getString("pays"),
+                    resultat.getBoolean("actif")
+                );
             }
         } catch (SQLException e) {
             e.printStackTrace();

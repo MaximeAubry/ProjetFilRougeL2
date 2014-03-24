@@ -13,8 +13,8 @@ import java.sql.Date;
  * @author Maxime
  */
 public class Commande extends Document {
-    private long statutCommande;
-    private long delaiExpedition;
+    private int statutCommande;
+    private int delaiExpedition;
 
     public Commande() {
         super();
@@ -22,25 +22,25 @@ public class Commande extends Document {
         this.delaiExpedition = 0;
     }
 
-    public Commande(long statutCommande, long delaiExpedition, long id, Date dateDeCreation, long idCommercial, long idClient) {
+    public Commande(long id, Date dateDeCreation, long idCommercial, long idClient, int statutCommande, int delaiExpedition) {
         super(id, dateDeCreation, idCommercial, idClient);
         this.statutCommande = statutCommande;
         this.delaiExpedition = delaiExpedition;
     }
 
-    public long getStatutCommande() {
+    public int getStatutCommande() {
         return statutCommande;
     }
 
-    public void setStatutCommande(long statutCommande) {
+    public void setStatutCommande(int statutCommande) {
         this.statutCommande = statutCommande;
     }
 
-    public long getDelaiExpedition() {
+    public int getDelaiExpedition() {
         return delaiExpedition;
     }
 
-    public void setDelaiExpedition(long delaiExpedition) {
+    public void setDelaiExpedition(int delaiExpedition) {
         this.delaiExpedition = delaiExpedition;
     }
 

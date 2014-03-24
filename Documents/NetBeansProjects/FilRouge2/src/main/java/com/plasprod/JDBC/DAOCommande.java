@@ -1,10 +1,10 @@
 package com.plasprod.JDBC;
 
 import com.plasprod.Models.Commande;
-import com.plasprod.Models.Commercial;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.List;
+import java.util.ArrayList;
 
 /**
  *
@@ -12,8 +12,13 @@ import java.util.List;
  */
 public class DAOCommande {
     public static void creationCommande(Commande commande) {
+        // Document
+        long Id = DAODocument.ajoutDocument(commande);
+        commande.setId(Id);
+        
+        // Commande
         ConnectionBDD.creerConnection();
-        String requete = "INSERT INTO commande(statutCommande,delaiExpedition,IdDocument) VALUES (?,?,?)";
+        String requete = "INSERT INTO commande(statutCommande,delaiExpedition,IdDocument) VALUES (?,?,?);";
         PreparedStatement preparedStatement;
         try{
             preparedStatement = ConnectionBDD.connection.prepareStatement(requete);
@@ -28,33 +33,18 @@ public class DAOCommande {
         ConnectionBDD.fermerConnection();
     }
 
-    public void suppressionCommercial(Commercial commande) {
+    public void modificationCommande(Commande commande) {
+        // Document
+        DAODocument.modificationDocument(commande);
+        
+        // Commande
         ConnectionBDD.creerConnection();
-        String requete = "DELETE FROM commande WHERE commande.IDCOMMERCIAL = ?";
+        String requete = "UPDATE commande SET statutCommande = ?,delaiExpedition = ? WHERE IdDocument = ?;";
         PreparedStatement preparedStatement;
         try {
             preparedStatement = ConnectionBDD.connection.prepareStatement(requete);
-            preparedStatement.setLong(1,commande.getId());
-            preparedStatement.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        ConnectionBDD.fermerConnection();
-    }
-
-    public void modificationCommercial(Commercial commande) {
-        ConnectionBDD.creerConnection();
-        String requete = "UPDATE commande SET reference = '?',nom = '?',prenom = '?',email = '?',telephone = '?',identifiant = '?',motDePasse = '?',actif = ? WHERE IDCOMMERCIAL = ?";
-        PreparedStatement preparedStatement;
-        try {
-            preparedStatement = ConnectionBDD.connection.prepareStatement(requete);
-            preparedStatement.setString(1,commande.getReference());
-            preparedStatement.setString(2,commande.getNom());
-            preparedStatement.setString(3,commande.getPrenom());
-            preparedStatement.setString(4,commande.getEmail());
-            preparedStatement.setString(5,commande.getTelephone());
-            preparedStatement.setString(6,commande.getIdentifiant());
-            preparedStatement.setString(7,commande.getMotDePasse());
+            preparedStatement.setInt(1,commande.getStatutCommande());
+            preparedStatement.setInt(1,commande.getDelaiExpedition());
             preparedStatement.setLong(8,commande.getId());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
@@ -62,37 +52,88 @@ public class DAOCommande {
         }
         ConnectionBDD.fermerConnection();
     }
-    
-    public List<Commande> getCommandeParCommercial(Commercial commande) {
 
-        List<Commande> listCommande = null;
-        ConnectionBDD.creerConnection();
-        String requete = "SELECT * FROM commande WHERE IDCOMMERCIAL = ?";
-        PreparedStatement preparedStatement;
-        try {
-                preparedStatement = ConnectionBDD.connection.prepareStatement(requete);
-                preparedStatement.setLong(1,commande.getId());
-                listCommande = (List<Commande>) preparedStatement.executeQuery();
-        } catch (SQLException e) {
-                e.printStackTrace();
-        }
-        ConnectionBDD.fermerConnection();
-        return ((List<Commande>) listCommande);
+    public void suppressionCommande(Commande commande) {
+        // Document
+        DAODocument.suppressionDocument(commande);
     }
     
-    public static Commande getLastCommandeParCommercial (Commercial commercial){
-        List<Commande> listCommande = null;
+    public static ArrayList<Commande> getListCommandes() {
+        ArrayList<Commande> commandes = new ArrayList<Commande>();
         ConnectionBDD.creerConnection();
-        String requete = "SELECT * FROM commande WHERE id = ? AND ROWNUM = 1 ";
-        PreparedStatement preparedStatement;
         try {
-                preparedStatement = ConnectionBDD.connection.prepareStatement(requete);
-                preparedStatement.setLong(1,commercial.getId());
-                listCommande = (List<Commande>) preparedStatement.executeQuery();
+            String requete = "SELECT Document.Id,dateDeCreation,IdCommercial,IdContact,statutCommande,delaiExpedition FROM Document INNER JOIN Commande ON Commande.IdDocument = Document.Id;";
+            PreparedStatement preparedStatement = ConnectionBDD.connection.prepareStatement(requete);
+            ResultSet resultat = preparedStatement.executeQuery();
+            while (resultat.next())
+            {
+                Commande commande = new Commande(
+                    resultat.getLong("Id"),
+                    resultat.getDate("dateDeCreation"),
+                    resultat.getLong("IdCommercial"),
+                    resultat.getLong("IdClient"),
+                    resultat.getInt("statutCommande"),
+                    resultat.getInt("delaiExpedition")
+                );
+                commandes.add(commande);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        ConnectionBDD.fermerConnection();
+        return commandes;
+    }
+    
+    public static Commande getCommande(long Id) {
+        Commande commande = null;
+        ConnectionBDD.creerConnection();
+        try {
+            String requete = "SELECT Document.Id,dateDeCreation,IdCommercial,IdClient,statutCommande,delaiExpedition FROM Document INNER JOIN Commande ON Commande.IdDocument = Document.Id WHERE Document.Id = ?;";
+            PreparedStatement preparedStatement = ConnectionBDD.connection.prepareStatement(requete);
+            preparedStatement.setLong(1, Id);
+            ResultSet resultat = preparedStatement.executeQuery();
+            while (resultat.next())
+            {
+                commande = new Commande(
+                    resultat.getLong("Id"),
+                    resultat.getDate("dateDeCreation"),
+                    resultat.getLong("IdCommercial"),
+                    resultat.getLong("IdClient"),
+                    resultat.getInt("statutCommande"),
+                    resultat.getInt("delaiExpedition")
+                );
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        ConnectionBDD.fermerConnection();
+        return commande;
+    }
+    
+    public ArrayList<Commande> getCommandesParCommercial(long Id) {
+        ArrayList<Commande> commandes = new ArrayList<Commande>();
+        ConnectionBDD.creerConnection();
+        try {
+            String requete = "SELECT Document.Id,dateDeCreation,IdCommercial,IdClient,statutCommande,delaiExpedition FROM Document INNER JOIN Commande ON Commande.IdDocument = Document.Id WHERE IdCommercial = ?;";
+            PreparedStatement preparedStatement = ConnectionBDD.connection.prepareStatement(requete);
+            preparedStatement.setLong(1,Id);
+            ResultSet resultat = preparedStatement.executeQuery();
+            while (resultat.next())
+            {
+                Commande commande = new Commande(
+                    resultat.getLong("Id"),
+                    resultat.getDate("dateDeCreation"),
+                    resultat.getLong("IdCommercial"),
+                    resultat.getLong("IdClient"),
+                    resultat.getInt("statutCommande"),
+                    resultat.getInt("delaiExpedition")
+                );
+                commandes.add(commande);
+            }
         } catch (SQLException e) {
                 e.printStackTrace();
         }
         ConnectionBDD.fermerConnection();
-        return (Commande) listCommande.get(0);
+        return commandes;
     }
 }

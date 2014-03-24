@@ -24,7 +24,7 @@ public class Devis extends Document {
         this.graduationDeDemande = 0;
     }
 
-    public Devis(Date dateDeFinDeValidite, Boolean signe, double remise, double fraisDeTransport, double tauxDeTva, int graduationDeDemande, long id, Date dateDeCreation, long idCommercial, long idClient) {
+    public Devis(long id, Date dateDeCreation, long idCommercial, long idClient, Date dateDeFinDeValidite, Boolean signe, double remise, double fraisDeTransport, double tauxDeTva, int graduationDeDemande) {
         super(id, dateDeCreation, idCommercial, idClient);
         this.dateDeFinDeValidite = dateDeFinDeValidite;
         this.signe = signe;

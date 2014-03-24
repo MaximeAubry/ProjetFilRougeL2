@@ -19,7 +19,6 @@ import java.util.Date;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
-import com.toedter.calendar.JDateChooser;
 
 /**
  *

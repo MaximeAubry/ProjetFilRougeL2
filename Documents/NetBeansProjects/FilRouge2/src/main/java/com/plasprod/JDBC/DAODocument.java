@@ -1,28 +1,68 @@
 package com.plasprod.JDBC;
 
-import com.plasprod.Models.Commande;
-import com.plasprod.Models.Commercial;
+import com.plasprod.Models.Document;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.List;
 
 /**
  *
  * @author Antoine Demarly
  */
 public class DAODocument {
-    public static void creationDocumennt(Commande commande) {
+    public static long ajoutDocument(Document document) {
+        long Id = 0;
         ConnectionBDD.creerConnection();
-        String requete = "INSERT INTO document(dateDeCreation,idCommercial,idClient) VALUES (?,?,?)";
-        PreparedStatement preparedStatement;
         try {
+            String requete = "INSERT INTO Document(dateDeCreation,idCommercial,idClient) VALUES (?,?,?);";
+            PreparedStatement preparedStatement = ConnectionBDD.connection.prepareStatement(requete);
+            preparedStatement.setDate(1,document.getDateDeCreation());
+            preparedStatement.setLong(2,document.getIdCommercial());
+            preparedStatement.setLong(3,document.getIdClient());
+            preparedStatement.executeUpdate();
+            
+            // retour du dernier Id
+            requete = "SELECT MAX(IdDocument) AS Id FROM Document;";
             preparedStatement = ConnectionBDD.connection.prepareStatement(requete);
-            preparedStatement.setDate(1,commande.getDateDeCreation());
-            preparedStatement.setLong(2,commande.getIdCommercial());
-            preparedStatement.setLong(3,commande.getIdClient());
+            preparedStatement.executeUpdate();
+            ResultSet resultat = preparedStatement.executeQuery();
+            while (resultat.next())
+            {
+                Id = resultat.getLong("Id");
+            }
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+        ConnectionBDD.fermerConnection();
+        return Id;
+    }
+    
+    public static void modificationDocument(Document document) {
+        ConnectionBDD.creerConnection();
+        try {
+            String requete = "UPDATE Document SET dateDeCreation = ?,idCommercial = ?,idClient = ? WHERE IdDocument = ?;";
+            PreparedStatement preparedStatement = ConnectionBDD.connection.prepareStatement(requete);
+            preparedStatement.setDate(1,document.getDateDeCreation());
+            preparedStatement.setLong(2,document.getIdCommercial());
+            preparedStatement.setLong(3,document.getIdClient());
+            preparedStatement.setLong(3,document.getId());
             preparedStatement.executeUpdate();
         }
         catch (SQLException e) {
+            e.printStackTrace();
+        }
+        ConnectionBDD.fermerConnection();
+    }
+
+    public static void suppressionDocument(Document document) {
+        ConnectionBDD.creerConnection();
+        try {
+            String requete = "DELETE FROM Document WHERE Id = ?;";
+            PreparedStatement preparedStatement = ConnectionBDD.connection.prepareStatement(requete);
+            preparedStatement.setLong(1,document.getId());
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         ConnectionBDD.fermerConnection();
