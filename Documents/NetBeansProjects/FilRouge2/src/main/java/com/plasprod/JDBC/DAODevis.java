@@ -6,10 +6,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-/**
- *
- * @author Antoine Demarly
- */
 public class DAODevis {
     public static void ajoutDevis(Devis devis) {
         // Document

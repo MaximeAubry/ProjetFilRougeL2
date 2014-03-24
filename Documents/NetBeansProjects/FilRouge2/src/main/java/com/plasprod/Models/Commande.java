@@ -13,34 +13,34 @@ import java.sql.Date;
  * @author Maxime
  */
 public class Commande extends Document {
-    private int statutCommande;
-    private int delaiExpedition;
+    private Enum statutCommande;
+    private long delaiExpedition;
 
     public Commande() {
         super();
-        this.statutCommande = 0;
+        this.statutCommande = null;
         this.delaiExpedition = 0;
     }
 
-    public Commande(long id, Date dateDeCreation, long idCommercial, long idClient, int statutCommande, int delaiExpedition) {
+    public Commande(long id, Date dateDeCreation, long idCommercial, long idClient, Enum statutCommande, long delaiExpedition) {
         super(id, dateDeCreation, idCommercial, idClient);
         this.statutCommande = statutCommande;
         this.delaiExpedition = delaiExpedition;
     }
 
-    public int getStatutCommande() {
+    public Enum getStatutCommande() {
         return statutCommande;
     }
 
-    public void setStatutCommande(int statutCommande) {
+    public void setStatutCommande(Enum statutCommande) {
         this.statutCommande = statutCommande;
     }
 
-    public int getDelaiExpedition() {
+    public long getDelaiExpedition() {
         return delaiExpedition;
     }
 
-    public void setDelaiExpedition(int delaiExpedition) {
+    public void setDelaiExpedition(long delaiExpedition) {
         this.delaiExpedition = delaiExpedition;
     }
 

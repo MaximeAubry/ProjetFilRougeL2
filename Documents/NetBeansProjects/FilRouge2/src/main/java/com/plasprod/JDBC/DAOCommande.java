@@ -1,15 +1,12 @@
 package com.plasprod.JDBC;
 
 import com.plasprod.Models.Commande;
+import com.plasprod.Models.Enums.StatutCommande;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-/**
- *
- * @author Antoine Demarly
- */
 public class DAOCommande {
     public static void creationCommande(Commande commande) {
         // Document
@@ -25,8 +22,8 @@ public class DAOCommande {
         PreparedStatement preparedStatement;
         try{
             preparedStatement = ConnectionBDD.connection.prepareStatement(requete);
-            preparedStatement.setDate(1,commande.getDateDeCreation());
-            preparedStatement.setLong(2,commande.getIdCommercial());
+            preparedStatement.setString(1,commande.getStatutCommande().toString());
+            preparedStatement.setLong(2,commande.getDelaiExpedition());
             preparedStatement.setLong(3,commande.getId());
             preparedStatement.executeUpdate();
         }
@@ -50,9 +47,9 @@ public class DAOCommande {
         PreparedStatement preparedStatement;
         try {
             preparedStatement = ConnectionBDD.connection.prepareStatement(requete);
-            preparedStatement.setInt(1,commande.getStatutCommande());
-            preparedStatement.setInt(1,commande.getDelaiExpedition());
-            preparedStatement.setLong(8,commande.getId());
+            preparedStatement.setString(1,commande.getStatutCommande().toString());
+            preparedStatement.setLong(2,commande.getDelaiExpedition());
+            preparedStatement.setLong(3,commande.getId());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -81,8 +78,8 @@ public class DAOCommande {
                     resultat.getDate("dateDeCreation"),
                     resultat.getLong("IdCommercial"),
                     resultat.getLong("IdClient"),
-                    resultat.getInt("statutCommande"),
-                    resultat.getInt("delaiExpedition")
+                    StatutCommande.valueOf(resultat.getString("statutCommande")),
+                    resultat.getLong("delaiExpedition")
                 );
                 commandes.add(commande);
             }
@@ -110,8 +107,8 @@ public class DAOCommande {
                     resultat.getDate("dateDeCreation"),
                     resultat.getLong("IdCommercial"),
                     resultat.getLong("IdClient"),
-                    resultat.getInt("statutCommande"),
-                    resultat.getInt("delaiExpedition")
+                    StatutCommande.valueOf(resultat.getString("statutCommande")),
+                    resultat.getLong("delaiExpedition")
                 );
             }
         } catch (SQLException e) {
@@ -139,8 +136,8 @@ public class DAOCommande {
                     resultat.getDate("dateDeCreation"),
                     resultat.getLong("IdCommercial"),
                     resultat.getLong("IdClient"),
-                    resultat.getInt("statutCommande"),
-                    resultat.getInt("delaiExpedition")
+                    StatutCommande.valueOf(resultat.getString("statutCommande")),
+                    resultat.getLong("delaiExpedition")
                 );
                 commandes.add(commande);
             }

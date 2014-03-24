@@ -10,7 +10,7 @@ import com.plasprod.Models.Contact;
 import com.plasprod.Models.Enums.EditMode;
 import com.plasprod.Models.Evenement;
 import com.plasprod.Models.Singleton;
-import com.plasprod.Models.TypeRdv;
+import com.plasprod.Models.Enums.TypeRdv;
 import java.sql.Time;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;

@@ -1,5 +1,6 @@
 package com.plasprod.JDBC;
 
+import com.plasprod.Models.Enums.TypeRdv;
 import com.plasprod.Models.Evenement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -15,7 +16,7 @@ public class DAOEvenement {
                             "VALUES\n" +
                                 "(?,?,?,?,?,?);";
             PreparedStatement preparedStatement = ConnectionBDD.connection.prepareStatement(requete);
-            preparedStatement.setString(1,null);
+            preparedStatement.setString(1,evenement.getTypeRDV().toString());
             preparedStatement.setString(2,evenement.getCommentaire());
             preparedStatement.setDate(3,evenement.getDateDeDebut());
             preparedStatement.setDate(4,evenement.getDateDeFin());
@@ -41,7 +42,7 @@ public class DAOEvenement {
                                 ",IdContact = ?\n" +
                             "WHERE id = ?;";
             PreparedStatement preparedStatement = ConnectionBDD.connection.prepareStatement(requete);
-            preparedStatement.setString(1,null);
+            preparedStatement.setString(1,evenement.getTypeRDV().toString());
             preparedStatement.setString(2,evenement.getCommentaire());
             preparedStatement.setDate(3,evenement.getDateDeDebut());
             preparedStatement.setDate(4,evenement.getDateDeFin());
@@ -82,7 +83,7 @@ public class DAOEvenement {
             {
                 Evenement evenement = new Evenement(
                     resultat.getLong("Id"),
-                    null,
+                    TypeRdv.valueOf(resultat.getString("typeRDV")),
                     resultat.getString("commentaire"),
                     resultat.getDate("dateDeDebut"),
                     resultat.getDate("dateDeFin"),
@@ -112,7 +113,7 @@ public class DAOEvenement {
             {
                 evenement = new Evenement(
                     resultat.getLong("Id"),
-                    null,
+                    TypeRdv.valueOf(resultat.getString("typeRDV")),
                     resultat.getString("commentaire"),
                     resultat.getDate("dateDeDebut"),
                     resultat.getDate("dateDeFin"),

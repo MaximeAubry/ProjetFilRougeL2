@@ -250,7 +250,7 @@ public class VueContactEdit extends javax.swing.JFrame {
         }
         
         this.dispose();
-        Singleton.getCurrent().vueClient.DislayCurrentClient(true);
+        Singleton.getCurrent().vueContact.DislayCurrentContact(true);
     }//GEN-LAST:event_jButtonEnregistrerMousePressed
 
     private void jButtonAnnulerMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonAnnulerMousePressed

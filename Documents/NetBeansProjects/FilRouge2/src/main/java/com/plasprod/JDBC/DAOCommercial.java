@@ -115,8 +115,22 @@ public class DAOCommercial{
                             "FROM Commercial\n" +
                             "WHERE Id = ?;";
             PreparedStatement preparedStatement = ConnectionBDD.connection.prepareStatement(requete);
-            preparedStatement.setLong(1, Id);
-            commercial = (Commercial)preparedStatement.executeQuery();
+            preparedStatement.setLong(1,Id);
+            ResultSet resultat = preparedStatement.executeQuery();
+            while (resultat.next())
+            {
+                commercial = new Commercial(
+                    resultat.getLong("Id"),
+                    resultat.getString("reference"),
+                    resultat.getString("nom"),
+                    resultat.getString("prenom"),
+                    resultat.getString("email"),
+                    resultat.getString("telephone"),
+                    resultat.getString("identifiant"),
+                    resultat.getString("motDePasse"),
+                    resultat.getBoolean("actif")
+                );
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }

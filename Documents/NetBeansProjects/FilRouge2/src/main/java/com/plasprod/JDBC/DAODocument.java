@@ -5,10 +5,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- *
- * @author Antoine Demarly
- */
 public class DAODocument {
     public static long ajoutDocument(Document document) {
         long Id = 0;
