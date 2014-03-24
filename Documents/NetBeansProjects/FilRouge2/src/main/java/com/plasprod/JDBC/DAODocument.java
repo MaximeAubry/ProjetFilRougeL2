@@ -14,7 +14,10 @@ public class DAODocument {
         long Id = 0;
         ConnectionBDD.creerConnection();
         try {
-            String requete = "INSERT INTO Document(dateDeCreation,idCommercial,idClient) VALUES (?,?,?);";
+            String requete = "INSERT INTO Document\n" +
+                                "(dateDeCreation,idCommercial,idClient)\n" +
+                            "VALUES\n" +
+                                "(?,?,?);";
             PreparedStatement preparedStatement = ConnectionBDD.connection.prepareStatement(requete);
             preparedStatement.setDate(1,document.getDateDeCreation());
             preparedStatement.setLong(2,document.getIdCommercial());
@@ -22,7 +25,8 @@ public class DAODocument {
             preparedStatement.executeUpdate();
             
             // retour du dernier Id
-            requete = "SELECT MAX(IdDocument) AS Id FROM Document;";
+            requete = "SELECT MAX(Id) AS Id\n" +
+                    "FROM Document;";
             preparedStatement = ConnectionBDD.connection.prepareStatement(requete);
             preparedStatement.executeUpdate();
             ResultSet resultat = preparedStatement.executeQuery();
@@ -41,7 +45,12 @@ public class DAODocument {
     public static void modificationDocument(Document document) {
         ConnectionBDD.creerConnection();
         try {
-            String requete = "UPDATE Document SET dateDeCreation = ?,idCommercial = ?,idClient = ? WHERE IdDocument = ?;";
+            String requete = "UPDATE Document\n" +
+                            "SET\n" +
+                                "dateDeCreation = ?\n" +
+                                ",idCommercial = ?\n" +
+                                ",idClient = ?\n" +
+                            "WHERE IdDocument = ?;";
             PreparedStatement preparedStatement = ConnectionBDD.connection.prepareStatement(requete);
             preparedStatement.setDate(1,document.getDateDeCreation());
             preparedStatement.setLong(2,document.getIdCommercial());
@@ -58,7 +67,9 @@ public class DAODocument {
     public static void suppressionDocument(Document document) {
         ConnectionBDD.creerConnection();
         try {
-            String requete = "DELETE FROM Document WHERE Id = ?;";
+            String requete = "DELETE\n" +
+                            "FROM Document\n" +
+                            "WHERE Id = ?;";
             PreparedStatement preparedStatement = ConnectionBDD.connection.prepareStatement(requete);
             preparedStatement.setLong(1,document.getId());
             preparedStatement.executeUpdate();

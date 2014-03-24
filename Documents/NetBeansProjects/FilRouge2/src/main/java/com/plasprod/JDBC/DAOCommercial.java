@@ -11,7 +11,10 @@ public class DAOCommercial{
     public static void ajoutCommercial(Commercial commercial) {
         ConnectionBDD.creerConnection();
         try {
-            String requete = "INSERT INTO commercial(reference,nom,prenom,email,telephone,identifiant,motDePasse,actif) VALUES (?,?,?,?,?,?,?,?);";
+            String requete = "INSERT INTO commercial\n" +
+                                "(reference,nom,prenom,email,telephone,identifiant,motDePasse,actif)\n" +
+                            "VALUES\n" +
+                                "(?,?,?,?,?,?,?,?);";
             PreparedStatement preparedStatement = ConnectionBDD.connection.prepareStatement(requete);
             preparedStatement.setString(1,commercial.getReference());
             preparedStatement.setString(2,commercial.getNom());
@@ -31,7 +34,17 @@ public class DAOCommercial{
     public static void modificationCommercial(Commercial commercial) {
         ConnectionBDD.creerConnection();
         try {
-            String requete = "UPDATE commercial SET reference = ?,nom = ?,prenom = ?,email = ?,telephone = ?,identifiant = ?,motDePasse = ?,actif = ? WHERE id = ?;";
+            String requete = "UPDATE commercial\n" +
+                            "SET\n" +
+                                "reference = ?\n" +
+                                ",nom = ?\n" +
+                                ",prenom = ?\n" +
+                                ",email = ?\n" +
+                                ",telephone = ?\n" +
+                                ",identifiant = ?\n" +
+                                ",motDePasse = ?\n" +
+                                ",actif = ?\n" +
+                            "WHERE id = ?;";
             PreparedStatement preparedStatement = ConnectionBDD.connection.prepareStatement(requete);
             preparedStatement.setString(1,commercial.getReference());
             preparedStatement.setString(2,commercial.getNom());
@@ -52,7 +65,9 @@ public class DAOCommercial{
     public static void suppressionCommercial(Commercial commercial) {
         ConnectionBDD.creerConnection();
         try {
-            String requete = "DELETE FROM commercial WHERE id = ?;";
+            String requete = "DELETE\n" +
+                            "FROM commercial\n" +
+                            "WHERE id = ?;";
             PreparedStatement preparedStatement = ConnectionBDD.connection.prepareStatement(requete);
             preparedStatement.setLong(1,commercial.getId());
             preparedStatement.executeUpdate();
@@ -66,7 +81,8 @@ public class DAOCommercial{
         ArrayList<Commercial> commerciaux = new ArrayList<Commercial>();
         ConnectionBDD.creerConnection();
         try {
-            String requete = "SELECT Id,reference,nom,prenom,email,telephone,identifiant,motDePasse,actif FROM Commercial;";
+            String requete = "SELECT Id,reference,nom,prenom,email,telephone,identifiant,motDePasse,actif\n" +
+                            "FROM Commercial;";
             PreparedStatement preparedStatement = ConnectionBDD.connection.prepareStatement(requete);
             ResultSet resultat = preparedStatement.executeQuery();
             while (resultat.next())
@@ -95,7 +111,9 @@ public class DAOCommercial{
         Commercial commercial = null;
         ConnectionBDD.creerConnection();
         try {
-            String requete = "SELECT Id,reference,nom,prenom,email,telephone,identifiant,motDePasse,actif FROM Commercial WHERE Id = ?;";
+            String requete = "SELECT Id,reference,nom,prenom,email,telephone,identifiant,motDePasse,actif\n" +
+                            "FROM Commercial\n" +
+                            "WHERE Id = ?;";
             PreparedStatement preparedStatement = ConnectionBDD.connection.prepareStatement(requete);
             preparedStatement.setLong(1, Id);
             commercial = (Commercial)preparedStatement.executeQuery();
@@ -105,38 +123,4 @@ public class DAOCommercial{
         ConnectionBDD.fermerConnection();
         return commercial;
     }
-    
-    /*public static List<Commande> getCommandeParCommercial(Commercial commercial) {
-
-        List<Commande> listCommande = null;
-        ConnectionBDD.creerConnection();
-        String requete = "SELECT * FROM commande WHERE IdCommercial = ?";
-        PreparedStatement preparedStatement;
-        try {
-                preparedStatement = ConnectionBDD.connection.prepareStatement(requete);
-                preparedStatement.setLong(1,commercial.getId());
-                listCommande = (List<Commande>) preparedStatement.executeQuery();
-        } catch (SQLException e) {
-                e.printStackTrace();
-        }
-        ConnectionBDD.fermerConnection();
-        return ((List<Commande>) listCommande);
-    }
-    
-    public static Commercial getCommercialParId(long id) {
-
-        List<Commercial> listCommercial = null;
-        ConnectionBDD.creerConnection();
-        String requete = "SELECT * FROM commercial WHERE id = ?";
-        PreparedStatement preparedStatement;
-        try {
-                preparedStatement = ConnectionBDD.connection.prepareStatement(requete);
-                preparedStatement.setLong(1,id);
-                listCommercial = (List<Commercial>) preparedStatement.executeQuery();
-        } catch (SQLException e) {
-                e.printStackTrace();
-        }
-        ConnectionBDD.fermerConnection();
-        return (Commercial) listCommercial.get(0);
-    }*/
 }

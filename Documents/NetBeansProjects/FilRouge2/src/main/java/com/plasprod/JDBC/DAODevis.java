@@ -18,7 +18,10 @@ public class DAODevis {
         
         // Devis
         ConnectionBDD.creerConnection();
-        String requete = "INSERT INTO Devis(dateDeFinDeValidite,signe,remise,fraisDeTransport,tauxDeTva,graduationDeDemande,IdDocument) VALUES (?,?,?,?,?,?,?);";
+        String requete = "INSERT INTO Devis\n" +
+                            "(dateDeFinDeValidite,signe,remise,fraisDeTransport,tauxDeTva,graduationDeDemande,IdDocument)\n" +
+                        "VALUES\n" +
+                            "(?,?,?,?,?,?,?);";
         PreparedStatement preparedStatement;
         try{
             preparedStatement = ConnectionBDD.connection.prepareStatement(requete);
@@ -43,7 +46,15 @@ public class DAODevis {
         
         // Devis
         ConnectionBDD.creerConnection();
-        String requete = "UPDATE Devis SET dateDeFinDeValidite = ?,signe = ?,remise = ?,fraisDeTransport = ?,tauxDeTva = ?,graduationDeDemande = ? WHERE IdDocument = ?;";
+        String requete = "UPDATE Devis\n" +
+                        "SET\n" +
+                            "dateDeFinDeValidite = ?\n" +
+                            ",signe = ?\n" +
+                            ",remise = ?\n" +
+                            ",fraisDeTransport = ?\n" +
+                            ",tauxDeTva = ?\n" +
+                            ",graduationDeDemande = ?\n" +
+                        "WHERE IdDocument = ?;";
         PreparedStatement preparedStatement;
         try {
             preparedStatement = ConnectionBDD.connection.prepareStatement(requete);
@@ -70,7 +81,9 @@ public class DAODevis {
         ArrayList<Devis> devis = new ArrayList<Devis>();
         ConnectionBDD.creerConnection();
         try {
-            String requete = "SELECT Document.Id,dateDeCreation,IdCommercial,IdContact,dateDeFinDeValidite,signe,remise,fraisDeTransport,tauxDeTva,graduationDeDemande FROM Document INNER JOIN Devis ON Devis.IdDocument = Document.Id;";
+            String requete = "SELECT Document.Id,dateDeCreation,IdCommercial,IdContact,dateDeFinDeValidite,signe,remise,fraisDeTransport,tauxDeTva,graduationDeDemande\n" +
+                            "FROM Document\n" +
+                            "INNER JOIN Devis ON Devis.IdDocument = Document.Id;";
             PreparedStatement preparedStatement = ConnectionBDD.connection.prepareStatement(requete);
             ResultSet resultat = preparedStatement.executeQuery();
             while (resultat.next())
@@ -100,7 +113,10 @@ public class DAODevis {
         Devis devis = null;
         ConnectionBDD.creerConnection();
         try {
-            String requete = "SELECT Document.Id,dateDeCreation,IdCommercial,IdClient,statutDevis,delaiExpedition FROM Document INNER JOIN Document ON Devis.IdDocument = Document.Id WHERE Document.Id = ?;";
+            String requete = "SELECT Document.Id,dateDeCreation,IdCommercial,IdContact,dateDeFinDeValidite,signe,remise,fraisDeTransport,tauxDeTva,graduationDeDemande\n" +
+                            "FROM Document\n" +
+                            "INNER JOIN Devis ON Devis.IdDocument = Document.Id\n" +
+                            "WHERE Document.Id = ?;";
             PreparedStatement preparedStatement = ConnectionBDD.connection.prepareStatement(requete);
             preparedStatement.setLong(1, Id);
             ResultSet resultat = preparedStatement.executeQuery();
@@ -130,7 +146,10 @@ public class DAODevis {
         ArrayList<Devis> devis = new ArrayList<Devis>();
         ConnectionBDD.creerConnection();
         try {
-            String requete = "SELECT Document.Id,dateDeCreation,IdCommercial,IdClient,statutDevis,delaiExpedition FROM Document INNER JOIN Devis ON Devis.IdDocument = Document.Id WHERE IdCommercial = ?;";
+            String requete = "SELECT Document.Id,dateDeCreation,IdCommercial,IdContact,dateDeFinDeValidite,signe,remise,fraisDeTransport,tauxDeTva,graduationDeDemande\n" +
+                            "FROM Document\n" +
+                            "INNER JOIN Devis ON Devis.IdDocument = Document.Id\n" +
+                            "WHERE IdCommercial = ?;";
             PreparedStatement preparedStatement = ConnectionBDD.connection.prepareStatement(requete);
             preparedStatement.setLong(1,Id);
             ResultSet resultat = preparedStatement.executeQuery();
