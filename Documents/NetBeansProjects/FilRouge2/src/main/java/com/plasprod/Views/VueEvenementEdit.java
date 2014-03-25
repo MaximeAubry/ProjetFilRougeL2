@@ -7,16 +7,25 @@ import com.plasprod.Models.Enums.EditMode;
 import com.plasprod.Models.Evenement;
 import com.plasprod.Models.Singleton;
 import com.plasprod.Models.Enums.TypeRdv;
+import java.awt.Component;
 import java.sql.Date;
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Calendar;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.DefaultListCellRenderer;
+import javax.swing.DefaultListModel;
+import javax.swing.JList;
 import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingUtilities;
 
 public class VueEvenementEdit extends javax.swing.JFrame {
+    ArrayList<Time> heures = new ArrayList<Time>();
+    final DefaultComboBoxModel modelComboBoxContact;
+    final DefaultComboBoxModel modelComboBoxTypeRdv;
+    final DefaultListModel modelListHeureDeDebut;
+    
     /**
      * Creates new form VueAgendaEdit
      */
@@ -27,13 +36,13 @@ public class VueEvenementEdit extends javax.swing.JFrame {
         Evenement evenement = Singleton.getCurrent().evenement;
         jTextAreaCommentaire.setText(evenement.getCommentaire());
         jDateChooserDateEvenement.setDate(evenement.getDateDeDebut());
+        jListHeureDeDebut.setModel(new DefaultListModel());
         
-        final DefaultComboBoxModel modelComboBoxContact = (DefaultComboBoxModel)jComboBoxContact.getModel();
-        final DefaultComboBoxModel modelComboBoxTypeRdv = (DefaultComboBoxModel)jComboBoxType.getModel();
-        final DefaultComboBoxModel modelComboBoxHeureDeDebut = (DefaultComboBoxModel)jComboBoxHeureDeDebut.getModel();
-        
+        modelComboBoxContact = (DefaultComboBoxModel)jComboBoxContact.getModel();
+        modelComboBoxTypeRdv = (DefaultComboBoxModel)jComboBoxType.getModel();
+        modelListHeureDeDebut = (DefaultListModel)jListHeureDeDebut.getModel();
         modelComboBoxContact.removeAllElements();
-        modelComboBoxHeureDeDebut.removeAllElements();
+        modelListHeureDeDebut.removeAllElements();
         
         for (Contact contact : contacts) {
             modelComboBoxContact.addElement(contact);
@@ -43,7 +52,28 @@ public class VueEvenementEdit extends javax.swing.JFrame {
         }
         for(int i = 8; i <= 22; i++) {
             Time time = new Time((i - 1) * 60 * 60 * 1000);
-            modelComboBoxHeureDeDebut.addElement(time);
+            heures.add(time);
+            modelListHeureDeDebut.addElement(time);
+        }
+        
+        if (Singleton.getCurrent().editModeEvenement == EditMode.MODIFICATION) {
+            Contact contact = DAOContact.getContact(evenement.getIdContact());
+            TypeRdv typeRdv = TypeRdv.valueOf(evenement.getTypeRDV().name());
+            
+            Calendar dateDeDebut = Calendar.getInstance();
+            dateDeDebut.setTime(evenement.getDateDeDebut());
+            int heureDeDebutIndex = (dateDeDebut.get(Calendar.HOUR_OF_DAY) - 8);
+            Time heureDeDebut = new Time((dateDeDebut.get(Calendar.HOUR_OF_DAY) - 1) * 60 * 60 * 1000);
+            
+            Calendar dateDeFin = Calendar.getInstance();
+            dateDeFin.setTime(evenement.getDateDeFin());
+            int dureeMax = (dateDeFin.get(Calendar.HOUR_OF_DAY) - dateDeDebut.get(Calendar.HOUR_OF_DAY));
+            SpinnerModel modelSpinnerDuree = new SpinnerNumberModel(dureeMax, 0, dureeMax, 1);
+            
+            jComboBoxContact.setSelectedItem(contact);
+            jComboBoxType.setSelectedItem(typeRdv);
+            jListHeureDeDebut.setSelectedValue(heureDeDebut, true);
+            jSpinnerDuree.setModel(modelSpinnerDuree);
         }
         
         SwingUtilities.invokeLater (new Runnable ()
@@ -59,50 +89,18 @@ public class VueEvenementEdit extends javax.swing.JFrame {
                 jComboBoxType.revalidate();
                 jComboBoxType.repaint();
                 
-                jComboBoxHeureDeDebut.setModel(modelComboBoxHeureDeDebut);
-                jComboBoxHeureDeDebut.revalidate();
-                jComboBoxHeureDeDebut.repaint();
+                jListHeureDeDebut.setModel(modelListHeureDeDebut);
+                jListHeureDeDebut.revalidate();
+                jListHeureDeDebut.repaint();
+                
+                desactiverHeuresUtilisees();
+                setDureeMax();
             }
         });
-        
-        if (Singleton.getCurrent().editModeEvenement == EditMode.MODIFICATION) {
-            Contact contact = DAOContact.getContact(evenement.getIdContact());
-            TypeRdv typeRdv = TypeRdv.valueOf(evenement.getTypeRDV().name());
-            
-            Calendar dateDeDebut = Calendar.getInstance();
-            dateDeDebut.setTime(evenement.getDateDeDebut());
-            Calendar heureDeDebut = null;
-            for(int i = 0; i < modelComboBoxHeureDeDebut.getSize(); i++) {
-                Calendar heureDeDebutTEMP = Calendar.getInstance();
-                heureDeDebutTEMP.setTime((Time)modelComboBoxHeureDeDebut.getElementAt(i));
-                
-                if (dateDeDebut.get(Calendar.HOUR_OF_DAY) == heureDeDebutTEMP.get(Calendar.HOUR_OF_DAY)) {
-                    heureDeDebut = heureDeDebutTEMP;
-                    break;
-                }
-            }
-            
-            //Time heureDeDebut = new Time((dateDeDebut.get(Calendar.HOUR_OF_DAY) - 1) * 60 * 60 * 1000);
-            
-            Calendar dateDeFin = Calendar.getInstance();
-            dateDeFin.setTime(evenement.getDateDeFin());
-            int dureeMax = (dateDeFin.get(Calendar.HOUR_OF_DAY) - dateDeDebut.get(Calendar.HOUR_OF_DAY));
-            SpinnerModel modelSpinnerDuree = new SpinnerNumberModel(dureeMax, 0, dureeMax, 1);
-            
-            jComboBoxContact.setSelectedItem(contact);
-            jComboBoxType.setSelectedItem(typeRdv);
-            jComboBoxHeureDeDebut.setSelectedItem(new Time(heureDeDebut.getTimeInMillis()));
-            jSpinnerDuree.setModel(modelSpinnerDuree);
-        }
-        
-        supprimerHeuresUtilisees();
-        setMaxDelay();
     }
     
-    private void supprimerHeuresUtilisees() {
+    private void desactiverHeuresUtilisees() {
         ArrayList<Evenement> evenements = DAOEvenement.getListEvenements(Singleton.getCurrent().evenement.getDateDeDebut());
-        ArrayList<Time> heuresUtilisees = new ArrayList<Time>();
-        final DefaultComboBoxModel modelComboBoxHeureDeDebut = (DefaultComboBoxModel)jComboBoxHeureDeDebut.getModel();
         
         for (Evenement evenement : evenements) {
             Calendar dateDeDebut = Calendar.getInstance();
@@ -115,30 +113,29 @@ public class VueEvenementEdit extends javax.swing.JFrame {
             
             for(int i = heureDeDebut; i < heureDeFin; i++) {
                 Time heure = new Time((i - 1) * 60 * 60 * 1000);
-                modelComboBoxHeureDeDebut.removeElement(heure);
+                
             }
         }
     }
     
-    private void setMaxDelay() {
-        final DefaultComboBoxModel modelComboBoxHeureDeDebut = (DefaultComboBoxModel)jComboBoxHeureDeDebut.getModel();
-        int selectedIndex = jComboBoxHeureDeDebut.getSelectedIndex();
+    private void setDureeMax() {
+        int selectedIndex = jListHeureDeDebut.getSelectedIndex();
         int dureeMax = 0;
         
         if (selectedIndex > -1) {
-            Calendar heureSelectionnee = Calendar.getInstance();
-            heureSelectionnee.setTime(new Date(((Time)jComboBoxHeureDeDebut.getItemAt(selectedIndex)).getTime()));
+            /*Calendar heureSelectionnee = Calendar.getInstance();
+            heureSelectionnee.setTime(new Date(((Time)modelListHeureDeDebut.getElementAt(selectedIndex)).getTime()));
             
-            for(int i = selectedIndex; i < modelComboBoxHeureDeDebut.getSize(); i++) {
+            for(int i = selectedIndex; i < modelListHeureDeDebut.getSize(); i++) {
                 Calendar heureActuelle = Calendar.getInstance();
                 Calendar heureSuivante = Calendar.getInstance();
                 
-                if (i < (modelComboBoxHeureDeDebut.getSize() - 1)) {
-                    Time x = (Time)jComboBoxHeureDeDebut.getItemAt(i);
-                    Time y = (Time)jComboBoxHeureDeDebut.getItemAt(i + 1);
+                if (i < (modelListHeureDeDebut.getSize() - 1)) {
+                    Time x = (Time)modelListHeureDeDebut.getElementAt(i);
+                    Time y = (Time)modelListHeureDeDebut.getElementAt(i + 1);
                     
-                    heureActuelle.setTime(new Date(((Time)jComboBoxHeureDeDebut.getItemAt(i)).getTime()));
-                    heureSuivante.setTime(new Date(((Time)jComboBoxHeureDeDebut.getItemAt(i + 1)).getTime()));
+                    heureActuelle.setTime(new Date(((Time)modelListHeureDeDebut.getElementAt(i)).getTime()));
+                    heureSuivante.setTime(new Date(((Time)modelListHeureDeDebut.getElementAt(i + 1)).getTime()));
                     
                     int diff = (heureSuivante.get(Calendar.HOUR_OF_DAY) - heureActuelle.get(Calendar.HOUR_OF_DAY));
                     if (diff > 1) {
@@ -146,10 +143,10 @@ public class VueEvenementEdit extends javax.swing.JFrame {
                         break;
                     }
                 } else {
-                    heureActuelle.setTime(new Date(((Time)jComboBoxHeureDeDebut.getItemAt(i)).getTime()));
+                    heureActuelle.setTime(new Date(((Time)modelListHeureDeDebut.getElementAt(i)).getTime()));
                     dureeMax = (heureActuelle.get(Calendar.HOUR_OF_DAY) - heureSelectionnee.get(Calendar.HOUR_OF_DAY));
                 }
-            }
+            }*/
         }
         
         SpinnerModel modelSpinnerDuree = new SpinnerNumberModel(dureeMax, 0, dureeMax, 1);
@@ -175,13 +172,14 @@ public class VueEvenementEdit extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         jScrollPaneDuree = new javax.swing.JScrollPane();
         jTextAreaCommentaire = new javax.swing.JTextArea();
-        jComboBoxHeureDeDebut = new javax.swing.JComboBox();
         jComboBoxContact = new javax.swing.JComboBox();
         jLabel6 = new javax.swing.JLabel();
         jSpinnerDuree = new javax.swing.JSpinner();
         jDateChooserDateEvenement = new com.toedter.calendar.JDateChooser();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jListHeureDeDebut = new javax.swing.JList();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jButtonEnregistrer.setText("Enregistrer");
         jButtonEnregistrer.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -212,12 +210,6 @@ public class VueEvenementEdit extends javax.swing.JFrame {
         jTextAreaCommentaire.setRows(5);
         jScrollPaneDuree.setViewportView(jTextAreaCommentaire);
 
-        jComboBoxHeureDeDebut.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                jComboBoxHeureDeDebutItemStateChanged(evt);
-            }
-        });
-
         jLabel6.setText("Contact");
 
         jDateChooserDateEvenement.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
@@ -225,6 +217,14 @@ public class VueEvenementEdit extends javax.swing.JFrame {
                 jDateChooserDateEvenementPropertyChange(evt);
             }
         });
+
+        jListHeureDeDebut.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jListHeureDeDebut.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                jListHeureDeDebutValueChanged(evt);
+            }
+        });
+        jScrollPane1.setViewportView(jListHeureDeDebut);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -234,34 +234,30 @@ public class VueEvenementEdit extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 96, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jComboBoxHeureDeDebut, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jSpinnerDuree, javax.swing.GroupLayout.DEFAULT_SIZE, 374, Short.MAX_VALUE)))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 374, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, 96, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jDateChooserDateEvenement, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 374, Short.MAX_VALUE)
-                                    .addComponent(jComboBoxType, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jComboBoxContact, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(10, 10, 10)
-                                .addComponent(jScrollPaneDuree, javax.swing.GroupLayout.DEFAULT_SIZE, 374, Short.MAX_VALUE))))
+                            .addComponent(jDateChooserDateEvenement, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 374, Short.MAX_VALUE)
+                            .addComponent(jComboBoxType, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jComboBoxContact, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jScrollPaneDuree)))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jButtonEnregistrer)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButtonAnnuler)))
+                        .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(10, 10, 10)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(jButtonEnregistrer)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jButtonAnnuler))
+                            .addComponent(jSpinnerDuree, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 374, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -281,18 +277,18 @@ public class VueEvenementEdit extends javax.swing.JFrame {
                         .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jDateChooserDateEvenement, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel3)
-                    .addComponent(jComboBoxHeureDeDebut, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jSpinnerDuree, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel4))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jSpinnerDuree)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel5)
-                    .addComponent(jScrollPaneDuree, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 129, Short.MAX_VALUE)
+                    .addComponent(jScrollPaneDuree, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 49, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButtonAnnuler)
                     .addComponent(jButtonEnregistrer))
@@ -307,7 +303,7 @@ public class VueEvenementEdit extends javax.swing.JFrame {
 
         // heure de début ET durée
         Calendar heureDeDebut = Calendar.getInstance();
-        heureDeDebut.setTime(((Time)jComboBoxHeureDeDebut.getSelectedItem()));
+        heureDeDebut.setTime(((Time)jListHeureDeDebut.getSelectedValue()));
         int duree = (int)jSpinnerDuree.getValue();
         
         // date de début
@@ -350,13 +346,14 @@ public class VueEvenementEdit extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_jButtonAnnulerMousePressed
 
-    private void jComboBoxHeureDeDebutItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBoxHeureDeDebutItemStateChanged
-        setMaxDelay();
-    }//GEN-LAST:event_jComboBoxHeureDeDebutItemStateChanged
-
     private void jDateChooserDateEvenementPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_jDateChooserDateEvenementPropertyChange
-        setMaxDelay();
+        desactiverHeuresUtilisees();
+        setDureeMax();
     }//GEN-LAST:event_jDateChooserDateEvenementPropertyChange
+
+    private void jListHeureDeDebutValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_jListHeureDeDebutValueChanged
+        setDureeMax();
+    }//GEN-LAST:event_jListHeureDeDebutValueChanged
 
     /**
      * @param args the command line arguments
@@ -397,7 +394,6 @@ public class VueEvenementEdit extends javax.swing.JFrame {
     private javax.swing.JButton jButtonAnnuler;
     private javax.swing.JButton jButtonEnregistrer;
     private javax.swing.JComboBox jComboBoxContact;
-    private javax.swing.JComboBox jComboBoxHeureDeDebut;
     private javax.swing.JComboBox jComboBoxType;
     private com.toedter.calendar.JDateChooser jDateChooserDateEvenement;
     private javax.swing.JLabel jLabel1;
@@ -406,6 +402,8 @@ public class VueEvenementEdit extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JList jListHeureDeDebut;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPaneDuree;
     private javax.swing.JSpinner jSpinnerDuree;
     private javax.swing.JTextArea jTextAreaCommentaire;

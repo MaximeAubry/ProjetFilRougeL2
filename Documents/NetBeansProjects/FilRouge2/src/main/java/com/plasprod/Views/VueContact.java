@@ -33,7 +33,7 @@ public class VueContact extends javax.swing.JFrame {
         model.getDataVector().removeAllElements();
         
         for (Contact contact : contacts) {
-            Object[] obj = new Object[] { contact, contact.getPrenom(), contact.getEmail() };
+            Object[] obj = new Object[] { contact, contact.getEmail() };
             model.addRow(obj);
         }
         
@@ -117,14 +117,14 @@ public class VueContact extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Nom", "Prénom", "Email"
+                "Contact", "Email"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, true, true
+                false, true
             };
 
             public Class getColumnClass(int columnIndex) {

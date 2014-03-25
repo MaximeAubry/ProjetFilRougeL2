@@ -11,13 +11,14 @@ public class DAODocument {
         ConnectionBDD.creerConnection();
         try {
             String requete = "INSERT INTO Document\n" +
-                                "(dateDeCreation,idCommercial,idClient)\n" +
+                                "(dateDeCreation,reference,idCommercial,idClient)\n" +
                             "VALUES\n" +
                                 "(?,?,?);";
             PreparedStatement preparedStatement = ConnectionBDD.connection.prepareStatement(requete);
             preparedStatement.setDate(1,document.getDateDeCreation());
-            preparedStatement.setLong(2,document.getIdCommercial());
-            preparedStatement.setLong(3,document.getIdClient());
+            preparedStatement.setString(2,document.getReference());
+            preparedStatement.setLong(3,document.getIdCommercial());
+            preparedStatement.setLong(4,document.getIdClient());
             preparedStatement.executeUpdate();
             
             // retour du dernier Id
@@ -44,14 +45,16 @@ public class DAODocument {
             String requete = "UPDATE Document\n" +
                             "SET\n" +
                                 "dateDeCreation = ?\n" +
+                                ",reference = ?\n" +
                                 ",idCommercial = ?\n" +
                                 ",idClient = ?\n" +
                             "WHERE IdDocument = ?;";
             PreparedStatement preparedStatement = ConnectionBDD.connection.prepareStatement(requete);
             preparedStatement.setDate(1,document.getDateDeCreation());
-            preparedStatement.setLong(2,document.getIdCommercial());
-            preparedStatement.setLong(3,document.getIdClient());
-            preparedStatement.setLong(3,document.getId());
+            preparedStatement.setString(2,document.getReference());
+            preparedStatement.setLong(3,document.getIdCommercial());
+            preparedStatement.setLong(4,document.getIdClient());
+            preparedStatement.setLong(5,document.getId());
             preparedStatement.executeUpdate();
         }
         catch (SQLException e) {

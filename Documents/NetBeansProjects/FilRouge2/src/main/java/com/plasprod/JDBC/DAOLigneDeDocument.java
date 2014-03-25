@@ -60,13 +60,15 @@ public class DAOLigneDeDocument {
         ConnectionBDD.fermerConnection();
     }
     
-    public static ArrayList<LigneDeDocument> getListLigneDeDocuments() {
+    public static ArrayList<LigneDeDocument> getListLigneDeDocuments(long Id) {
         ArrayList<LigneDeDocument> ligneDeDocuments = new ArrayList<LigneDeDocument>();
         ConnectionBDD.creerConnection();
         try {
             String requete = "SELECT Id,numeroDeLigne,qte,remise,IdDocument,IdArticle\n" +
-                            "FROM LigneDeDocument;";
+                            "FROM LigneDeDocument\n" +
+                            "WHERE IdDocument = ?;";
             PreparedStatement preparedStatement = ConnectionBDD.connection.prepareStatement(requete);
+            preparedStatement.setLong(1,Id);
             ResultSet resultat = preparedStatement.executeQuery();
             while (resultat.next())
             {

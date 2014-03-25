@@ -1,6 +1,7 @@
 package com.plasprod.Models;
 
 import java.sql.Date;
+import java.util.Calendar;
 
 /**
  *
@@ -9,19 +10,24 @@ import java.sql.Date;
 public class Document {
     private long id;
     private Date dateDeCreation;
+    private String reference;
     private long idCommercial;
     private long idClient;
 
     public Document() {
+        Calendar now = Calendar.getInstance();
+        
         this.id = 0;
-        this.dateDeCreation = null;
+        this.dateDeCreation = new Date(now.getTimeInMillis());
+        this.reference = null;
         this.idCommercial = 0;
         this.idClient = 0;
     }
 
-    public Document(long id, Date dateDeCreation, long idCommercial, long idClient) {
+    public Document(long id, Date dateDeCreation, String reference, long idCommercial, long idClient) {
         this.id = id;
         this.dateDeCreation = dateDeCreation;
+        this.reference = reference;
         this.idCommercial = idCommercial;
         this.idClient = idClient;
     }
@@ -42,6 +48,14 @@ public class Document {
         this.dateDeCreation = dateDeCreation;
     }
 
+    public String getReference() {
+        return reference;
+    }
+
+    public void setReference(String reference) {
+        this.reference = reference;
+    }
+    
     public long getIdCommercial() {
         return idCommercial;
     }

@@ -13,6 +13,7 @@ import com.plasprod.Views.VueClient;
 import com.plasprod.Views.VueCommande;
 import com.plasprod.Views.VueCommercial;
 import com.plasprod.Views.VueContact;
+import com.plasprod.Views.VueDevis;
 
 /**
  *
@@ -48,6 +49,7 @@ public class Singleton {
     public VueCommande vueCommande;
     public VueCommercial vueCommercial;
     public VueContact vueContact;
+    public VueDevis vueDevis;
     public VueEvenement vueEvenement;
     
     // mon constructeur
@@ -68,6 +70,7 @@ public class Singleton {
         this.vueCommande = new VueCommande();
         this.vueCommercial = new VueCommercial();
         this.vueContact = new VueContact();
+        this.vueDevis = new VueDevis();
         this.vueEvenement = new VueEvenement();
         
         this.me = DAOCommercial.getCommercial(2);

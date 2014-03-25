@@ -33,7 +33,7 @@ public class DAOCommande {
         ConnectionBDD.fermerConnection();
     }
 
-    public void modificationCommande(Commande commande) {
+    public static void modificationCommande(Commande commande) {
         // Document
         DAODocument.modificationDocument(commande);
         
@@ -57,7 +57,7 @@ public class DAOCommande {
         ConnectionBDD.fermerConnection();
     }
 
-    public void suppressionCommande(Commande commande) {
+    public static void suppressionCommande(Commande commande) {
         // Document
         DAODocument.suppressionDocument(commande);
     }
@@ -66,7 +66,7 @@ public class DAOCommande {
         ArrayList<Commande> commandes = new ArrayList<Commande>();
         ConnectionBDD.creerConnection();
         try {
-            String requete = "SELECT Document.Id,dateDeCreation,IdCommercial,IdContact,statutCommande,delaiExpedition\n" +
+            String requete = "SELECT Document.Id,dateDeCreation,reference,IdCommercial,IdContact,statutCommande,delaiExpedition\n" +
                             "FROM Document\n" +
                             "INNER JOIN Commande ON Commande.IdDocument = Document.Id;";
             PreparedStatement preparedStatement = ConnectionBDD.connection.prepareStatement(requete);
@@ -76,6 +76,7 @@ public class DAOCommande {
                 Commande commande = new Commande(
                     resultat.getLong("Id"),
                     resultat.getDate("dateDeCreation"),
+                    resultat.getString("referencce"),
                     resultat.getLong("IdCommercial"),
                     resultat.getLong("IdClient"),
                     StatutCommande.valueOf(resultat.getString("statutCommande")),
@@ -94,7 +95,7 @@ public class DAOCommande {
         Commande commande = null;
         ConnectionBDD.creerConnection();
         try {
-            String requete = "SELECT Document.Id,dateDeCreation,IdCommercial,IdContact,statutCommande,delaiExpedition FROM Document\n" +
+            String requete = "SELECT Document.Id,dateDeCreation,reference,IdCommercial,IdContact,statutCommande,delaiExpedition FROM Document\n" +
                             "INNER JOIN Commande ON Commande.IdDocument = Document.Id\n" +
                             "WHERE Document.Id = ?;";
             PreparedStatement preparedStatement = ConnectionBDD.connection.prepareStatement(requete);
@@ -105,6 +106,7 @@ public class DAOCommande {
                 commande = new Commande(
                     resultat.getLong("Id"),
                     resultat.getDate("dateDeCreation"),
+                    resultat.getString("referencce"),
                     resultat.getLong("IdCommercial"),
                     resultat.getLong("IdClient"),
                     StatutCommande.valueOf(resultat.getString("statutCommande")),
@@ -122,7 +124,7 @@ public class DAOCommande {
         ArrayList<Commande> commandes = new ArrayList<Commande>();
         ConnectionBDD.creerConnection();
         try {
-            String requete = "SELECT Document.Id,dateDeCreation,IdCommercial,IdContact,statutCommande,delaiExpedition\n" +
+            String requete = "SELECT Document.Id,dateDeCreation,reference,IdCommercial,IdContact,statutCommande,delaiExpedition\n" +
                             "FROM Document\n" +
                             "INNER JOIN Commande ON Commande.IdDocument = Document.Id\n" +
                             "WHERE IdCommercial = ?;";
@@ -134,6 +136,7 @@ public class DAOCommande {
                 Commande commande = new Commande(
                     resultat.getLong("Id"),
                     resultat.getDate("dateDeCreation"),
+                    resultat.getString("referencce"),
                     resultat.getLong("IdCommercial"),
                     resultat.getLong("IdClient"),
                     StatutCommande.valueOf(resultat.getString("statutCommande")),

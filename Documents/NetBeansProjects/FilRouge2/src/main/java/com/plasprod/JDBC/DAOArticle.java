@@ -131,4 +131,34 @@ public class DAOArticle {
         ConnectionBDD.fermerConnection();
         return article;
     }
+    
+    public static Article getArticle(String reference) {
+        Article article = null;
+        ConnectionBDD.creerConnection();
+        try {
+            String requete = "SELECT Id,reference,nom,couleur,quantiteStock,unite,prixUnitaire,actif\n" +
+                            "FROM Article\n" +
+                            "WHERE reference = ?;";
+            PreparedStatement preparedStatement = ConnectionBDD.connection.prepareStatement(requete);
+            preparedStatement.setString(1, reference);
+            ResultSet resultat = preparedStatement.executeQuery();
+            while (resultat.next())
+            {
+                article = new Article(
+                    resultat.getLong("Id"),
+                    resultat.getString("reference"),
+                    resultat.getString("nom"),
+                    resultat.getString("couleur"),
+                    resultat.getDouble("quantiteStock"),
+                    resultat.getString("unite"),
+                    resultat.getDouble("prixUnitaire"),
+                    resultat.getBoolean("actif")
+                );
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        ConnectionBDD.fermerConnection();
+        return article;
+    }
 }

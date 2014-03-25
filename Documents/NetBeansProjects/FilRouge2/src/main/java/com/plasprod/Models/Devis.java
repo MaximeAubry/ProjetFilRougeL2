@@ -1,6 +1,7 @@
 package com.plasprod.Models;
 
 import java.sql.Date;
+import java.util.Calendar;
 
 /**
  *
@@ -16,7 +17,12 @@ public class Devis extends Document {
 
     public Devis() {
         super();
-        this.dateDeFinDeValidite = null;
+        
+        Calendar nextMonth = Calendar.getInstance();
+        nextMonth.setTime(this.getDateDeCreation());
+        nextMonth.add(Calendar.MONTH, 1);
+        
+        this.dateDeFinDeValidite = new Date(nextMonth.getTimeInMillis());
         this.signe = false;
         this.remise = 0;
         this.fraisDeTransport = 0;
@@ -24,8 +30,8 @@ public class Devis extends Document {
         this.graduationDeDemande = 0;
     }
 
-    public Devis(long id, Date dateDeCreation, long idCommercial, long idClient, Date dateDeFinDeValidite, Boolean signe, double remise, double fraisDeTransport, double tauxDeTva, int graduationDeDemande) {
-        super(id, dateDeCreation, idCommercial, idClient);
+    public Devis(long id, Date dateDeCreation, String reference, long idCommercial, long idClient, Date dateDeFinDeValidite, Boolean signe, double remise, double fraisDeTransport, double tauxDeTva, int graduationDeDemande) {
+        super(id, dateDeCreation, reference, idCommercial, idClient);
         this.dateDeFinDeValidite = dateDeFinDeValidite;
         this.signe = signe;
         this.remise = remise;

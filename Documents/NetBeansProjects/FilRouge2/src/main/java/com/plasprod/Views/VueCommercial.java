@@ -19,7 +19,7 @@ public class VueCommercial extends javax.swing.JFrame {
         model.getDataVector().removeAllElements();
         
         for (Commercial commercial : commerciaux) {
-            Object[] obj = new Object[] { commercial, commercial.getNom(), commercial.getEmail() };
+            Object[] obj = new Object[] { commercial, commercial.getEmail() };
             model.addRow(obj);
         }
         
@@ -99,14 +99,14 @@ public class VueCommercial extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Nom", "Prénom", "Email"
+                "Commercial", "Email"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false
+                false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -127,7 +127,6 @@ public class VueCommercial extends javax.swing.JFrame {
         if (jTableCommerciaux.getColumnModel().getColumnCount() > 0) {
             jTableCommerciaux.getColumnModel().getColumn(0).setResizable(false);
             jTableCommerciaux.getColumnModel().getColumn(1).setResizable(false);
-            jTableCommerciaux.getColumnModel().getColumn(2).setResizable(false);
         }
 
         jPanel2.setPreferredSize(new java.awt.Dimension(350, 200));

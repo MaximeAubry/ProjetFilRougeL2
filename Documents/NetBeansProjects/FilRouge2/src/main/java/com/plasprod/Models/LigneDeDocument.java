@@ -86,6 +86,6 @@ public class LigneDeDocument {
 
     @Override
     public String toString() {
-        return "ligneDeDocument{" + "id=" + id + ", numeroDeLigne=" + numeroDeLigne + ", qte=" + qte + ", remise=" + remise + ", idDocument=" + idDocument + ", idArticle=" + idArticle + '}';
+        return new Integer(this.getNumeroDeLigne()).toString();
     }
 }

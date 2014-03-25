@@ -22,8 +22,8 @@ public class Commande extends Document {
         this.delaiExpedition = 0;
     }
 
-    public Commande(long id, Date dateDeCreation, long idCommercial, long idClient, Enum statutCommande, long delaiExpedition) {
-        super(id, dateDeCreation, idCommercial, idClient);
+    public Commande(long id, Date dateDeCreation, String reference, long idCommercial, long idClient, Enum statutCommande, long delaiExpedition) {
+        super(id, dateDeCreation, reference, idCommercial, idClient);
         this.statutCommande = statutCommande;
         this.delaiExpedition = delaiExpedition;
     }

@@ -36,7 +36,7 @@ public class DAODevis {
         ConnectionBDD.fermerConnection();
     }
 
-    public void modificationDevis(Devis devis) {
+    public static void modificationDevis(Devis devis) {
         // Document
         DAODocument.modificationDocument(devis);
         
@@ -68,7 +68,7 @@ public class DAODevis {
         ConnectionBDD.fermerConnection();
     }
 
-    public void suppressionDevis(Devis devis) {
+    public static void suppressionDevis(Devis devis) {
         // Document
         DAODocument.suppressionDocument(devis);
     }
@@ -77,7 +77,7 @@ public class DAODevis {
         ArrayList<Devis> devis = new ArrayList<Devis>();
         ConnectionBDD.creerConnection();
         try {
-            String requete = "SELECT Document.Id,dateDeCreation,IdCommercial,IdContact,dateDeFinDeValidite,signe,remise,fraisDeTransport,tauxDeTva,graduationDeDemande\n" +
+            String requete = "SELECT Document.Id,dateDeCreation,reference,IdCommercial,IdContact,dateDeFinDeValidite,signe,remise,fraisDeTransport,tauxDeTva,graduationDeDemande\n" +
                             "FROM Document\n" +
                             "INNER JOIN Devis ON Devis.IdDocument = Document.Id;";
             PreparedStatement preparedStatement = ConnectionBDD.connection.prepareStatement(requete);
@@ -87,6 +87,7 @@ public class DAODevis {
                 Devis _devis = new Devis(
                     resultat.getLong("Id"),
                     resultat.getDate("dateDeCreation"),
+                    resultat.getString("referencce"),
                     resultat.getLong("IdCommercial"),
                     resultat.getLong("IdClient"),
                     resultat.getDate("dateDeFinDeValidite"),
@@ -109,7 +110,7 @@ public class DAODevis {
         Devis devis = null;
         ConnectionBDD.creerConnection();
         try {
-            String requete = "SELECT Document.Id,dateDeCreation,IdCommercial,IdContact,dateDeFinDeValidite,signe,remise,fraisDeTransport,tauxDeTva,graduationDeDemande\n" +
+            String requete = "SELECT Document.Id,dateDeCreation,reference,IdCommercial,IdContact,dateDeFinDeValidite,signe,remise,fraisDeTransport,tauxDeTva,graduationDeDemande\n" +
                             "FROM Document\n" +
                             "INNER JOIN Devis ON Devis.IdDocument = Document.Id\n" +
                             "WHERE Document.Id = ?;";
@@ -121,6 +122,7 @@ public class DAODevis {
                 devis = new Devis(
                     resultat.getLong("Id"),
                     resultat.getDate("dateDeCreation"),
+                    resultat.getString("referencce"),
                     resultat.getLong("IdCommercial"),
                     resultat.getLong("IdClient"),
                     resultat.getDate("dateDeFinDeValidite"),
@@ -142,7 +144,7 @@ public class DAODevis {
         ArrayList<Devis> devis = new ArrayList<Devis>();
         ConnectionBDD.creerConnection();
         try {
-            String requete = "SELECT Document.Id,dateDeCreation,IdCommercial,IdContact,dateDeFinDeValidite,signe,remise,fraisDeTransport,tauxDeTva,graduationDeDemande\n" +
+            String requete = "SELECT Document.Id,dateDeCreation,reference,IdCommercial,IdContact,dateDeFinDeValidite,signe,remise,fraisDeTransport,tauxDeTva,graduationDeDemande\n" +
                             "FROM Document\n" +
                             "INNER JOIN Devis ON Devis.IdDocument = Document.Id\n" +
                             "WHERE IdCommercial = ?;";
@@ -154,6 +156,7 @@ public class DAODevis {
                 Devis _devis = new Devis(
                     resultat.getLong("Id"),
                     resultat.getDate("dateDeCreation"),
+                    resultat.getString("referencce"),
                     resultat.getLong("IdCommercial"),
                     resultat.getLong("IdClient"),
                     resultat.getDate("dateDeFinDeValidite"),

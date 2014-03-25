@@ -26,6 +26,8 @@ import javax.swing.SwingUtilities;
 public class VueContactEdit extends javax.swing.JFrame {
     ArrayList<Client> clients = new ArrayList<Client>();
     ArrayList<Commercial> commerciaux = new ArrayList<Commercial>();
+    final DefaultComboBoxModel modelComboBoxClient;
+    final DefaultComboBoxModel modelComboBoxCommercial;
     
     /**
      * Creates new form VueContactEdit
@@ -44,9 +46,8 @@ public class VueContactEdit extends javax.swing.JFrame {
         jTextFieldTelephone.setText(contact.getTelephone());
         jCheckBoxActif.setSelected(contact.isActif());
         
-        final DefaultComboBoxModel modelComboBoxClient = (DefaultComboBoxModel)jComboBoxClient.getModel();
-        final DefaultComboBoxModel modelComboBoxCommercial = (DefaultComboBoxModel)jComboBoxCommercial.getModel();
-        
+        modelComboBoxClient = (DefaultComboBoxModel)jComboBoxClient.getModel();
+        modelComboBoxCommercial = (DefaultComboBoxModel)jComboBoxCommercial.getModel();
         modelComboBoxClient.removeAllElements();
         modelComboBoxCommercial.removeAllElements();
         
@@ -55,6 +56,14 @@ public class VueContactEdit extends javax.swing.JFrame {
         }
         for (Commercial commercial : commerciaux) {
             modelComboBoxCommercial.addElement(commercial);
+        }
+        
+        if (Singleton.getCurrent().editModeContact == EditMode.MODIFICATION) {
+            Client client = DAOClient.getClient(contact.getIdClient());
+            Commercial commercial = DAOCommercial.getCommercial(contact.getIdCommercial());
+            
+            jComboBoxClient.setSelectedItem(client);
+            jComboBoxCommercial.setSelectedItem(commercial);
         }
         
         SwingUtilities.invokeLater (new Runnable ()
@@ -71,14 +80,6 @@ public class VueContactEdit extends javax.swing.JFrame {
                 jComboBoxCommercial.repaint();
             }
         });
-        
-        if (Singleton.getCurrent().editModeContact == EditMode.MODIFICATION) {
-            Client client = DAOClient.getClient(contact.getIdClient());
-            Commercial commercial = DAOCommercial.getCommercial(contact.getIdCommercial());
-            
-            jComboBoxClient.setSelectedItem(client);
-            jComboBoxCommercial.setSelectedItem(commercial);
-        }
     }
     
     /**
