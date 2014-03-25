@@ -19,7 +19,18 @@ public class Article {
     private String unite;
     private Double prixUnitaire;
     private Boolean actif;
-
+    
+    public Article() {
+        this.id = 0;
+        this.reference = null;
+        this.nom = null;
+        this.couleur = null;
+        this.quantiteStock = 0.0;
+        this.unite = null;
+        this.prixUnitaire = 0.0;
+        this.actif = false;
+    }
+    
     public Article(long id, String reference, String nom, String couleur, Double quantiteStock, String unite, Double prixUnitaire, Boolean actif) {
         this.id = id;
         this.reference = reference;

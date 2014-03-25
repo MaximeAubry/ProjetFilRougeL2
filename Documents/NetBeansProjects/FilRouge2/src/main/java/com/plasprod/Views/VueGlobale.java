@@ -50,7 +50,7 @@ public class VueGlobale extends javax.swing.JFrame {
             }
         });
 
-        jButton2.setText("Agenda");
+        jButton2.setText("Evénements");
         jButton2.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 jButton2MousePressed(evt);
@@ -132,7 +132,7 @@ public class VueGlobale extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1MousePressed
 
     private void jButton2MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton2MousePressed
-        Singleton.getCurrent().vueAgenda.setVisible(true);
+        Singleton.getCurrent().vueEvenement.setVisible(true);
     }//GEN-LAST:event_jButton2MousePressed
 
     private void jButton4MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton4MousePressed

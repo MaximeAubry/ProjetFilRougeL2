@@ -11,8 +11,8 @@ package com.plasprod.Models.Enums;
  * @author Maxime
  */
 public enum TypeRdv {
-    repas("REPAS"),
-    reunion("REUNION");
+    REPAS("Repas"),
+    REUNION("Réunion");
     
     /** L'attribut qui contient la valeur associé à l'enum */
     private final String display;

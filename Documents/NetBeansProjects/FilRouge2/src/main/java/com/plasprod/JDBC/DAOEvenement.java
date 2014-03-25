@@ -2,10 +2,13 @@ package com.plasprod.JDBC;
 
 import com.plasprod.Models.Enums.TypeRdv;
 import com.plasprod.Models.Evenement;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class DAOEvenement {
     public static void ajoutEvenement(Evenement evenement) {
@@ -16,10 +19,10 @@ public class DAOEvenement {
                             "VALUES\n" +
                                 "(?,?,?,?,?,?);";
             PreparedStatement preparedStatement = ConnectionBDD.connection.prepareStatement(requete);
-            preparedStatement.setString(1,evenement.getTypeRDV().toString());
+            preparedStatement.setString(1,evenement.getTypeRDV().name());
             preparedStatement.setString(2,evenement.getCommentaire());
-            preparedStatement.setDate(3,evenement.getDateDeDebut());
-            preparedStatement.setDate(4,evenement.getDateDeFin());
+            preparedStatement.setTimestamp(3,new Timestamp(evenement.getDateDeDebut().getTime()));
+            preparedStatement.setTimestamp(4,new Timestamp(evenement.getDateDeFin().getTime()));
             preparedStatement.setLong(5,evenement.getIdCommercial());
             preparedStatement.setLong(6,evenement.getIdContact());
             preparedStatement.executeUpdate();
@@ -42,10 +45,10 @@ public class DAOEvenement {
                                 ",IdContact = ?\n" +
                             "WHERE id = ?;";
             PreparedStatement preparedStatement = ConnectionBDD.connection.prepareStatement(requete);
-            preparedStatement.setString(1,evenement.getTypeRDV().toString());
+            preparedStatement.setString(1,evenement.getTypeRDV().name());
             preparedStatement.setString(2,evenement.getCommentaire());
-            preparedStatement.setDate(3,evenement.getDateDeDebut());
-            preparedStatement.setDate(4,evenement.getDateDeFin());
+            preparedStatement.setTimestamp(3,new Timestamp(evenement.getDateDeDebut().getTime()));
+            preparedStatement.setTimestamp(4,new Timestamp(evenement.getDateDeFin().getTime()));
             preparedStatement.setLong(5,evenement.getIdCommercial());
             preparedStatement.setLong(6,evenement.getIdContact());
             preparedStatement.setLong(7,evenement.getId());
@@ -71,13 +74,28 @@ public class DAOEvenement {
         ConnectionBDD.fermerConnection();
     }
     
-    public static ArrayList<Evenement> getListEvenements() {
+    public static ArrayList<Evenement> getListEvenements(Date dateEvenement) {
         ArrayList<Evenement> evenements = new ArrayList<Evenement>();
         ConnectionBDD.creerConnection();
         try {
+            Calendar dateDeDebut = Calendar.getInstance();
+            dateDeDebut.setTime(dateEvenement);
+            dateDeDebut.set(Calendar.HOUR_OF_DAY, 0);
+            dateDeDebut.set(Calendar.MINUTE, 0);
+            dateDeDebut.set(Calendar.SECOND, 0);
+            dateDeDebut.set(Calendar.MILLISECOND, 0);
+            
+            Calendar dateDeFin = Calendar.getInstance();
+            dateDeFin.setTime(dateDeDebut.getTime());
+            dateDeFin.add(Calendar.DATE, 1);
+            
             String requete = "SELECT Id,typeRDV,commentaire,dateDeDebut,dateDeFin,IdCommercial,IdContact\n" +
-                            "FROM Evenement;";
+                            "FROM Evenement\n" +
+                            "WHERE dateDeDebut >= ? AND dateDeFin <= ?\n" +
+                            "ORDER BY dateDeDebut ASC;";
             PreparedStatement preparedStatement = ConnectionBDD.connection.prepareStatement(requete);
+            preparedStatement.setDate(1, new Date(dateDeDebut.getTimeInMillis()));
+            preparedStatement.setDate(2, new Date(dateDeFin.getTimeInMillis()));
             ResultSet resultat = preparedStatement.executeQuery();
             while (resultat.next())
             {
@@ -85,10 +103,10 @@ public class DAOEvenement {
                     resultat.getLong("Id"),
                     TypeRdv.valueOf(resultat.getString("typeRDV")),
                     resultat.getString("commentaire"),
-                    resultat.getDate("dateDeDebut"),
-                    resultat.getDate("dateDeFin"),
-                    resultat.getLong("IdCommercial"),
-                    resultat.getLong("IdContact")
+                    new Date(resultat.getTimestamp("dateDeDebut").getTime()),
+                    new Date(resultat.getTimestamp("dateDeFin").getTime()),
+                    resultat.getLong("IdContact"),
+                    resultat.getLong("IdCommercial")
                 );
                 evenements.add(evenement);
             }
@@ -115,10 +133,10 @@ public class DAOEvenement {
                     resultat.getLong("Id"),
                     TypeRdv.valueOf(resultat.getString("typeRDV")),
                     resultat.getString("commentaire"),
-                    resultat.getDate("dateDeDebut"),
-                    resultat.getDate("dateDeFin"),
-                    resultat.getLong("IdCommercial"),
-                    resultat.getLong("IdContact")
+                    new Date(resultat.getTimestamp("dateDeDebut").getTime()),
+                    new Date(resultat.getTimestamp("dateDeFin").getTime()),
+                    resultat.getLong("IdContact"),
+                    resultat.getLong("IdCommercial")
                 );
             }
         } catch (SQLException e) {

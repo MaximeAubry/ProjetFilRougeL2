@@ -6,8 +6,9 @@
 
 package com.plasprod.Models;
 
+import com.plasprod.JDBC.DAOCommercial;
 import com.plasprod.Models.Enums.EditMode;
-import com.plasprod.Views.VueAgenda;
+import com.plasprod.Views.VueEvenement;
 import com.plasprod.Views.VueClient;
 import com.plasprod.Views.VueCommande;
 import com.plasprod.Views.VueCommercial;
@@ -30,6 +31,8 @@ public class Singleton {
     public EditMode editModeSatisfaction;
     public EditMode editModeLigneDeDocument;
     
+    public Commercial me;
+    
     public Article article;
     public Client client;
     public Commande commande;
@@ -41,11 +44,11 @@ public class Singleton {
     public Satisfaction satisfaction;
     public LigneDeDocument ligneDeDocument;
     
-    public VueAgenda vueAgenda;
     public VueClient vueClient;
     public VueCommande vueCommande;
     public VueCommercial vueCommercial;
     public VueContact vueContact;
+    public VueEvenement vueEvenement;
     
     // mon constructeur
     private Singleton()
@@ -61,11 +64,13 @@ public class Singleton {
         this.editModeSatisfaction = EditMode.CONSULTATION;
         this.editModeLigneDeDocument = EditMode.CONSULTATION;
         
-        this.vueAgenda = new VueAgenda();
         this.vueClient = new VueClient();
         this.vueCommande = new VueCommande();
         this.vueCommercial = new VueCommercial();
         this.vueContact = new VueContact();
+        this.vueEvenement = new VueEvenement();
+        
+        this.me = DAOCommercial.getCommercial(2);
     }
 
     private static Singleton _current;

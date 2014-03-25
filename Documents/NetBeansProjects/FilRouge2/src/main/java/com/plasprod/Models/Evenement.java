@@ -7,6 +7,7 @@
 package com.plasprod.Models;
 
 import java.sql.Date;
+import java.util.Calendar;
 
 /**
  *
@@ -22,11 +23,13 @@ public class Evenement {
     private long idCommercial;
 
     public Evenement() {
+        Calendar dateEvenement = Calendar.getInstance();
+        
         this.id = 0;
         this.typeRDV = null;
         this.commentaire = null;
-        this.dateDeDebut = null;
-        this.dateDeFin = null;
+        this.dateDeDebut = new Date(dateEvenement.getTimeInMillis());
+        this.dateDeFin = new Date(dateEvenement.getTimeInMillis());
         this.idContact = 0;
         this.idCommercial = 0;
     }
@@ -99,6 +102,6 @@ public class Evenement {
 
     @Override
     public String toString() {
-        return "Evenement{" + "id=" + id + ", typeRDV=" + typeRDV + ", commentaire=" + commentaire + ", dateDeDebut=" + dateDeDebut + ", dateDeFin=" + dateDeFin + ", idContact=" + idContact + ", idCommercial=" + idCommercial + '}';
+        return this.getTypeRDV().toString();
     }
 }

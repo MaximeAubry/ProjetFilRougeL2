@@ -11,8 +11,8 @@ package com.plasprod.Models.Enums;
  * @author Maxime
  */
 public enum StatutCommande {
-    repas(""),
-    reunion("");
+    TERMINEE("Terminée"),
+    LIVRAISON_EN_COURS("Livraison en cours");
     
     /** L'attribut qui contient la valeur associé à l'enum */
     private final String display;

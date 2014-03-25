@@ -116,7 +116,21 @@ public class DAOContact{
                             "WHERE Id = ?;";
             PreparedStatement preparedStatement = ConnectionBDD.connection.prepareStatement(requete);
             preparedStatement.setLong(1, Id);
-            contact = (Contact)preparedStatement.executeQuery();
+            ResultSet resultat = preparedStatement.executeQuery();
+            while (resultat.next())
+            {
+                contact = new Contact(
+                    resultat.getLong("Id"),
+                    resultat.getString("reference"),
+                    resultat.getString("nom"),
+                    resultat.getString("prenom"),
+                    resultat.getString("email"),
+                    resultat.getString("telephone"),
+                    resultat.getBoolean("actif"),
+                    resultat.getLong("idClient"),
+                    resultat.getLong("idCommercial")
+                );
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }

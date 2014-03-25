@@ -1,4 +1,4 @@
-/*package com.plasprod.JDBC;
+package com.plasprod.JDBC;
 
 import com.plasprod.Models.Article;
 import java.sql.PreparedStatement;
@@ -10,9 +10,18 @@ public class DAOArticle {
     public static void ajoutArticle(Article article) {
         ConnectionBDD.creerConnection();
         try {
-            String requete = "";
+            String requete = "INSERT INTO Article\n" +
+                                "(reference,nom,couleur,quantiteStock,unite,prixUnitaire,actif)\n" +
+                            "VALUES\n" +
+                                "(?,?,?,?,?,?,?);";
             PreparedStatement preparedStatement = ConnectionBDD.connection.prepareStatement(requete);
-            preparedStatement.set_(1,article._);
+            preparedStatement.setString(1,article.getReference());
+            preparedStatement.setString(2,article.getNom());
+            preparedStatement.setString(3,article.getCouleur());
+            preparedStatement.setDouble(4,article.getQuantiteStock());
+            preparedStatement.setString(5,article.getUnite());
+            preparedStatement.setDouble(6,article.getPrixUnitaire());
+            preparedStatement.setBoolean(7,article.isActif());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -23,9 +32,25 @@ public class DAOArticle {
     public static void modificationArticle(Article article) {
         ConnectionBDD.creerConnection();
         try {
-            String requete = "";
+            String requete = "UPDATE Article\n" +
+                            "SET\n" +
+                                "reference = ?\n" +
+                                ",nom = ?\n" +
+                                ",couleur = ?\n" +
+                                ",quantiteStock = ?\n" +
+                                ",unite = ?\n" +
+                                ",prixUnitaire = ?\n" +
+                                ",actif = ?\n" +
+                            "WHERE id = ?;";
             PreparedStatement preparedStatement = ConnectionBDD.connection.prepareStatement(requete);
-            preparedStatement.set_(1,article._);
+            preparedStatement.setString(1,article.getReference());
+            preparedStatement.setString(2,article.getNom());
+            preparedStatement.setString(3,article.getCouleur());
+            preparedStatement.setDouble(4,article.getQuantiteStock());
+            preparedStatement.setString(5,article.getUnite());
+            preparedStatement.setDouble(6,article.getPrixUnitaire());
+            preparedStatement.setBoolean(7,article.isActif());
+            preparedStatement.setLong(8,article.getId());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -52,13 +77,21 @@ public class DAOArticle {
         ArrayList<Article> articles = new ArrayList<Article>();
         ConnectionBDD.creerConnection();
         try {
-            String requete = "";
+            String requete = "SELECT Id,reference,nom,couleur,quantiteStock,unite,prixUnitaire,actif\n" +
+                            "FROM Article;";
             PreparedStatement preparedStatement = ConnectionBDD.connection.prepareStatement(requete);
             ResultSet resultat = preparedStatement.executeQuery();
             while (resultat.next())
             {
                 Article article = new Article(
-                    
+                    resultat.getLong("Id"),
+                    resultat.getString("reference"),
+                    resultat.getString("nom"),
+                    resultat.getString("couleur"),
+                    resultat.getDouble("quantiteStock"),
+                    resultat.getString("unite"),
+                    resultat.getDouble("prixUnitaire"),
+                    resultat.getBoolean("actif")
                 );
                 articles.add(article);
             }
@@ -73,14 +106,23 @@ public class DAOArticle {
         Article article = null;
         ConnectionBDD.creerConnection();
         try {
-            String requete = "";
+            String requete = "SELECT Id,reference,nom,couleur,quantiteStock,unite,prixUnitaire,actif\n" +
+                            "FROM Article\n" +
+                            "WHERE Id = ?;";
             PreparedStatement preparedStatement = ConnectionBDD.connection.prepareStatement(requete);
             preparedStatement.setLong(1, Id);
             ResultSet resultat = preparedStatement.executeQuery();
             while (resultat.next())
             {
                 article = new Article(
-                    
+                    resultat.getLong("Id"),
+                    resultat.getString("reference"),
+                    resultat.getString("nom"),
+                    resultat.getString("couleur"),
+                    resultat.getDouble("quantiteStock"),
+                    resultat.getString("unite"),
+                    resultat.getDouble("prixUnitaire"),
+                    resultat.getBoolean("actif")
                 );
             }
         } catch (SQLException e) {
@@ -90,4 +132,3 @@ public class DAOArticle {
         return article;
     }
 }
-*/

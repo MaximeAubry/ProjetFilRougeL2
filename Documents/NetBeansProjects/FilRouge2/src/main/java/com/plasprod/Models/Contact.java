@@ -33,7 +33,7 @@ public class Contact {
         this.idCommercial = 0;
     }
 
-    public Contact(long Id, String reference, String nom, String prenom, String email, String telephone, Boolean actif, long idClient, long idCommercial) {
+    public Contact(long id, String reference, String nom, String prenom, String email, String telephone, Boolean actif, long idClient, long idCommercial) {
         this.id = id;
         this.reference = reference;
         this.nom = nom;
@@ -115,6 +115,6 @@ public class Contact {
 
     @Override
     public String toString() {
-        return this.getNom();
+        return this.getPrenom() + " " + this.getNom();
     }
 }
