@@ -10,9 +10,9 @@ public class DAOSatisfaction {
     public static void ajoutSatisfaction(Satisfaction satisfaction) {
         ConnectionBDD.creerConnection();
         try {
-            String requete = "INSERT INTO Satisfaction\n" +
-                                "(note,commentaire,dateSatisfaction,IdDocument,IdEvenement)\n" +
-                            "VALUES\n" +
+            String requete = "INSERT INTO Satisfaction " +
+                                "(note,commentaire,dateSatisfaction,IdDocument,IdEvenement) " +
+                            "VALUES " +
                                 "(?,?,?,?,?);";
             PreparedStatement preparedStatement = ConnectionBDD.connection.prepareStatement(requete);
             preparedStatement.setLong(1,satisfaction.getNote());
@@ -30,13 +30,13 @@ public class DAOSatisfaction {
     public static void modificationSatisfaction(Satisfaction satisfaction) {
         ConnectionBDD.creerConnection();
         try {
-            String requete = "UPDATE Satisfaction\n" +
-                            "SET\n" +
-                                "note = ?\n" +
-                                ",commentaire = ?\n" +
-                                ",dateSatisfaction = ?\n" +
-                                ",IdDocument = ?\n" +
-                                ",IdEvenement = ?\n" +
+            String requete = "UPDATE Satisfaction " +
+                            "SET " +
+                                "note = ? " +
+                                ",commentaire = ? " +
+                                ",dateSatisfaction = ? " +
+                                ",IdDocument = ? " +
+                                ",IdEvenement = ? " +
                             "WHERE Id = ?;";
             PreparedStatement preparedStatement = ConnectionBDD.connection.prepareStatement(requete);
             preparedStatement.setInt(1,satisfaction.getNote());
@@ -55,8 +55,8 @@ public class DAOSatisfaction {
     public static void suppressionSatisfaction(Satisfaction satisfaction) {
         ConnectionBDD.creerConnection();
         try {
-            String requete = "DELETE\n" +
-                            "FROM Satisfaction\n" +
+            String requete = "DELETE " +
+                            "FROM Satisfaction " +
                             "WHERE Id = ?;";
             PreparedStatement preparedStatement = ConnectionBDD.connection.prepareStatement(requete);
             preparedStatement.setLong(1,satisfaction.getId());
@@ -71,7 +71,7 @@ public class DAOSatisfaction {
         ArrayList<Satisfaction> satisfactions = new ArrayList<Satisfaction>();
         ConnectionBDD.creerConnection();
         try {
-            String requete = "SELECT Id,note,commentaire,dateSatisfaction,IdDocument,IdEvenement\n" +
+            String requete = "SELECT Id,note,commentaire,dateSatisfaction,IdDocument,IdEvenement " +
                             "FROM Satisfaction;";
             PreparedStatement preparedStatement = ConnectionBDD.connection.prepareStatement(requete);
             ResultSet resultat = preparedStatement.executeQuery();
@@ -98,8 +98,8 @@ public class DAOSatisfaction {
         Satisfaction satisfaction = null;
         ConnectionBDD.creerConnection();
         try {
-            String requete = "SELECT Id,note,commentaire,dateSatisfaction,IdDocument,IdEvenement\n" +
-                            "FROM Satisfaction\n" +
+            String requete = "SELECT Id,note,commentaire,dateSatisfaction,IdDocument,IdEvenement " +
+                            "FROM Satisfaction " +
                             "WHERE Id = ?;";
             PreparedStatement preparedStatement = ConnectionBDD.connection.prepareStatement(requete);
             preparedStatement.setLong(1, Id);

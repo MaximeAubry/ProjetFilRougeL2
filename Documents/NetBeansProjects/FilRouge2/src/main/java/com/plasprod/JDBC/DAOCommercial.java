@@ -11,9 +11,9 @@ public class DAOCommercial{
     public static void ajoutCommercial(Commercial commercial) {
         ConnectionBDD.creerConnection();
         try {
-            String requete = "INSERT INTO commercial\n" +
-                                "(reference,nom,prenom,email,telephone,identifiant,motDePasse,actif)\n" +
-                            "VALUES\n" +
+            String requete = "INSERT INTO commercial " +
+                                "(reference,nom,prenom,email,telephone,identifiant,motDePasse,actif) " +
+                            "VALUES " +
                                 "(?,?,?,?,?,?,?,?);";
             PreparedStatement preparedStatement = ConnectionBDD.connection.prepareStatement(requete);
             preparedStatement.setString(1,commercial.getReference());
@@ -34,16 +34,16 @@ public class DAOCommercial{
     public static void modificationCommercial(Commercial commercial) {
         ConnectionBDD.creerConnection();
         try {
-            String requete = "UPDATE commercial\n" +
-                            "SET\n" +
-                                "reference = ?\n" +
-                                ",nom = ?\n" +
-                                ",prenom = ?\n" +
-                                ",email = ?\n" +
-                                ",telephone = ?\n" +
-                                ",identifiant = ?\n" +
-                                ",motDePasse = ?\n" +
-                                ",actif = ?\n" +
+            String requete = "UPDATE commercial " +
+                            "SET " +
+                                "reference = ? " +
+                                ",nom = ? " +
+                                ",prenom = ? " +
+                                ",email = ? " +
+                                ",telephone = ? " +
+                                ",identifiant = ? " +
+                                ",motDePasse = ? " +
+                                ",actif = ? " +
                             "WHERE id = ?;";
             PreparedStatement preparedStatement = ConnectionBDD.connection.prepareStatement(requete);
             preparedStatement.setString(1,commercial.getReference());
@@ -65,8 +65,8 @@ public class DAOCommercial{
     public static void suppressionCommercial(Commercial commercial) {
         ConnectionBDD.creerConnection();
         try {
-            String requete = "DELETE\n" +
-                            "FROM commercial\n" +
+            String requete = "DELETE " +
+                            "FROM commercial " +
                             "WHERE id = ?;";
             PreparedStatement preparedStatement = ConnectionBDD.connection.prepareStatement(requete);
             preparedStatement.setLong(1,commercial.getId());
@@ -81,7 +81,7 @@ public class DAOCommercial{
         ArrayList<Commercial> commerciaux = new ArrayList<Commercial>();
         ConnectionBDD.creerConnection();
         try {
-            String requete = "SELECT Id,reference,nom,prenom,email,telephone,identifiant,motDePasse,actif\n" +
+            String requete = "SELECT Id,reference,nom,prenom,email,telephone,identifiant,motDePasse,actif " +
                             "FROM Commercial;";
             PreparedStatement preparedStatement = ConnectionBDD.connection.prepareStatement(requete);
             ResultSet resultat = preparedStatement.executeQuery();
@@ -111,8 +111,8 @@ public class DAOCommercial{
         Commercial commercial = null;
         ConnectionBDD.creerConnection();
         try {
-            String requete = "SELECT Id,reference,nom,prenom,email,telephone,identifiant,motDePasse,actif\n" +
-                            "FROM Commercial\n" +
+            String requete = "SELECT Id,reference,nom,prenom,email,telephone,identifiant,motDePasse,actif " +
+                            "FROM Commercial " +
                             "WHERE Id = ?;";
             PreparedStatement preparedStatement = ConnectionBDD.connection.prepareStatement(requete);
             preparedStatement.setLong(1,Id);

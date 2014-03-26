@@ -9,11 +9,13 @@ import java.util.Calendar;
  */
 public class Devis extends Document {
     private Date dateDeFinDeValidite;
+    private int graduationDeDemande;
     private Boolean signe;
+    private double montantTotalHT;
     private double remise;
     private double fraisDeTransport;
     private double tauxDeTva;
-    private int graduationDeDemande;
+    private double montantTotalTTC;
 
     public Devis() {
         super();
@@ -23,21 +25,25 @@ public class Devis extends Document {
         nextMonth.add(Calendar.MONTH, 1);
         
         this.dateDeFinDeValidite = new Date(nextMonth.getTimeInMillis());
+        this.graduationDeDemande = 0;
         this.signe = false;
+        this.montantTotalHT = 0;
         this.remise = 0;
         this.fraisDeTransport = 0;
         this.tauxDeTva = 0;
-        this.graduationDeDemande = 0;
+        this.montantTotalTTC = 0;
     }
 
-    public Devis(long id, Date dateDeCreation, String reference, long idCommercial, long idClient, Date dateDeFinDeValidite, Boolean signe, double remise, double fraisDeTransport, double tauxDeTva, int graduationDeDemande) {
+    public Devis(long id, Date dateDeCreation, String reference, long idCommercial, long idClient, Date dateDeFinDeValidite, int graduationDeDemande, Boolean signe, double montantTotalHT, double remise, double fraisDeTransport, double tauxDeTva, double montantTotalTTC) {
         super(id, dateDeCreation, reference, idCommercial, idClient);
         this.dateDeFinDeValidite = dateDeFinDeValidite;
+        this.graduationDeDemande = graduationDeDemande;
         this.signe = signe;
+        this.montantTotalHT = montantTotalHT;
         this.remise = remise;
         this.fraisDeTransport = fraisDeTransport;
         this.tauxDeTva = tauxDeTva;
-        this.graduationDeDemande = graduationDeDemande;
+        this.montantTotalTTC = montantTotalTTC;
     }
 
     public Date getDateDeFinDeValidite() {
@@ -48,6 +54,22 @@ public class Devis extends Document {
         this.dateDeFinDeValidite = dateDeFinDeValidite;
     }
 
+    public int getGraduationDeDemande() {
+        return graduationDeDemande;
+    }
+
+    public void setGraduationDeDemande(int graduationDeDemande) {
+        this.graduationDeDemande = graduationDeDemande;
+    }
+
+    public double getMontantTotalHT() {
+        return montantTotalHT;
+    }
+
+    public void setMontantTotalHT(double montantTotalHT) {
+        this.montantTotalHT = montantTotalHT;
+    }
+    
     public Boolean isSigne() {
         return signe;
     }
@@ -80,16 +102,16 @@ public class Devis extends Document {
         this.tauxDeTva = tauxDeTva;
     }
 
-    public int getGraduationDeDemande() {
-        return graduationDeDemande;
+    public double getMontantTotalTTC() {
+        return montantTotalTTC;
     }
 
-    public void setGraduationDeDemande(int graduationDeDemande) {
-        this.graduationDeDemande = graduationDeDemande;
+    public void setMontantTotalTTC(double montantTotalTTC) {
+        this.montantTotalTTC = montantTotalTTC;
     }
 
     @Override
     public String toString() {
-        return "Devis{" + "dateDeFinDeValidite=" + dateDeFinDeValidite + ", signe=" + signe + ", remise=" + remise + ", fraisDeTransport=" + fraisDeTransport + ", tauxDeTva=" + tauxDeTva + ", graduationDeDemande=" + graduationDeDemande + '}';
+        return this.getReference();
     }
 }

@@ -43,7 +43,7 @@
                       </Group>
                       <EmptySpace min="10" pref="10" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="jComboBoxClient" alignment="0" max="32767" attributes="0"/>
+                          <Component id="jComboBoxContact" alignment="0" max="32767" attributes="0"/>
                           <Group type="102" attributes="0">
                               <Component id="jCheckBoxSigne" min="-2" max="-2" attributes="0"/>
                               <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
@@ -65,14 +65,17 @@
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="jComboBoxTVA" alignment="1" max="32767" attributes="0"/>
                           <Component id="jSpinnerFraisDeTransport" alignment="1" max="32767" attributes="0"/>
-                          <Component id="jSpinnerMontantTotalHT" max="32767" attributes="0"/>
                           <Component id="jSpinnerRemise" max="32767" attributes="0"/>
-                          <Component id="jSpinnerMontantTotalTTC" max="32767" attributes="0"/>
+                          <Group type="102" attributes="0">
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="jLabelMontantTotalHT" min="-2" pref="655" max="-2" attributes="0"/>
+                                  <Component id="jLabelMontantTotalTTC" min="-2" pref="656" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                          </Group>
                       </Group>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
-                      <Component id="jButtonAjouterArticle" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
                       <Component id="jButtonNouvelleLigne" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                   </Group>
@@ -97,7 +100,7 @@
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jLabel8" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="jComboBoxClient" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jComboBoxContact" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
@@ -112,14 +115,11 @@
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Component id="jScrollPane1" min="-2" pref="189" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="jButtonAjouterArticle" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="jButtonNouvelleLigne" alignment="3" min="-2" max="-2" attributes="0"/>
-              </Group>
+              <Component id="jButtonNouvelleLigne" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jLabel11" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="jSpinnerMontantTotalHT" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jLabelMontantTotalHT" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
@@ -139,9 +139,9 @@
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jLabel15" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="jSpinnerMontantTotalTTC" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jLabelMontantTotalTTC" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace pref="14" max="32767" attributes="0"/>
+              <EmptySpace pref="26" max="32767" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jButtonAnnuler" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="jButtonEnregistrer" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -183,7 +183,7 @@
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel8">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Client"/>
+        <Property name="text" type="java.lang.String" value="Contact"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel9">
@@ -212,7 +212,7 @@
                 <Column editable="false" title="Nom" type="java.lang.String"/>
                 <Column editable="false" title="Quantit&#xe9; en stock" type="java.lang.Double"/>
                 <Column editable="true" title="Quantit&#xe9;" type="java.lang.Integer"/>
-                <Column editable="true" title="Remise" type="java.lang.Double"/>
+                <Column editable="true" title="Remise (%)" type="java.lang.Double"/>
                 <Column editable="false" title="Prix unitaire" type="java.lang.Double"/>
                 <Column editable="false" title="Prix total" type="java.lang.Double"/>
               </Table>
@@ -291,22 +291,30 @@
     <Component class="javax.swing.JComboBox" name="jComboBoxTVA">
       <Properties>
         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-          <StringArray count="0"/>
+          <StringArray count="3">
+            <StringItem index="0" value="5.5"/>
+            <StringItem index="1" value="10"/>
+            <StringItem index="2" value="20"/>
+          </StringArray>
         </Property>
       </Properties>
+      <Events>
+        <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="jComboBoxTVAItemStateChanged"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JCheckBox" name="jCheckBoxSigne">
     </Component>
     <Component class="javax.swing.JSpinner" name="jSpinnerRemise">
+      <Events>
+        <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="jSpinnerRemiseStateChanged"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JSpinner" name="jSpinnerFraisDeTransport">
+      <Events>
+        <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="jSpinnerFraisDeTransportStateChanged"/>
+      </Events>
     </Component>
-    <Component class="javax.swing.JSpinner" name="jSpinnerMontantTotalHT">
-      <Properties>
-        <Property name="enabled" type="boolean" value="false"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JComboBox" name="jComboBoxClient">
+    <Component class="javax.swing.JComboBox" name="jComboBoxContact">
       <Properties>
         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
           <StringArray count="0"/>
@@ -322,19 +330,6 @@
         <Property name="text" type="java.lang.String" value="Montant total TTC"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JSpinner" name="jSpinnerMontantTotalTTC">
-      <Properties>
-        <Property name="enabled" type="boolean" value="false"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JButton" name="jButtonAjouterArticle">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Nouvel article"/>
-      </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonAjouterArticleActionPerformed"/>
-      </Events>
-    </Component>
     <Component class="javax.swing.JButton" name="jButtonNouvelleLigne">
       <Properties>
         <Property name="text" type="java.lang.String" value="Nouvelle ligne"/>
@@ -342,6 +337,18 @@
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonNouvelleLigneActionPerformed"/>
       </Events>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabelMontantTotalHT">
+      <Properties>
+        <Property name="horizontalAlignment" type="int" value="4"/>
+        <Property name="text" type="java.lang.String" value="0"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabelMontantTotalTTC">
+      <Properties>
+        <Property name="horizontalAlignment" type="int" value="4"/>
+        <Property name="text" type="java.lang.String" value="0"/>
+      </Properties>
     </Component>
   </SubComponents>
 </Form>

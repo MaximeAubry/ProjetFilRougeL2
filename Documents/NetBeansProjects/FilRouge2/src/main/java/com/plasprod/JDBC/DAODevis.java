@@ -1,9 +1,11 @@
 package com.plasprod.JDBC;
 
 import com.plasprod.Models.Devis;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 
 public class DAODevis {
@@ -14,20 +16,22 @@ public class DAODevis {
         
         // Devis
         ConnectionBDD.creerConnection();
-        String requete = "INSERT INTO Devis\n" +
-                            "(dateDeFinDeValidite,signe,remise,fraisDeTransport,tauxDeTva,graduationDeDemande,IdDocument)\n" +
-                        "VALUES\n" +
-                            "(?,?,?,?,?,?,?);";
+        String requete = "INSERT INTO Devis " +
+                            "(dateDeFinDeValidite,graduationDeDemande,signe,montantTotalHT,remise,fraisDeTransport,tauxDeTva,montantTotalTTC,IdDocument) " +
+                        "VALUES " +
+                            "(?,?,?,?,?,?,?,?,?);";
         PreparedStatement preparedStatement;
         try{
             preparedStatement = ConnectionBDD.connection.prepareStatement(requete);
-            preparedStatement.setDate(1,devis.getDateDeFinDeValidite());
-            preparedStatement.setBoolean(2,devis.isSigne());
-            preparedStatement.setDouble(3,devis.getRemise());
-            preparedStatement.setDouble(4,devis.getFraisDeTransport());
-            preparedStatement.setDouble(5,devis.getTauxDeTva());
-            preparedStatement.setInt(6,devis.getGraduationDeDemande());
-            preparedStatement.setLong(7,devis.getId());
+            preparedStatement.setTimestamp(1,new Timestamp(devis.getDateDeFinDeValidite().getTime()));
+            preparedStatement.setInt(2,devis.getGraduationDeDemande());
+            preparedStatement.setBoolean(3,devis.isSigne());
+            preparedStatement.setDouble(4,devis.getMontantTotalHT());
+            preparedStatement.setDouble(5,devis.getRemise());
+            preparedStatement.setDouble(6,devis.getFraisDeTransport());
+            preparedStatement.setDouble(7,devis.getTauxDeTva());
+            preparedStatement.setDouble(8,devis.getMontantTotalTTC());
+            preparedStatement.setLong(9,devis.getId());
             preparedStatement.executeUpdate();
         }
         catch (SQLException e) {
@@ -42,25 +46,29 @@ public class DAODevis {
         
         // Devis
         ConnectionBDD.creerConnection();
-        String requete = "UPDATE Devis\n" +
-                        "SET\n" +
-                            "dateDeFinDeValidite = ?\n" +
-                            ",signe = ?\n" +
-                            ",remise = ?\n" +
-                            ",fraisDeTransport = ?\n" +
-                            ",tauxDeTva = ?\n" +
-                            ",graduationDeDemande = ?\n" +
+        String requete = "UPDATE Devis " +
+                        "SET " +
+                            "dateDeFinDeValidite = ? " +
+                            ",graduationDeDemande = ? " +
+                            ",signe = ? " +
+                            ",montantTotalHT = ? " +
+                            ",remise = ? " +
+                            ",fraisDeTransport = ? " +
+                            ",tauxDeTva = ? " +
+                            ",montantTotalTTC = ? " +
                         "WHERE IdDocument = ?;";
         PreparedStatement preparedStatement;
         try {
             preparedStatement = ConnectionBDD.connection.prepareStatement(requete);
-            preparedStatement.setDate(1,devis.getDateDeFinDeValidite());
-            preparedStatement.setBoolean(2,devis.isSigne());
-            preparedStatement.setDouble(3,devis.getRemise());
-            preparedStatement.setDouble(4,devis.getFraisDeTransport());
-            preparedStatement.setDouble(5,devis.getTauxDeTva());
-            preparedStatement.setInt(6,devis.getGraduationDeDemande());
-            preparedStatement.setLong(7,devis.getId());
+            preparedStatement.setTimestamp(1,new Timestamp(devis.getDateDeFinDeValidite().getTime()));
+            preparedStatement.setInt(2,devis.getGraduationDeDemande());
+            preparedStatement.setBoolean(3,devis.isSigne());
+            preparedStatement.setDouble(4,devis.getMontantTotalHT());
+            preparedStatement.setDouble(5,devis.getRemise());
+            preparedStatement.setDouble(6,devis.getFraisDeTransport());
+            preparedStatement.setDouble(7,devis.getTauxDeTva());
+            preparedStatement.setDouble(8,devis.getMontantTotalTTC());
+            preparedStatement.setLong(9,devis.getId());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -77,8 +85,8 @@ public class DAODevis {
         ArrayList<Devis> devis = new ArrayList<Devis>();
         ConnectionBDD.creerConnection();
         try {
-            String requete = "SELECT Document.Id,dateDeCreation,reference,IdCommercial,IdContact,dateDeFinDeValidite,signe,remise,fraisDeTransport,tauxDeTva,graduationDeDemande\n" +
-                            "FROM Document\n" +
+            String requete = "SELECT Document.Id,dateDeCreation,reference,IdCommercial,IdContact,dateDeFinDeValidite,graduationDeDemande,montantTotalHT,signe,remise,fraisDeTransport,tauxDeTva,montantTotalTTC " +
+                            "FROM Document " +
                             "INNER JOIN Devis ON Devis.IdDocument = Document.Id;";
             PreparedStatement preparedStatement = ConnectionBDD.connection.prepareStatement(requete);
             ResultSet resultat = preparedStatement.executeQuery();
@@ -86,16 +94,18 @@ public class DAODevis {
             {
                 Devis _devis = new Devis(
                     resultat.getLong("Id"),
-                    resultat.getDate("dateDeCreation"),
-                    resultat.getString("referencce"),
+                    new Date(resultat.getTimestamp("dateDeCreation").getTime()),
+                    resultat.getString("reference"),
                     resultat.getLong("IdCommercial"),
-                    resultat.getLong("IdClient"),
-                    resultat.getDate("dateDeFinDeValidite"),
+                    resultat.getLong("IdContact"),
+                    new Date(resultat.getTimestamp("dateDeFinDeValidite").getTime()),
+                    resultat.getInt("graduationDeDemande"),
                     resultat.getBoolean("signe"),
+                    resultat.getDouble("montantTotalHT"),
                     resultat.getDouble("remise"),
                     resultat.getDouble("fraisDeTransport"),
                     resultat.getDouble("tauxDeTva"),
-                    resultat.getInt("graduationDeDemande")
+                    resultat.getDouble("montantTotalTTC")
                 );
                 devis.add(_devis);
             }
@@ -110,9 +120,9 @@ public class DAODevis {
         Devis devis = null;
         ConnectionBDD.creerConnection();
         try {
-            String requete = "SELECT Document.Id,dateDeCreation,reference,IdCommercial,IdContact,dateDeFinDeValidite,signe,remise,fraisDeTransport,tauxDeTva,graduationDeDemande\n" +
-                            "FROM Document\n" +
-                            "INNER JOIN Devis ON Devis.IdDocument = Document.Id\n" +
+            String requete = "SELECT Document.Id,dateDeCreation,reference,IdCommercial,IdContact,dateDeFinDeValidite,graduationDeDemande,montantTotalHT,signe,remise,fraisDeTransport,tauxDeTva,montantTotalTTC " +
+                            "FROM Document " +
+                            "INNER JOIN Devis ON Devis.IdDocument = Document.Id " +
                             "WHERE Document.Id = ?;";
             PreparedStatement preparedStatement = ConnectionBDD.connection.prepareStatement(requete);
             preparedStatement.setLong(1, Id);
@@ -121,16 +131,18 @@ public class DAODevis {
             {
                 devis = new Devis(
                     resultat.getLong("Id"),
-                    resultat.getDate("dateDeCreation"),
-                    resultat.getString("referencce"),
+                    new Date(resultat.getTimestamp("dateDeCreation").getTime()),
+                    resultat.getString("reference"),
                     resultat.getLong("IdCommercial"),
-                    resultat.getLong("IdClient"),
-                    resultat.getDate("dateDeFinDeValidite"),
+                    resultat.getLong("IdContact"),
+                    new Date(resultat.getTimestamp("dateDeFinDeValidite").getTime()),
+                    resultat.getInt("graduationDeDemande"),
                     resultat.getBoolean("signe"),
+                    resultat.getDouble("montantTotalHT"),
                     resultat.getDouble("remise"),
                     resultat.getDouble("fraisDeTransport"),
                     resultat.getDouble("tauxDeTva"),
-                    resultat.getInt("graduationDeDemande")
+                    resultat.getDouble("montantTotalTTC")
                 );
             }
         } catch (SQLException e) {
@@ -144,9 +156,9 @@ public class DAODevis {
         ArrayList<Devis> devis = new ArrayList<Devis>();
         ConnectionBDD.creerConnection();
         try {
-            String requete = "SELECT Document.Id,dateDeCreation,reference,IdCommercial,IdContact,dateDeFinDeValidite,signe,remise,fraisDeTransport,tauxDeTva,graduationDeDemande\n" +
-                            "FROM Document\n" +
-                            "INNER JOIN Devis ON Devis.IdDocument = Document.Id\n" +
+            String requete = "SELECT Document.Id,dateDeCreation,reference,IdCommercial,IdContact,dateDeFinDeValidite,graduationDeDemande,montantTotalHT,signe,remise,fraisDeTransport,tauxDeTva,montantTotalTTC " +
+                            "FROM Document " +
+                            "INNER JOIN Devis ON Devis.IdDocument = Document.Id " +
                             "WHERE IdCommercial = ?;";
             PreparedStatement preparedStatement = ConnectionBDD.connection.prepareStatement(requete);
             preparedStatement.setLong(1,Id);
@@ -155,16 +167,18 @@ public class DAODevis {
             {
                 Devis _devis = new Devis(
                     resultat.getLong("Id"),
-                    resultat.getDate("dateDeCreation"),
-                    resultat.getString("referencce"),
+                    new Date(resultat.getTimestamp("dateDeCreation").getTime()),
+                    resultat.getString("reference"),
                     resultat.getLong("IdCommercial"),
-                    resultat.getLong("IdClient"),
-                    resultat.getDate("dateDeFinDeValidite"),
+                    resultat.getLong("IdContact"),
+                    new Date(resultat.getTimestamp("dateDeFinDeValidite").getTime()),
+                    resultat.getInt("graduationDeDemande"),
                     resultat.getBoolean("signe"),
+                    resultat.getDouble("montantTotalHT"),
                     resultat.getDouble("remise"),
                     resultat.getDouble("fraisDeTransport"),
                     resultat.getDouble("tauxDeTva"),
-                    resultat.getInt("graduationDeDemande")
+                    resultat.getDouble("montantTotalTTC")
                 );
                 devis.add(_devis);
             }

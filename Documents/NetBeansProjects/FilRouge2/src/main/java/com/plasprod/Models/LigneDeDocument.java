@@ -14,6 +14,7 @@ public class LigneDeDocument {
     private long id;
     private int numeroDeLigne;
     private int qte;
+    private double prixUnitaire;
     private double remise;
     private long idDocument;
     private long idArticle;
@@ -22,15 +23,17 @@ public class LigneDeDocument {
         this.id = 0;
         this.numeroDeLigne = 0;
         this.qte = 0;
+        this.prixUnitaire = 0;
         this.remise = 0;
         this.idDocument = 0;
         this.idArticle = 0;
     }
 
-    public LigneDeDocument(long id, int numeroDeLigne, int qte, double remise, long idDocument, long idArticle) {
+    public LigneDeDocument(long id, int numeroDeLigne, int qte, double prixUnitaire, double remise, long idDocument, long idArticle) {
         this.id = id;
         this.numeroDeLigne = numeroDeLigne;
         this.qte = qte;
+        this.prixUnitaire = prixUnitaire;
         this.remise = remise;
         this.idDocument = idDocument;
         this.idArticle = idArticle;
@@ -60,6 +63,14 @@ public class LigneDeDocument {
         this.qte = qte;
     }
 
+    public double getPrixUnitaire() {
+        return prixUnitaire;
+    }
+
+    public void setPrixUnitaire(double prixUnitaire) {
+        this.prixUnitaire = prixUnitaire;
+    }
+    
     public double getRemise() {
         return remise;
     }

@@ -10,9 +10,9 @@ public class DAOClient{
     public static void ajoutClient(Client client) {
         ConnectionBDD.creerConnection();
         try {
-            String requete = "INSERT INTO Client\n" +
-                                "(reference,raisonSociale,adresse,codePostal,ville,pays,actif)\n" +
-                            "VALUES\n" +
+            String requete = "INSERT INTO Client " +
+                                "(reference,raisonSociale,adresse,codePostal,ville,pays,actif) " +
+                            "VALUES " +
                                 "(?,?,?,?,?,?,?);";
             PreparedStatement preparedStatement = ConnectionBDD.connection.prepareStatement(requete);
             preparedStatement.setString(1,client.getReference());
@@ -32,15 +32,15 @@ public class DAOClient{
     public static void modificationClient(Client client) {
         ConnectionBDD.creerConnection();
         try {
-            String requete = "UPDATE Client\n" +
-                            "SET\n" +
-                                "reference = ?\n" +
-                                ",raisonSociale = ?\n" +
-                                ",adresse = ?\n" +
-                                ",codePostal = ?\n" +
-                                ",ville = ?\n" +
-                                ",pays = ?\n" +
-                                ",actif = ?\n" +
+            String requete = "UPDATE Client " +
+                            "SET " +
+                                "reference = ? " +
+                                ",raisonSociale = ? " +
+                                ",adresse = ? " +
+                                ",codePostal = ? " +
+                                ",ville = ? " +
+                                ",pays = ? " +
+                                ",actif = ? " +
                             "WHERE Id = ?;";
             PreparedStatement preparedStatement = ConnectionBDD.connection.prepareStatement(requete);
             preparedStatement.setString(1,client.getReference());
@@ -61,8 +61,8 @@ public class DAOClient{
     public static void suppressionClient(Client client) {
         ConnectionBDD.creerConnection();
         try {
-            String requete = "DELETE\n" +
-                            "FROM Client\n" +
+            String requete = "DELETE " +
+                            "FROM Client " +
                             "WHERE Id = ?;";
             PreparedStatement preparedStatement = ConnectionBDD.connection.prepareStatement(requete);
             preparedStatement.setLong(1,client.getId());
@@ -77,7 +77,7 @@ public class DAOClient{
         ArrayList<Client> clients = new ArrayList<Client>();
         ConnectionBDD.creerConnection();
         try {
-            String requete = "SELECT Id,reference,raisonSociale,adresse,codePostal,ville,pays,actif\n" +
+            String requete = "SELECT Id,reference,raisonSociale,adresse,codePostal,ville,pays,actif " +
                             "FROM Client;";
             PreparedStatement preparedStatement = ConnectionBDD.connection.prepareStatement(requete);
             ResultSet resultat = preparedStatement.executeQuery();
@@ -106,8 +106,8 @@ public class DAOClient{
         Client client = null;
         ConnectionBDD.creerConnection();
         try {
-            String requete = "SELECT Id,reference,raisonSociale,adresse,codePostal,ville,pays,actif\n" +
-                            "FROM Client\n" +
+            String requete = "SELECT Id,reference,raisonSociale,adresse,codePostal,ville,pays,actif " +
+                            "FROM Client " +
                             "WHERE Id = ?;";
             PreparedStatement preparedStatement = ConnectionBDD.connection.prepareStatement(requete);
             preparedStatement.setLong(1, Id);

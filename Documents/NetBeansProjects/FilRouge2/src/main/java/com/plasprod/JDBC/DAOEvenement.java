@@ -14,9 +14,9 @@ public class DAOEvenement {
     public static void ajoutEvenement(Evenement evenement) {
         ConnectionBDD.creerConnection();
         try {
-            String requete = "INSERT INTO Evenement\n" +
-                                "(typeRDV,commentaire,dateDeDebut,dateDeFin,IdCommercial,IdContact)\n" +
-                            "VALUES\n" +
+            String requete = "INSERT INTO Evenement " +
+                                "(typeRDV,commentaire,dateDeDebut,dateDeFin,IdCommercial,IdContact) " +
+                            "VALUES " +
                                 "(?,?,?,?,?,?);";
             PreparedStatement preparedStatement = ConnectionBDD.connection.prepareStatement(requete);
             preparedStatement.setString(1,evenement.getTypeRDV().name());
@@ -35,14 +35,14 @@ public class DAOEvenement {
     public static void modificationEvenement(Evenement evenement) {
         ConnectionBDD.creerConnection();
         try {
-            String requete = "UPDATE Evenement\n" +
-                            "SET\n" +
-                                "typeRDV = ?\n" +
-                                ",commentaire = ?\n" +
-                                ",dateDeDebut = ?\n" +
-                                ",dateDeFin = ?\n" +
-                                ",IdCommercial = ?\n" +
-                                ",IdContact = ?\n" +
+            String requete = "UPDATE Evenement " +
+                            "SET " +
+                                "typeRDV = ? " +
+                                ",commentaire = ? " +
+                                ",dateDeDebut = ? " +
+                                ",dateDeFin = ? " +
+                                ",IdCommercial = ? " +
+                                ",IdContact = ? " +
                             "WHERE id = ?;";
             PreparedStatement preparedStatement = ConnectionBDD.connection.prepareStatement(requete);
             preparedStatement.setString(1,evenement.getTypeRDV().name());
@@ -62,8 +62,8 @@ public class DAOEvenement {
     public static void suppressionEvenement(Evenement evenement) {
         ConnectionBDD.creerConnection();
         try {
-            String requete = "DELETE\n" +
-                            "FROM Evenement\n" +
+            String requete = "DELETE " +
+                            "FROM Evenement " +
                             "WHERE Id = ?;";
             PreparedStatement preparedStatement = ConnectionBDD.connection.prepareStatement(requete);
             preparedStatement.setLong(1,evenement.getId());
@@ -89,9 +89,9 @@ public class DAOEvenement {
             dateDeFin.setTime(dateDeDebut.getTime());
             dateDeFin.add(Calendar.DATE, 1);
             
-            String requete = "SELECT Id,typeRDV,commentaire,dateDeDebut,dateDeFin,IdCommercial,IdContact\n" +
-                            "FROM Evenement\n" +
-                            "WHERE dateDeDebut >= ? AND dateDeFin <= ?\n" +
+            String requete = "SELECT Id,typeRDV,commentaire,dateDeDebut,dateDeFin,IdCommercial,IdContact " +
+                            "FROM Evenement " +
+                            "WHERE dateDeDebut >= ? AND dateDeFin <= ? " +
                             "ORDER BY dateDeDebut ASC;";
             PreparedStatement preparedStatement = ConnectionBDD.connection.prepareStatement(requete);
             preparedStatement.setDate(1, new Date(dateDeDebut.getTimeInMillis()));
@@ -121,8 +121,8 @@ public class DAOEvenement {
         Evenement evenement = null;
         ConnectionBDD.creerConnection();
         try {
-            String requete = "SELECT Id,typeRDV,commentaire,dateDeDebut,dateDeFin,IdCommercial,IdContact\n" +
-                            "FROM Evenement\n" +
+            String requete = "SELECT Id,typeRDV,commentaire,dateDeDebut,dateDeFin,IdCommercial,IdContact " +
+                            "FROM Evenement " +
                             "WHERE Id = ?;";
             PreparedStatement preparedStatement = ConnectionBDD.connection.prepareStatement(requete);
             preparedStatement.setLong(1, Id);

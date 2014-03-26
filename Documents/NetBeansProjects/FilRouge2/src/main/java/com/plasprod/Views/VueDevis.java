@@ -1,9 +1,9 @@
 package com.plasprod.Views;
 
-import com.plasprod.JDBC.DAOClient;
+import com.plasprod.JDBC.DAOContact;
 import com.plasprod.JDBC.DAOCommercial;
 import com.plasprod.JDBC.DAODevis;
-import com.plasprod.Models.Client;
+import com.plasprod.Models.Contact;
 import com.plasprod.Models.Commercial;
 import com.plasprod.Models.Devis;
 import com.plasprod.Models.Enums.EditMode;
@@ -25,8 +25,8 @@ public class VueDevis extends javax.swing.JFrame {
         
         for (Devis devis : documents) {
             Commercial commercial = DAOCommercial.getCommercial(devis.getIdCommercial());
-            Client client = DAOClient.getClient(devis.getIdClient());
-            Object[] obj = new Object[] { devis, devis.getDateDeCreation(), commercial.toString(), client.toString() };
+            Contact contact = DAOContact.getContact(devis.getIdContact());
+            Object[] obj = new Object[] { devis, devis.getDateDeCreation(), commercial.toString(), contact.toString() };
             modelTableDevis.addRow(obj);
         }
         
@@ -52,10 +52,10 @@ public class VueDevis extends javax.swing.JFrame {
         
         // raffraichissement du bloc de droite
         Devis devis = Singleton.getCurrent().devis;
-        Client client = DAOClient.getClient(devis.getIdClient());
+        Contact contact = DAOContact.getContact(devis.getIdContact());
         jLabelReference.setText(devis.getReference());
         jLabelDateDeCreation.setText(dateFormat.format(devis.getDateDeCreation()));
-        jLabelClient.setText(client.toString());
+        jLabelContact.setText(contact.toString());
         jLabelDateDeValidite.setText(dateFormat.format(devis.getDateDeFinDeValidite()));
         jCheckBoxSigne.setSelected(devis.isSigne());
     }
@@ -88,7 +88,7 @@ public class VueDevis extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         jLabelDateDeCreation = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
-        jLabelClient = new javax.swing.JLabel();
+        jLabelContact = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         jLabelDateDeValidite = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
@@ -159,7 +159,7 @@ public class VueDevis extends javax.swing.JFrame {
 
         jLabel6.setText("Date de création");
 
-        jLabel7.setText("Client");
+        jLabel7.setText("Contact");
 
         jLabel9.setText("Date de validité");
 
@@ -186,7 +186,7 @@ public class VueDevis extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabelClient, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(jLabelContact, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -222,7 +222,7 @@ public class VueDevis extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel7)
-                    .addComponent(jLabelClient, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabelContact, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel9)
@@ -341,7 +341,7 @@ public class VueDevis extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel9;
-    private javax.swing.JLabel jLabelClient;
+    private javax.swing.JLabel jLabelContact;
     private javax.swing.JLabel jLabelDateDeCreation;
     private javax.swing.JLabel jLabelDateDeValidite;
     private javax.swing.JLabel jLabelReference;

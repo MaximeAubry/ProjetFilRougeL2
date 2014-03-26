@@ -10,9 +10,9 @@ public class DAOLigneDeDocument {
     public static void ajoutLigneDeDocument(LigneDeDocument ligneDeDocument) {
         ConnectionBDD.creerConnection();
         try {
-            String requete = "INSERT INTO LigneDeDocument\n" +
-                                "(numeroDeLigne,qte,remise,IdDocument,IdArticle)\n" +
-                            "VALUES\n" +
+            String requete = "INSERT INTO LigneDeDocument " +
+                                "(numeroDeLigne,qte,remise,IdDocument,IdArticle) " +
+                            "VALUES " +
                                 "(?,?,?,?,?);";
             PreparedStatement preparedStatement = ConnectionBDD.connection.prepareStatement(requete);
             preparedStatement.setLong(1,ligneDeDocument.getNumeroDeLigne());
@@ -48,8 +48,8 @@ public class DAOLigneDeDocument {
     public static void suppressionLigneDeDocument(LigneDeDocument ligneDeDocument) {
         ConnectionBDD.creerConnection();
         try {
-            String requete = "DELETE\n" +
-                            "FROM LigneDeDocument\n" +
+            String requete = "DELETE " +
+                            "FROM LigneDeDocument " +
                             "WHERE Id = ?;";
             PreparedStatement preparedStatement = ConnectionBDD.connection.prepareStatement(requete);
             preparedStatement.setLong(1,ligneDeDocument.getId());
@@ -60,12 +60,12 @@ public class DAOLigneDeDocument {
         ConnectionBDD.fermerConnection();
     }
     
-    public static ArrayList<LigneDeDocument> getListLigneDeDocuments(long Id) {
-        ArrayList<LigneDeDocument> ligneDeDocuments = new ArrayList<LigneDeDocument>();
+    public static ArrayList<LigneDeDocument> getListLignesDeDocument(long Id) {
+        ArrayList<LigneDeDocument> lignesDeDocument = new ArrayList<LigneDeDocument>();
         ConnectionBDD.creerConnection();
         try {
-            String requete = "SELECT Id,numeroDeLigne,qte,remise,IdDocument,IdArticle\n" +
-                            "FROM LigneDeDocument\n" +
+            String requete = "SELECT Id,numeroDeLigne,qte,prixUnitaire,remise,IdDocument,IdArticle " +
+                            "FROM LigneDeDocument " +
                             "WHERE IdDocument = ?;";
             PreparedStatement preparedStatement = ConnectionBDD.connection.prepareStatement(requete);
             preparedStatement.setLong(1,Id);
@@ -76,25 +76,26 @@ public class DAOLigneDeDocument {
                     resultat.getLong("Id"),
                     resultat.getInt("numeroDeLigne"),
                     resultat.getInt("qte"),
+                    resultat.getDouble("prixUnitaire"),
                     resultat.getDouble("remise"),
                     resultat.getLong("IdDocument"),
                     resultat.getLong("IdArticle")
                 );
-                ligneDeDocuments.add(ligneDeDocument);
+                lignesDeDocument.add(ligneDeDocument);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
         ConnectionBDD.fermerConnection();
-        return ligneDeDocuments;
+        return lignesDeDocument;
     }
     
     public static LigneDeDocument getLigneDeDocument(long Id) {
         LigneDeDocument ligneDeDocument = null;
         ConnectionBDD.creerConnection();
         try {
-            String requete = "SELECT Id,note,commentaire,dateLigneDeDocument,IdDocument,IdEvenement\n" +
-                            "FROM LigneDeDocument\n" +
+            String requete = "SELECT Id,numeroDeLigne,qte,prixUnitaire,remise,IdDocument,IdArticle " +
+                            "FROM LigneDeDocument " +
                             "WHERE Id = ?;";
             PreparedStatement preparedStatement = ConnectionBDD.connection.prepareStatement(requete);
             preparedStatement.setLong(1, Id);
@@ -105,6 +106,7 @@ public class DAOLigneDeDocument {
                     resultat.getLong("Id"),
                     resultat.getInt("numeroDeLigne"),
                     resultat.getInt("qte"),
+                    resultat.getDouble("prixUnitaire"),
                     resultat.getDouble("remise"),
                     resultat.getLong("IdDocument"),
                     resultat.getLong("IdArticle")

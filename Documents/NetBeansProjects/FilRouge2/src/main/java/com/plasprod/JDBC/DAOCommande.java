@@ -15,9 +15,9 @@ public class DAOCommande {
         
         // Commande
         ConnectionBDD.creerConnection();
-        String requete = "INSERT INTO Commande\n" +
-                            "(statutCommande,delaiExpedition,IdDocument)\n" +
-                        "VALUES\n" +
+        String requete = "INSERT INTO Commande " +
+                            "(statutCommande,delaiExpedition,IdDocument) " +
+                        "VALUES " +
                             "(?,?,?);";
         PreparedStatement preparedStatement;
         try{
@@ -39,10 +39,10 @@ public class DAOCommande {
         
         // Commande
         ConnectionBDD.creerConnection();
-        String requete = "UPDATE commande\n" +
-                        "SET\n" +
-                        "statutCommande = ?\n" +
-                        ",delaiExpedition = ?\n" +
+        String requete = "UPDATE commande " +
+                        "SET " +
+                        "statutCommande = ? " +
+                        ",delaiExpedition = ? " +
                         "WHERE IdDocument = ?;";
         PreparedStatement preparedStatement;
         try {
@@ -66,8 +66,8 @@ public class DAOCommande {
         ArrayList<Commande> commandes = new ArrayList<Commande>();
         ConnectionBDD.creerConnection();
         try {
-            String requete = "SELECT Document.Id,dateDeCreation,reference,IdCommercial,IdContact,statutCommande,delaiExpedition\n" +
-                            "FROM Document\n" +
+            String requete = "SELECT Document.Id,dateDeCreation,reference,IdCommercial,IdContact,statutCommande,delaiExpedition " +
+                            "FROM Document " +
                             "INNER JOIN Commande ON Commande.IdDocument = Document.Id;";
             PreparedStatement preparedStatement = ConnectionBDD.connection.prepareStatement(requete);
             ResultSet resultat = preparedStatement.executeQuery();
@@ -95,8 +95,8 @@ public class DAOCommande {
         Commande commande = null;
         ConnectionBDD.creerConnection();
         try {
-            String requete = "SELECT Document.Id,dateDeCreation,reference,IdCommercial,IdContact,statutCommande,delaiExpedition FROM Document\n" +
-                            "INNER JOIN Commande ON Commande.IdDocument = Document.Id\n" +
+            String requete = "SELECT Document.Id,dateDeCreation,reference,IdCommercial,IdContact,statutCommande,delaiExpedition FROM Document " +
+                            "INNER JOIN Commande ON Commande.IdDocument = Document.Id " +
                             "WHERE Document.Id = ?;";
             PreparedStatement preparedStatement = ConnectionBDD.connection.prepareStatement(requete);
             preparedStatement.setLong(1, Id);
@@ -124,9 +124,9 @@ public class DAOCommande {
         ArrayList<Commande> commandes = new ArrayList<Commande>();
         ConnectionBDD.creerConnection();
         try {
-            String requete = "SELECT Document.Id,dateDeCreation,reference,IdCommercial,IdContact,statutCommande,delaiExpedition\n" +
-                            "FROM Document\n" +
-                            "INNER JOIN Commande ON Commande.IdDocument = Document.Id\n" +
+            String requete = "SELECT Document.Id,dateDeCreation,reference,IdCommercial,IdContact,statutCommande,delaiExpedition " +
+                            "FROM Document " +
+                            "INNER JOIN Commande ON Commande.IdDocument = Document.Id " +
                             "WHERE IdCommercial = ?;";
             PreparedStatement preparedStatement = ConnectionBDD.connection.prepareStatement(requete);
             preparedStatement.setLong(1,Id);

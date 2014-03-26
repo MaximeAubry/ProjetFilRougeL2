@@ -11,9 +11,9 @@ public class DAOContact{
     public static void ajoutContact(Contact contact) {
         ConnectionBDD.creerConnection();
         try {
-            String requete = "INSERT INTO Contact\n" +
-                                "(reference,nom,prenom,email,telephone,actif,IdClient,IdCommercial)\n" +
-                            "VALUES\n" +
+            String requete = "INSERT INTO Contact " +
+                                "(reference,nom,prenom,email,telephone,actif,IdClient,IdCommercial) " +
+                            "VALUES " +
                                 "(?,?,?,?,?,?,?,?);";
             PreparedStatement preparedStatement = ConnectionBDD.connection.prepareStatement(requete);
             preparedStatement.setString(1,contact.getReference());
@@ -34,16 +34,16 @@ public class DAOContact{
     public static void modificationContact(Contact contact) {
         ConnectionBDD.creerConnection();
         try {
-            String requete = "UPDATE Contact\n" +
-                            "SET\n" +
-                                "reference = ?\n" +
-                                ",nom = ?\n" +
-                                ",prenom = ?\n" +
-                                ",email = ?\n" +
-                                ",telephone = ?\n" +
-                                ",actif = ?\n" +
-                                ",IdClient = ?\n" +
-                                ",IdCommercial = ?\n" +
+            String requete = "UPDATE Contact " +
+                            "SET " +
+                                "reference = ? " +
+                                ",nom = ? " +
+                                ",prenom = ? " +
+                                ",email = ? " +
+                                ",telephone = ? " +
+                                ",actif = ? " +
+                                ",IdClient = ? " +
+                                ",IdCommercial = ? " +
                             "WHERE Id = ?;";
             PreparedStatement preparedStatement = ConnectionBDD.connection.prepareStatement(requete);
             preparedStatement.setString(1,contact.getReference());
@@ -65,8 +65,8 @@ public class DAOContact{
     public static void suppressionContact(Contact contact) {
         ConnectionBDD.creerConnection();
         try {
-            String requete = "DELETE\n" +
-                            "FROM Contact\n" +
+            String requete = "DELETE " +
+                            "FROM Contact " +
                             "WHERE Id = ?;";
             PreparedStatement preparedStatement = ConnectionBDD.connection.prepareStatement(requete);
             preparedStatement.setLong(1,contact.getId());
@@ -81,7 +81,7 @@ public class DAOContact{
         ArrayList<Contact> contacts = new ArrayList<Contact>();
         ConnectionBDD.creerConnection();
         try {
-            String requete = "SELECT Id,reference,nom,prenom,email,telephone,actif,IdClient,IdCommercial\n" +
+            String requete = "SELECT Id,reference,nom,prenom,email,telephone,actif,IdClient,IdCommercial " +
                             "FROM Contact;";
             PreparedStatement preparedStatement = ConnectionBDD.connection.prepareStatement(requete);
             ResultSet resultat = preparedStatement.executeQuery();
@@ -111,8 +111,8 @@ public class DAOContact{
         Contact contact = null;
         ConnectionBDD.creerConnection();
         try {
-            String requete = "SELECT Id,reference,nom,prenom,email,telephone,actif,IdClient,IdCommercial\n" +
-                            "FROM Contact\n" +
+            String requete = "SELECT Id,reference,nom,prenom,email,telephone,actif,IdClient,IdCommercial " +
+                            "FROM Contact " +
                             "WHERE Id = ?;";
             PreparedStatement preparedStatement = ConnectionBDD.connection.prepareStatement(requete);
             preparedStatement.setLong(1, Id);

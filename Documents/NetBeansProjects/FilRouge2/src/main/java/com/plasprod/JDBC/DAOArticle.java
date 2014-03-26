@@ -10,9 +10,9 @@ public class DAOArticle {
     public static void ajoutArticle(Article article) {
         ConnectionBDD.creerConnection();
         try {
-            String requete = "INSERT INTO Article\n" +
-                                "(reference,nom,couleur,quantiteStock,unite,prixUnitaire,actif)\n" +
-                            "VALUES\n" +
+            String requete = "INSERT INTO Article " +
+                                "(reference,nom,couleur,quantiteStock,unite,prixUnitaire,actif) " +
+                            "VALUES " +
                                 "(?,?,?,?,?,?,?);";
             PreparedStatement preparedStatement = ConnectionBDD.connection.prepareStatement(requete);
             preparedStatement.setString(1,article.getReference());
@@ -32,15 +32,15 @@ public class DAOArticle {
     public static void modificationArticle(Article article) {
         ConnectionBDD.creerConnection();
         try {
-            String requete = "UPDATE Article\n" +
-                            "SET\n" +
-                                "reference = ?\n" +
-                                ",nom = ?\n" +
-                                ",couleur = ?\n" +
-                                ",quantiteStock = ?\n" +
-                                ",unite = ?\n" +
-                                ",prixUnitaire = ?\n" +
-                                ",actif = ?\n" +
+            String requete = "UPDATE Article " +
+                            "SET " +
+                                "reference = ? " +
+                                ",nom = ? " +
+                                ",couleur = ? " +
+                                ",quantiteStock = ? " +
+                                ",unite = ? " +
+                                ",prixUnitaire = ? " +
+                                ",actif = ? " +
                             "WHERE id = ?;";
             PreparedStatement preparedStatement = ConnectionBDD.connection.prepareStatement(requete);
             preparedStatement.setString(1,article.getReference());
@@ -61,8 +61,8 @@ public class DAOArticle {
     public static void suppressionArticle(Article article) {
         ConnectionBDD.creerConnection();
         try {
-            String requete = "DELETE\n" +
-                            "FROM Article\n" +
+            String requete = "DELETE " +
+                            "FROM Article " +
                             "WHERE Id = ?;";
             PreparedStatement preparedStatement = ConnectionBDD.connection.prepareStatement(requete);
             preparedStatement.setLong(1,article.getId());
@@ -77,7 +77,7 @@ public class DAOArticle {
         ArrayList<Article> articles = new ArrayList<Article>();
         ConnectionBDD.creerConnection();
         try {
-            String requete = "SELECT Id,reference,nom,couleur,quantiteStock,unite,prixUnitaire,actif\n" +
+            String requete = "SELECT Id,reference,nom,couleur,quantiteStock,unite,prixUnitaire,actif " +
                             "FROM Article;";
             PreparedStatement preparedStatement = ConnectionBDD.connection.prepareStatement(requete);
             ResultSet resultat = preparedStatement.executeQuery();
@@ -106,8 +106,8 @@ public class DAOArticle {
         Article article = null;
         ConnectionBDD.creerConnection();
         try {
-            String requete = "SELECT Id,reference,nom,couleur,quantiteStock,unite,prixUnitaire,actif\n" +
-                            "FROM Article\n" +
+            String requete = "SELECT Id,reference,nom,couleur,quantiteStock,unite,prixUnitaire,actif " +
+                            "FROM Article " +
                             "WHERE Id = ?;";
             PreparedStatement preparedStatement = ConnectionBDD.connection.prepareStatement(requete);
             preparedStatement.setLong(1, Id);
@@ -136,8 +136,8 @@ public class DAOArticle {
         Article article = null;
         ConnectionBDD.creerConnection();
         try {
-            String requete = "SELECT Id,reference,nom,couleur,quantiteStock,unite,prixUnitaire,actif\n" +
-                            "FROM Article\n" +
+            String requete = "SELECT Id,reference,nom,couleur,quantiteStock,unite,prixUnitaire,actif " +
+                            "FROM Article " +
                             "WHERE reference = ?;";
             PreparedStatement preparedStatement = ConnectionBDD.connection.prepareStatement(requete);
             preparedStatement.setString(1, reference);

@@ -12,7 +12,7 @@ public class Document {
     private Date dateDeCreation;
     private String reference;
     private long idCommercial;
-    private long idClient;
+    private long idContact;
 
     public Document() {
         Calendar now = Calendar.getInstance();
@@ -21,15 +21,15 @@ public class Document {
         this.dateDeCreation = new Date(now.getTimeInMillis());
         this.reference = null;
         this.idCommercial = 0;
-        this.idClient = 0;
+        this.idContact = 0;
     }
 
-    public Document(long id, Date dateDeCreation, String reference, long idCommercial, long idClient) {
+    public Document(long id, Date dateDeCreation, String reference, long idCommercial, long idContact) {
         this.id = id;
         this.dateDeCreation = dateDeCreation;
         this.reference = reference;
         this.idCommercial = idCommercial;
-        this.idClient = idClient;
+        this.idContact = idContact;
     }
 
     public long getId() {
@@ -64,16 +64,16 @@ public class Document {
         this.idCommercial = idCommercial;
     }
 
-    public long getIdClient() {
-        return idClient;
+    public long getIdContact() {
+        return idContact;
     }
 
-    public void setIdClient(long idClient) {
-        this.idClient = idClient;
+    public void setIdContact(long idContact) {
+        this.idContact = idContact;
     }
 
     @Override
     public String toString() {
-        return "Document{" + "id=" + id + ", dateDeCreation=" + dateDeCreation + ", idCommercial=" + idCommercial + ", idClient=" + idClient + '}';
+        return this.getReference();
     }
 }

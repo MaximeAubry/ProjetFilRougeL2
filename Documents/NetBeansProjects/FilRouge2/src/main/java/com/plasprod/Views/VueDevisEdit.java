@@ -1,12 +1,16 @@
 package com.plasprod.Views;
 
+import com.plasprod.CustomLibraries.JSpinnerChangeCustom;
+import com.plasprod.CustomLibraries.JTextFieldFocusCustom;
+import com.plasprod.CustomLibraries.SpinnerEditor;
 import com.plasprod.JDBC.DAOArticle;
-import com.plasprod.JDBC.DAOClient;
+import com.plasprod.JDBC.DAOContact;
 import com.plasprod.JDBC.DAODevis;
 import com.plasprod.JDBC.DAOLigneDeDocument;
 import com.plasprod.Models.Article;
-import com.plasprod.Models.Client;
+import com.plasprod.Models.Contact;
 import com.plasprod.Models.Commercial;
+import com.plasprod.Models.Contact;
 import com.plasprod.Models.Devis;
 import com.plasprod.Models.Enums.EditMode;
 import com.plasprod.Models.LigneDeDocument;
@@ -14,44 +18,140 @@ import com.plasprod.Models.Singleton;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Calendar;
+import javax.swing.DefaultCellEditor;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
+import javax.swing.JTextField;
+import javax.swing.SpinnerModel;
+import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
 
 public class VueDevisEdit extends javax.swing.JFrame {
     ArrayList<LigneDeDocument> lignesDeDocument = new ArrayList<LigneDeDocument>();
-    final DefaultComboBoxModel modelComboBoxClient;
+    final DefaultComboBoxModel modelComboBoxContact;
     final DefaultTableModel modelComboBoxLignesDeDocument;
-
+    final SpinnerModel modelSpinnerRemise;
+    final SpinnerModel modelSpinnerFraisDeTransport;
+    
+    private void jTableSettings() {
+        TableColumn referenceColumn = jTableLigneDeDocument.getColumnModel().getColumn(1);
+        TableColumn qteColumn = jTableLigneDeDocument.getColumnModel().getColumn(4);
+        TableColumn remiseColumn = jTableLigneDeDocument.getColumnModel().getColumn(5);
+        
+        // création des composants
+        JTextField jTextFieldArticleReference = new JTextField();
+        SpinnerEditor jSpinnerLigneDeDocumentQte = new SpinnerEditor(0.0, 0.0, 100.0, 1.0);
+        SpinnerEditor jSpinnerLigneDeDocumentRemise = new SpinnerEditor(0.0, 0.0, 100.0, 0.5);
+        
+        // attribution des composants
+        referenceColumn.setCellEditor(new DefaultCellEditor(jTextFieldArticleReference));
+        qteColumn.setCellEditor(jSpinnerLigneDeDocumentQte);
+        remiseColumn.setCellEditor(jSpinnerLigneDeDocumentRemise);
+        
+        // events
+        jTextFieldArticleReference.addFocusListener(new JTextFieldFocusCustom(jTextFieldArticleReference) {
+            @Override
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                super.focusLost(evt);
+                jTextFieldArticleReferenceFocusLost(evt, this.value);
+            }
+        });
+        
+        jSpinnerLigneDeDocumentQte.spinner.addChangeListener(new JSpinnerChangeCustom(jSpinnerLigneDeDocumentQte.spinner) {
+            @Override
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                super.stateChanged(evt);
+                jSpinnerLigneDeDocumentQteStateChanged(evt, this.value.intValue());
+            }
+        });
+        
+        jSpinnerLigneDeDocumentRemise.spinner.addChangeListener(new JSpinnerChangeCustom(jSpinnerLigneDeDocumentRemise.spinner) {
+            @Override
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                super.stateChanged(evt);
+                jSpinnerLigneDeDocumentRemiseStateChanged(evt, this.value.doubleValue());
+            }
+        });
+    }
+    
+    private Boolean InsertionArticle(String reference) {
+        int nbPresences = 0;
+        
+        for (int i = 0; i< jTableLigneDeDocument.getRowCount(); i++) {
+            LigneDeDocument ligneDeDocument = (LigneDeDocument)jTableLigneDeDocument.getValueAt(i, 0);
+            if (ligneDeDocument.getIdArticle() != 0) {
+                Article article = DAOArticle.getArticle(ligneDeDocument.getIdArticle());
+                if (article.getReference().equals(reference)) {
+                    nbPresences++;
+                }
+            }
+        }
+        
+        if (nbPresences >1) {
+            JOptionPane.showMessageDialog(this, "L'article est déjà présent dans ce document", "Attention !", JOptionPane.WARNING_MESSAGE);
+            return false;
+        }
+        
+        return true;
+    }
+    
+    private void CalculMontants() {
+        Double MontantTotalHT = 0.0;
+        Double TauxRemise = (1 - (((Number)jSpinnerRemise.getValue()).doubleValue() / 100));
+        Double FraisDeTransport = ((Number)jSpinnerFraisDeTransport.getValue()).doubleValue();
+        Double TauxDeTVA = (1 + (Double.parseDouble((String)jComboBoxTVA.getSelectedItem()) / 100));
+        Double MontantTotalTTC = 0.0;
+        
+        for (int i = 0; i< jTableLigneDeDocument.getRowCount(); i++) {
+            LigneDeDocument ligneDeDocument = (LigneDeDocument)jTableLigneDeDocument.getValueAt(i, 0);
+            if (ligneDeDocument.getIdArticle() != 0) {
+                Article article = DAOArticle.getArticle(ligneDeDocument.getIdArticle());
+                MontantTotalHT = (MontantTotalHT + (Double)modelComboBoxLignesDeDocument.getValueAt(i, 7));
+            }
+        }
+        
+        MontantTotalTTC = (((MontantTotalHT * TauxRemise) + FraisDeTransport) * TauxDeTVA);
+        jLabelMontantTotalHT.setText(MontantTotalHT.toString());
+        jLabelMontantTotalTTC.setText(MontantTotalTTC.toString());
+    }
+    
     /**
      * Creates new form VueDevisEdit
      */
     public VueDevisEdit() {
         initComponents();
         
-        ArrayList<Client> clients = DAOClient.getListClients();
-        modelComboBoxClient = (DefaultComboBoxModel)jComboBoxClient.getModel();
+        ArrayList<Contact> clients = DAOContact.getListContacts();
+        modelComboBoxContact = (DefaultComboBoxModel)jComboBoxContact.getModel();
         modelComboBoxLignesDeDocument = (DefaultTableModel)jTableLigneDeDocument.getModel();
-        modelComboBoxClient.removeAllElements();
-        modelComboBoxLignesDeDocument.getDataVector().removeAllElements();
+        modelSpinnerRemise = new SpinnerNumberModel(0, 0, 100, 0.5);
+        modelSpinnerFraisDeTransport = new SpinnerNumberModel(0, 0, 100, 0.5);
         
-        for (Client client : clients) {
-            modelComboBoxClient.addElement(client);
+        modelComboBoxContact.removeAllElements();
+        modelComboBoxLignesDeDocument.getDataVector().removeAllElements();
+           
+        jTableSettings();
+        
+        for (Contact client : clients) {
+            modelComboBoxContact.addElement(client);
         }
         
         Devis devis = Singleton.getCurrent().devis;
         jTextFieldReference.setText(devis.getReference());
         jDateChooserDateDeCreation.setDate(devis.getDateDeCreation());
-        jComboBoxClient.setSelectedItem(devis);
+        jComboBoxContact.setSelectedItem(devis);
         jDateChooserDateDeValidite.setDate(devis.getDateDeFinDeValidite());
         jCheckBoxSigne.setSelected(devis.isSigne());
-        jSpinnerMontantTotalHT.setValue(0);
-        jSpinnerRemise.setValue(devis.getRemise());
-        jSpinnerFraisDeTransport.setValue(devis.getFraisDeTransport());
-        jSpinnerMontantTotalTTC.setValue(0);
+        jLabelMontantTotalHT.setText(Double.toString(devis.getMontantTotalHT()));
+        modelSpinnerRemise.setValue(devis.getRemise());
+        modelSpinnerFraisDeTransport.setValue(devis.getFraisDeTransport());
+        jComboBoxTVA.setSelectedItem(devis.getTauxDeTva());
+        jLabelMontantTotalTTC.setText(Double.toString(devis.getMontantTotalTTC()));
         
         if (Singleton.getCurrent().editModeDevis == EditMode.MODIFICATION) {
-            lignesDeDocument = DAOLigneDeDocument.getListLigneDeDocuments(devis.getId());
+            lignesDeDocument = DAOLigneDeDocument.getListLignesDeDocument(devis.getId());
             for (LigneDeDocument ligneDeDocument : lignesDeDocument) {
                 Article article = DAOArticle.getArticle(ligneDeDocument.getIdArticle());
                 Double Remise = (1 - (ligneDeDocument.getRemise() / 100));
@@ -74,13 +174,21 @@ public class VueDevisEdit extends javax.swing.JFrame {
             @Override
             public void run()
             {
-                jComboBoxClient.setModel(modelComboBoxClient);
-                jComboBoxClient.revalidate();
-                jComboBoxClient.repaint();
+                jComboBoxContact.setModel(modelComboBoxContact);
+                jComboBoxContact.revalidate();
+                jComboBoxContact.repaint();
                 
                 jTableLigneDeDocument.setModel(modelComboBoxLignesDeDocument);
                 jTableLigneDeDocument.revalidate();
                 jTableLigneDeDocument.repaint();
+        
+                jSpinnerRemise.setModel(modelSpinnerRemise);
+                jSpinnerRemise.revalidate();
+                jSpinnerRemise.repaint();
+        
+                jSpinnerFraisDeTransport.setModel(modelSpinnerFraisDeTransport);
+                jSpinnerFraisDeTransport.revalidate();
+                jSpinnerFraisDeTransport.repaint();
             }
         });
     }
@@ -112,14 +220,13 @@ public class VueDevisEdit extends javax.swing.JFrame {
         jCheckBoxSigne = new javax.swing.JCheckBox();
         jSpinnerRemise = new javax.swing.JSpinner();
         jSpinnerFraisDeTransport = new javax.swing.JSpinner();
-        jSpinnerMontantTotalHT = new javax.swing.JSpinner();
-        jComboBoxClient = new javax.swing.JComboBox();
+        jComboBoxContact = new javax.swing.JComboBox();
         jDateChooserDateDeCreation = new com.toedter.calendar.JDateChooser();
         jDateChooserDateDeValidite = new com.toedter.calendar.JDateChooser();
         jLabel15 = new javax.swing.JLabel();
-        jSpinnerMontantTotalTTC = new javax.swing.JSpinner();
-        jButtonAjouterArticle = new javax.swing.JButton();
         jButtonNouvelleLigne = new javax.swing.JButton();
+        jLabelMontantTotalHT = new javax.swing.JLabel();
+        jLabelMontantTotalTTC = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -142,7 +249,7 @@ public class VueDevisEdit extends javax.swing.JFrame {
 
         jLabel7.setText("Date de création");
 
-        jLabel8.setText("Client");
+        jLabel8.setText("Contact");
 
         jLabel9.setText("Date de validité");
 
@@ -153,7 +260,7 @@ public class VueDevisEdit extends javax.swing.JFrame {
                 {null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "Numéro de ligne", "Référence", "Nom", "Quantité en stock", "Quantité", "Remise", "Prix unitaire", "Prix total"
+                "Numéro de ligne", "Référence", "Nom", "Quantité en stock", "Quantité", "Remise (%)", "Prix unitaire", "Prix total"
             }
         ) {
             Class[] types = new Class [] {
@@ -191,18 +298,26 @@ public class VueDevisEdit extends javax.swing.JFrame {
 
         jLabel14.setText("Taux de TVA");
 
-        jSpinnerMontantTotalHT.setEnabled(false);
-
-        jLabel15.setText("Montant total TTC");
-
-        jSpinnerMontantTotalTTC.setEnabled(false);
-
-        jButtonAjouterArticle.setText("Nouvel article");
-        jButtonAjouterArticle.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonAjouterArticleActionPerformed(evt);
+        jComboBoxTVA.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "5.5", "10", "20" }));
+        jComboBoxTVA.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                jComboBoxTVAItemStateChanged(evt);
             }
         });
+
+        jSpinnerRemise.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                jSpinnerRemiseStateChanged(evt);
+            }
+        });
+
+        jSpinnerFraisDeTransport.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                jSpinnerFraisDeTransportStateChanged(evt);
+            }
+        });
+
+        jLabel15.setText("Montant total TTC");
 
         jButtonNouvelleLigne.setText("Nouvelle ligne");
         jButtonNouvelleLigne.addActionListener(new java.awt.event.ActionListener() {
@@ -210,6 +325,12 @@ public class VueDevisEdit extends javax.swing.JFrame {
                 jButtonNouvelleLigneActionPerformed(evt);
             }
         });
+
+        jLabelMontantTotalHT.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabelMontantTotalHT.setText("0");
+
+        jLabelMontantTotalTTC.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabelMontantTotalTTC.setText("0");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -233,7 +354,7 @@ public class VueDevisEdit extends javax.swing.JFrame {
                             .addComponent(jLabel10, javax.swing.GroupLayout.DEFAULT_SIZE, 96, Short.MAX_VALUE))
                         .addGap(10, 10, 10)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jComboBoxClient, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jComboBoxContact, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jCheckBoxSigne)
                                 .addGap(0, 0, Short.MAX_VALUE))
@@ -251,12 +372,13 @@ public class VueDevisEdit extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jComboBoxTVA, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jSpinnerFraisDeTransport, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jSpinnerMontantTotalHT)
                             .addComponent(jSpinnerRemise)
-                            .addComponent(jSpinnerMontantTotalTTC)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabelMontantTotalHT, javax.swing.GroupLayout.PREFERRED_SIZE, 655, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabelMontantTotalTTC, javax.swing.GroupLayout.PREFERRED_SIZE, 656, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(0, 0, Short.MAX_VALUE))))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButtonAjouterArticle)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButtonNouvelleLigne)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
@@ -275,7 +397,7 @@ public class VueDevisEdit extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel8)
-                    .addComponent(jComboBoxClient, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jComboBoxContact, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel9)
@@ -287,13 +409,11 @@ public class VueDevisEdit extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButtonAjouterArticle)
-                    .addComponent(jButtonNouvelleLigne))
+                .addComponent(jButtonNouvelleLigne)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel11)
-                    .addComponent(jSpinnerMontantTotalHT, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabelMontantTotalHT))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel12)
@@ -309,8 +429,8 @@ public class VueDevisEdit extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel15)
-                    .addComponent(jSpinnerMontantTotalTTC, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 14, Short.MAX_VALUE)
+                    .addComponent(jLabelMontantTotalTTC))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButtonAnnuler)
                     .addComponent(jButtonEnregistrer))
@@ -320,9 +440,102 @@ public class VueDevisEdit extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jTextFieldArticleReferenceFocusLost(java.awt.event.FocusEvent evt, String reference) {
+        if (reference != null) {
+            int rowIndex = jTableLigneDeDocument.getSelectedRow();
+            
+            if (InsertionArticle(reference)) {
+                Article article = DAOArticle.getArticle(reference);
+                if (article != null) {
+                    // récupération de la ligne
+                    LigneDeDocument ligneDeDocument = (LigneDeDocument)jTableLigneDeDocument.getValueAt(rowIndex, 0);
+
+                    // attribution de nouvelles valeurs
+                    ligneDeDocument.setIdArticle(article.getId());
+                    Double TauxRemise = (1 - (ligneDeDocument.getRemise() / 100));
+                    Double prixTotal = ((article.getPrixUnitaire() * ligneDeDocument.getQte()) * TauxRemise);
+                    Object[] obj = new Object[] { ligneDeDocument, article.getReference(), article.getNom(), article.getQuantiteStock(), ligneDeDocument.getQte(), article.getPrixUnitaire(), ligneDeDocument.getRemise(), prixTotal };
+                    
+                    // affichage
+                    modelComboBoxLignesDeDocument.setValueAt(ligneDeDocument, rowIndex, 0);
+                    modelComboBoxLignesDeDocument.setValueAt(article.getReference(), rowIndex, 1);
+                    modelComboBoxLignesDeDocument.setValueAt(article.getNom(), rowIndex, 2);
+                    modelComboBoxLignesDeDocument.setValueAt(article.getQuantiteStock(), rowIndex, 3);
+                    modelComboBoxLignesDeDocument.setValueAt(ligneDeDocument.getQte(), rowIndex, 4);
+                    modelComboBoxLignesDeDocument.setValueAt(ligneDeDocument.getRemise(), rowIndex, 5);
+                    modelComboBoxLignesDeDocument.setValueAt(article.getPrixUnitaire(), rowIndex, 6);
+                    modelComboBoxLignesDeDocument.setValueAt(prixTotal, rowIndex, 7);
+                    
+                    // calcul des montants
+                    CalculMontants();
+                }
+            } else {
+                modelComboBoxLignesDeDocument.setValueAt(null, rowIndex, 1);
+            }
+        }
+    }
+    
+    private void jSpinnerLigneDeDocumentQteStateChanged(javax.swing.event.ChangeEvent evt, int qte) {
+        // récupération de la ligne et de l'article
+        int rowIndex = jTableLigneDeDocument.getSelectedRow();
+        LigneDeDocument ligneDeDocument = (LigneDeDocument)jTableLigneDeDocument.getValueAt(rowIndex, 0);
+        
+        if (ligneDeDocument.getIdArticle() != 0) {
+            Article article = DAOArticle.getArticle(ligneDeDocument.getIdArticle());
+                
+            // attribution de nouvelles valeurs
+            ligneDeDocument.setQte(qte);
+            Double TauxRemise = (1 - (ligneDeDocument.getRemise() / 100));
+            Double prixTotal = ((article.getPrixUnitaire() * qte) * TauxRemise);
+            Object[] obj = new Object[] { ligneDeDocument, article.getReference(), article.getNom(), article.getQuantiteStock(), ligneDeDocument.getQte(), ligneDeDocument.getRemise(), article.getPrixUnitaire(), prixTotal };
+            
+            // affichage
+            modelComboBoxLignesDeDocument.setValueAt(ligneDeDocument, rowIndex, 0);
+            modelComboBoxLignesDeDocument.setValueAt(article.getReference(), rowIndex, 1);
+            modelComboBoxLignesDeDocument.setValueAt(article.getNom(), rowIndex, 2);
+            modelComboBoxLignesDeDocument.setValueAt(article.getQuantiteStock(), rowIndex, 3);
+            modelComboBoxLignesDeDocument.setValueAt(ligneDeDocument.getQte(), rowIndex, 4);
+            modelComboBoxLignesDeDocument.setValueAt(ligneDeDocument.getRemise(), rowIndex, 5);
+            modelComboBoxLignesDeDocument.setValueAt(article.getPrixUnitaire(), rowIndex, 6);
+            modelComboBoxLignesDeDocument.setValueAt(prixTotal, rowIndex, 7);
+                    
+            // calcul des montants
+            CalculMontants();
+        }
+    }
+    
+    private void jSpinnerLigneDeDocumentRemiseStateChanged(javax.swing.event.ChangeEvent evt, Double remise) {
+        // récupération de la ligne et de l'article
+        int rowIndex = jTableLigneDeDocument.getSelectedRow();
+        LigneDeDocument ligneDeDocument = (LigneDeDocument)jTableLigneDeDocument.getValueAt(rowIndex, 0);
+        
+        if (ligneDeDocument.getIdArticle() != 0) {
+            Article article = DAOArticle.getArticle(ligneDeDocument.getIdArticle());
+                
+            // attribution de nouvelles valeurs
+            ligneDeDocument.setRemise(remise);
+            Double TauxRemise = (1 - (remise / 100));
+            Double prixTotal = ((article.getPrixUnitaire() * ligneDeDocument.getQte()) * TauxRemise);
+            Object[] obj = new Object[] { ligneDeDocument, article.getReference(), article.getNom(), article.getQuantiteStock(), ligneDeDocument.getQte(), ligneDeDocument.getRemise(), article.getPrixUnitaire(), prixTotal };
+            
+            // affichage
+            modelComboBoxLignesDeDocument.setValueAt(ligneDeDocument, rowIndex, 0);
+            modelComboBoxLignesDeDocument.setValueAt(article.getReference(), rowIndex, 1);
+            modelComboBoxLignesDeDocument.setValueAt(article.getNom(), rowIndex, 2);
+            modelComboBoxLignesDeDocument.setValueAt(article.getQuantiteStock(), rowIndex, 3);
+            modelComboBoxLignesDeDocument.setValueAt(ligneDeDocument.getQte(), rowIndex, 4);
+            modelComboBoxLignesDeDocument.setValueAt(ligneDeDocument.getRemise(), rowIndex, 5);
+            modelComboBoxLignesDeDocument.setValueAt(article.getPrixUnitaire(), rowIndex, 6);
+            modelComboBoxLignesDeDocument.setValueAt(prixTotal, rowIndex, 7);
+                    
+            // calcul des montants
+            CalculMontants();
+        }
+    }
+    
     private void jButtonEnregistrerMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonEnregistrerMousePressed
         Devis devis = Singleton.getCurrent().devis;
-        Client client = (Client)jComboBoxClient.getSelectedItem();
+        Contact contact = (Contact)jComboBoxContact.getSelectedItem();
         Commercial commercial = Singleton.getCurrent().me;
         
         Calendar dateDeCreation = Calendar.getInstance();
@@ -332,30 +545,42 @@ public class VueDevisEdit extends javax.swing.JFrame {
         
         devis.setReference(jTextFieldReference.getText());
         devis.setDateDeCreation(new Date(dateDeCreation.getTime().getTime()));
-        devis.setIdClient(client.getId());
+        devis.setIdContact(contact.getId());
         devis.setIdCommercial(commercial.getId());
         devis.setDateDeFinDeValidite(new Date(dateDeFinDeValidite.getTime().getTime()));
         devis.setSigne(jCheckBoxSigne.isSelected());
+        devis.setMontantTotalHT(Double.parseDouble(jLabelMontantTotalHT.getText()));
         devis.setRemise((Double)jSpinnerRemise.getValue());
         devis.setFraisDeTransport((Double)jSpinnerFraisDeTransport.getValue());
-        devis.setTauxDeTva((Double)jComboBoxTVA.getSelectedItem());
+        devis.setTauxDeTva(Double.parseDouble((String)jComboBoxTVA.getSelectedItem()));
+        devis.setMontantTotalTTC(Double.parseDouble(jLabelMontantTotalTTC.getText()));
+        
+        /*
+        for (int i = 0; i< jTableLigneDeDocument.getRowCount(); i++) {
+            LigneDeDocument ligneDeDocument = (LigneDeDocument)jTableLigneDeDocument.getValueAt(i, 0);
+            if (ligneDeDocument.getIdArticle() != 0) {
+                Article article = DAOArticle.getArticle(ligneDeDocument.getIdArticle());
+                MontantTotalHT = (MontantTotalHT + (Double)modelComboBoxLignesDeDocument.getValueAt(i, 7));
+            }
+        }
+        */
         
         switch (Singleton.getCurrent().editModeDevis) {
             case CREATION:
-                //DAODevis.ajoutDevis(devis);
+                DAODevis.ajoutDevis(devis);
                 break;
                 
             case MODIFICATION:
-                //DAODevis.modificationDevis(devis);
+                DAODevis.modificationDevis(devis);
                 break;
         }
         
         this.dispose();
-        Singleton.getCurrent().vueClient.DislayCurrentClient(true);
+        Singleton.getCurrent().vueDevis.DislayCurrentDevis(true);
     }//GEN-LAST:event_jButtonEnregistrerMousePressed
 
     private void jButtonAnnulerMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonAnnulerMousePressed
-        
+        this.dispose();
     }//GEN-LAST:event_jButtonAnnulerMousePressed
 
     private void jButtonNouvelleLigneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonNouvelleLigneActionPerformed
@@ -373,23 +598,17 @@ public class VueDevisEdit extends javax.swing.JFrame {
         modelComboBoxLignesDeDocument.addRow(obj);
     }//GEN-LAST:event_jButtonNouvelleLigneActionPerformed
 
-    private void jButtonAjouterArticleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAjouterArticleActionPerformed
-        int rowIndex = jTableLigneDeDocument.getSelectedRow();
-        int columnIndex = jTableLigneDeDocument.getSelectedColumn();
-        String Reference = (String)jTableLigneDeDocument.getCellEditor(rowIndex,columnIndex).getCellEditorValue();
-        
-        Devis devis = Singleton.getCurrent().devis;
-        LigneDeDocument ligneDeDocument = (LigneDeDocument)jTableLigneDeDocument.getValueAt(rowIndex, 0);
-        
-        Article article = DAOArticle.getArticle(Reference);
-        if (article != null) {
-            ligneDeDocument.setIdArticle(article.getId());
-            Double Remise = (1 - (ligneDeDocument.getRemise() / 100));
-            Double prixTotal = ((article.getPrixUnitaire() * ligneDeDocument.getQte()) * Remise);
-            Object[] obj = new Object[] { ligneDeDocument, article.getReference(), article.getNom(), article.getQuantiteStock(), ligneDeDocument.getQte(), ligneDeDocument.getRemise(), article.getPrixUnitaire(), prixTotal };
-            modelComboBoxLignesDeDocument.setValueAt(obj, rowIndex, columnIndex);
-        }
-    }//GEN-LAST:event_jButtonAjouterArticleActionPerformed
+    private void jSpinnerRemiseStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jSpinnerRemiseStateChanged
+        CalculMontants();
+    }//GEN-LAST:event_jSpinnerRemiseStateChanged
+
+    private void jSpinnerFraisDeTransportStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jSpinnerFraisDeTransportStateChanged
+        CalculMontants();
+    }//GEN-LAST:event_jSpinnerFraisDeTransportStateChanged
+
+    private void jComboBoxTVAItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBoxTVAItemStateChanged
+        CalculMontants();
+    }//GEN-LAST:event_jComboBoxTVAItemStateChanged
 
     /**
      * @param args the command line arguments
@@ -427,12 +646,11 @@ public class VueDevisEdit extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButtonAjouterArticle;
     private javax.swing.JButton jButtonAnnuler;
     private javax.swing.JButton jButtonEnregistrer;
     private javax.swing.JButton jButtonNouvelleLigne;
     private javax.swing.JCheckBox jCheckBoxSigne;
-    private javax.swing.JComboBox jComboBoxClient;
+    private javax.swing.JComboBox jComboBoxContact;
     private javax.swing.JComboBox jComboBoxTVA;
     private com.toedter.calendar.JDateChooser jDateChooserDateDeCreation;
     private com.toedter.calendar.JDateChooser jDateChooserDateDeValidite;
@@ -446,10 +664,10 @@ public class VueDevisEdit extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
+    private javax.swing.JLabel jLabelMontantTotalHT;
+    private javax.swing.JLabel jLabelMontantTotalTTC;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSpinner jSpinnerFraisDeTransport;
-    private javax.swing.JSpinner jSpinnerMontantTotalHT;
-    private javax.swing.JSpinner jSpinnerMontantTotalTTC;
     private javax.swing.JSpinner jSpinnerRemise;
     private javax.swing.JTable jTableLigneDeDocument;
     private javax.swing.JTextField jTextFieldReference;
