@@ -1,21 +1,20 @@
 package com.plasprod.Views;
 
+import com.plasprod.CustomLibraries.CustomTimeListCellRenderer;
 import com.plasprod.JDBC.DAOContact;
 import com.plasprod.JDBC.DAOEvenement;
 import com.plasprod.Models.Contact;
+import com.plasprod.Models.CustomObjects.CustomTime;
 import com.plasprod.Models.Enums.EditMode;
 import com.plasprod.Models.Evenement;
 import com.plasprod.Models.Singleton;
 import com.plasprod.Models.Enums.TypeRdv;
-import java.awt.Component;
 import java.sql.Date;
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Calendar;
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
-import javax.swing.JList;
 import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingUtilities;
@@ -121,6 +120,8 @@ public class VueEvenementEdit extends javax.swing.JFrame {
     private void setDureeMax() {
         int selectedIndex = jListHeureDeDebut.getSelectedIndex();
         int dureeMax = 0;
+        
+        
         
         //jListHeureDeDebut.getCellRenderer().getListCellRendererComponent(jListHeureDeDebut, this, WIDTH, rootPaneCheckingEnabled, rootPaneCheckingEnabled)
         
