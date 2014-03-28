@@ -16,6 +16,7 @@ public class Devis extends Document {
     private double fraisDeTransport;
     private double tauxDeTva;
     private double montantTotalTTC;
+    private Long idCommande;
 
     public Devis() {
         super();
@@ -23,6 +24,8 @@ public class Devis extends Document {
         Calendar nextMonth = Calendar.getInstance();
         nextMonth.setTime(this.getDateDeCreation());
         nextMonth.add(Calendar.MONTH, 1);
+        
+        this.setReference("DEV-" + Calendar.getInstance().getTime().getTime());
         
         this.dateDeFinDeValidite = new Date(nextMonth.getTimeInMillis());
         this.graduationDeDemande = 0;
@@ -32,10 +35,14 @@ public class Devis extends Document {
         this.fraisDeTransport = 0;
         this.tauxDeTva = 0;
         this.montantTotalTTC = 0;
+        this.idCommande = null;
     }
 
-    public Devis(long id, Date dateDeCreation, String reference, long idCommercial, long idClient, Date dateDeFinDeValidite, int graduationDeDemande, Boolean signe, double montantTotalHT, double remise, double fraisDeTransport, double tauxDeTva, double montantTotalTTC) {
-        super(id, dateDeCreation, reference, idCommercial, idClient);
+    public Devis(long id, String reference, Date dateDeCreation, long idCommercial, long idClient, Date dateDeFinDeValidite, int graduationDeDemande, Boolean signe, double montantTotalHT, double remise, double fraisDeTransport, double tauxDeTva, double montantTotalTTC, Long idCommande) {
+        super(id, reference, dateDeCreation, idCommercial, idClient);
+        
+        this.setReference("DEV-" + Calendar.getInstance().getTime().getTime());
+        
         this.dateDeFinDeValidite = dateDeFinDeValidite;
         this.graduationDeDemande = graduationDeDemande;
         this.signe = signe;
@@ -44,6 +51,7 @@ public class Devis extends Document {
         this.fraisDeTransport = fraisDeTransport;
         this.tauxDeTva = tauxDeTva;
         this.montantTotalTTC = montantTotalTTC;
+        this.idCommande = idCommande;
     }
 
     public Date getDateDeFinDeValidite() {
@@ -108,6 +116,14 @@ public class Devis extends Document {
 
     public void setMontantTotalTTC(double montantTotalTTC) {
         this.montantTotalTTC = montantTotalTTC;
+    }
+
+    public Long getIdCommande() {
+        return idCommande;
+    }
+
+    public void setIdCommande(Long idCommande) {
+        this.idCommande = idCommande;
     }
 
     @Override

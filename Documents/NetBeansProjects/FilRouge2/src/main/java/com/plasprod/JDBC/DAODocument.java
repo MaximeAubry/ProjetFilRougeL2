@@ -12,12 +12,12 @@ public class DAODocument {
         ConnectionBDD.creerConnection();
         try {
             String requete = "INSERT INTO Document " +
-                                "(dateDeCreation,reference,IdCommercial,IdContact) " +
+                                "(reference,dateDeCreation,IdCommercial,IdContact) " +
                             "VALUES " +
                                 "(?,?,?,?);";
             PreparedStatement preparedStatement = ConnectionBDD.connection.prepareStatement(requete);
-            preparedStatement.setTimestamp(1,new Timestamp(document.getDateDeCreation().getTime()));
-            preparedStatement.setString(2,document.getReference());
+            preparedStatement.setString(1,document.getReference());
+            preparedStatement.setTimestamp(2,new Timestamp(document.getDateDeCreation().getTime()));
             preparedStatement.setLong(3,document.getIdCommercial());
             preparedStatement.setLong(4,document.getIdContact());
             preparedStatement.executeUpdate();
@@ -44,14 +44,14 @@ public class DAODocument {
         try {
             String requete = "UPDATE Document " +
                             "SET " +
-                                "dateDeCreation = ? " +
-                                ",reference = ? " +
-                                ",idCommercial = ? " +
+                                "reference = ? " +
+                                ",dateDeCreation = ? " +
+                                ",IdCommercial = ? " +
                                 ",IdContact = ? " +
-                            "WHERE IdDocument = ?;";
+                            "WHERE Id = ?;";
             PreparedStatement preparedStatement = ConnectionBDD.connection.prepareStatement(requete);
-            preparedStatement.setTimestamp(1,new Timestamp(document.getDateDeCreation().getTime()));
-            preparedStatement.setString(2,document.getReference());
+            preparedStatement.setString(1,document.getReference());
+            preparedStatement.setTimestamp(2,new Timestamp(document.getDateDeCreation().getTime()));
             preparedStatement.setLong(3,document.getIdCommercial());
             preparedStatement.setLong(4,document.getIdContact());
             preparedStatement.setLong(5,document.getId());

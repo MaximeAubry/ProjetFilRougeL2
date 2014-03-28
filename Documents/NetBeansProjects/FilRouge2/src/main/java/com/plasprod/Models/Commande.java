@@ -7,6 +7,7 @@
 package com.plasprod.Models;
 
 import java.sql.Date;
+import java.util.Calendar;
 
 /**
  *
@@ -15,17 +16,26 @@ import java.sql.Date;
 public class Commande extends Document {
     private Enum statutCommande;
     private long delaiExpedition;
+    private Long idDevis;
 
     public Commande() {
         super();
+        
+        this.setReference("COM-" + Calendar.getInstance().getTime().getTime());
+        
         this.statutCommande = null;
         this.delaiExpedition = 0;
+        this.idDevis = null;
     }
 
-    public Commande(long id, Date dateDeCreation, String reference, long idCommercial, long idClient, Enum statutCommande, long delaiExpedition) {
-        super(id, dateDeCreation, reference, idCommercial, idClient);
+    public Commande(long id, String reference, Date dateDeCreation, long idCommercial, long idClient, Enum statutCommande, long delaiExpedition, Long idDevis) {
+        super(id, reference, dateDeCreation, idCommercial, idClient);
+        
+        this.setReference("COM-" + Calendar.getInstance().getTime().getTime());
+        
         this.statutCommande = statutCommande;
         this.delaiExpedition = delaiExpedition;
+        this.idDevis = idDevis;
     }
 
     public Enum getStatutCommande() {
@@ -43,9 +53,17 @@ public class Commande extends Document {
     public void setDelaiExpedition(long delaiExpedition) {
         this.delaiExpedition = delaiExpedition;
     }
+    
+    public Long getIdDevis() {
+        return idDevis;
+    }
+
+    public void setIdDevis(Long idDevis) {
+        this.idDevis = idDevis;
+    }
 
     @Override
     public String toString() {
-        return "Commande{" + "statutCommande=" + statutCommande + ", delaiExpedition=" + delaiExpedition + '}';
+        return this.getReference();
     }
 }

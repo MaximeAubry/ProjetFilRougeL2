@@ -297,20 +297,25 @@ public class VueCommercial extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonAjouterMousePressed
 
     private void jButtonModifierMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonModifierMousePressed
-        Singleton.getCurrent().editModeClient = EditMode.MODIFICATION;
-
-        VueCommercialEdit vueCommercial = new VueCommercialEdit();
-        vueCommercial.setVisible(true);
+        if (Singleton.getCurrent().commercial != null) {
+            Singleton.getCurrent().editModeClient = EditMode.MODIFICATION;
+            VueCommercialEdit vueCommercial = new VueCommercialEdit();
+            vueCommercial.setVisible(true);
+        } else {
+            JOptionPane.showMessageDialog(this, "Aucun commercial n'a été sélectionné !", "Attention !", JOptionPane.WARNING_MESSAGE);
+        }
     }//GEN-LAST:event_jButtonModifierMousePressed
 
     private void jButtonSupprimerMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonSupprimerMousePressed
-        int retour = JOptionPane.showConfirmDialog(this, "Êtes-vous sur de vouloir supprimer ce commercial ?", "Suppression", JOptionPane.YES_NO_OPTION);
-
-        if( retour == JOptionPane.YES_NO_OPTION)
-        {
-            DAOCommercial.suppressionCommercial(Singleton.getCurrent().commercial);
-            Singleton.getCurrent().client = null;
-            DislayCurrentCommercial(true);
+        if (Singleton.getCurrent().commercial != null) {
+            int retour = JOptionPane.showConfirmDialog(this, "Êtes-vous sur de vouloir supprimer ce commercial ?", "Suppression", JOptionPane.YES_NO_OPTION);
+            if( retour == JOptionPane.YES_NO_OPTION) {
+                DAOCommercial.suppressionCommercial(Singleton.getCurrent().commercial);
+                Singleton.getCurrent().client = null;
+                DislayCurrentCommercial(true);
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Aucun commercial n'a été sélectionné !", "Attention !", JOptionPane.WARNING_MESSAGE);
         }
     }//GEN-LAST:event_jButtonSupprimerMousePressed
 

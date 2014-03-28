@@ -415,6 +415,16 @@ public class VueEvenement extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jTableEvenementsMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableEvenementsMousePressed
+        int rowIndex = jTableEvenements.getSelectedRow();
+        Singleton.getCurrent().evenement = (Evenement)jTableEvenements.getValueAt(rowIndex, 0);
+        DislayCurrentEvenement(false);
+    }//GEN-LAST:event_jTableEvenementsMousePressed
+
+    private void jButtonRechercherMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonRechercherMousePressed
+        LoadEvenements();
+    }//GEN-LAST:event_jButtonRechercherMousePressed
+
     private void jButtonAjouterMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonAjouterMousePressed
         Singleton.getCurrent().evenement = new Evenement();
         Singleton.getCurrent().editModeEvenement = EditMode.CREATION;
@@ -424,32 +434,27 @@ public class VueEvenement extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonAjouterMousePressed
 
     private void jButtonModifierMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonModifierMousePressed
-        Singleton.getCurrent().editModeEvenement = EditMode.MODIFICATION;
-        
-        VueEvenementEdit vueAgenda = new VueEvenementEdit();
-        vueAgenda.setVisible(true);
+        if (Singleton.getCurrent().evenement != null) {
+            Singleton.getCurrent().editModeEvenement = EditMode.MODIFICATION;
+            VueEvenementEdit vueAgenda = new VueEvenementEdit();
+            vueAgenda.setVisible(true);
+        } else {
+            JOptionPane.showMessageDialog(this, "Aucun événement n'a été sélectionné !", "Attention !", JOptionPane.WARNING_MESSAGE);
+        }
     }//GEN-LAST:event_jButtonModifierMousePressed
 
     private void jButtonSupprimerMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonSupprimerMousePressed
-        int retour = JOptionPane.showConfirmDialog(this, "Êtes-vous sur de vouloir supprimer cet événement ?", "Suppression", JOptionPane.YES_NO_OPTION);
-        
-        if( retour == JOptionPane.YES_NO_OPTION)
-        {
-            DAOEvenement.suppressionEvenement(Singleton.getCurrent().evenement);
-            Singleton.getCurrent().evenement = null;
-            DislayCurrentEvenement(true);
+        if (Singleton.getCurrent().evenement != null) {
+            int retour = JOptionPane.showConfirmDialog(this, "Êtes-vous sur de vouloir supprimer cet événement ?", "Suppression", JOptionPane.YES_NO_OPTION);
+            if( retour == JOptionPane.YES_NO_OPTION) {
+                DAOEvenement.suppressionEvenement(Singleton.getCurrent().evenement);
+                Singleton.getCurrent().evenement = null;
+                DislayCurrentEvenement(true);
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Aucun événement n'a été sélectionné !", "Attention !", JOptionPane.WARNING_MESSAGE);
         }
     }//GEN-LAST:event_jButtonSupprimerMousePressed
-
-    private void jButtonRechercherMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonRechercherMousePressed
-        LoadEvenements();
-    }//GEN-LAST:event_jButtonRechercherMousePressed
-
-    private void jTableEvenementsMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableEvenementsMousePressed
-        int rowIndex = jTableEvenements.getSelectedRow();
-        Singleton.getCurrent().evenement = (Evenement)jTableEvenements.getValueAt(rowIndex, 0);
-        DislayCurrentEvenement(false);
-    }//GEN-LAST:event_jTableEvenementsMousePressed
 
     /**
      * @param args the command line arguments

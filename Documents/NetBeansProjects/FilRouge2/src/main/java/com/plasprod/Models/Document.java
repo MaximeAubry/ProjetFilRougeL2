@@ -18,16 +18,16 @@ public class Document {
         Calendar now = Calendar.getInstance();
         
         this.id = 0;
-        this.dateDeCreation = new Date(now.getTimeInMillis());
         this.reference = null;
+        this.dateDeCreation = new Date(now.getTimeInMillis());
         this.idCommercial = 0;
         this.idContact = 0;
     }
 
-    public Document(long id, Date dateDeCreation, String reference, long idCommercial, long idContact) {
+    public Document(long id, String reference, Date dateDeCreation, long idCommercial, long idContact) {
         this.id = id;
-        this.dateDeCreation = dateDeCreation;
         this.reference = reference;
+        this.dateDeCreation = dateDeCreation;
         this.idCommercial = idCommercial;
         this.idContact = idContact;
     }
@@ -40,20 +40,20 @@ public class Document {
         this.id = id;
     }
 
-    public Date getDateDeCreation() {
-        return dateDeCreation;
-    }
-
-    public void setDateDeCreation(Date dateDeCreation) {
-        this.dateDeCreation = dateDeCreation;
-    }
-
     public String getReference() {
         return reference;
     }
 
     public void setReference(String reference) {
         this.reference = reference;
+    }
+
+    public Date getDateDeCreation() {
+        return dateDeCreation;
+    }
+
+    public void setDateDeCreation(Date dateDeCreation) {
+        this.dateDeCreation = dateDeCreation;
     }
     
     public long getIdCommercial() {

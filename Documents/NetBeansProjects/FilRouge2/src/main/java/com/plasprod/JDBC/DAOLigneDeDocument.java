@@ -11,15 +11,16 @@ public class DAOLigneDeDocument {
         ConnectionBDD.creerConnection();
         try {
             String requete = "INSERT INTO LigneDeDocument " +
-                                "(numeroDeLigne,qte,remise,IdDocument,IdArticle) " +
+                                "(numeroDeLigne,qte,prixUnitaire,remise,IdDocument,IdArticle) " +
                             "VALUES " +
-                                "(?,?,?,?,?);";
+                                "(?,?,?,?,?,?);";
             PreparedStatement preparedStatement = ConnectionBDD.connection.prepareStatement(requete);
             preparedStatement.setLong(1,ligneDeDocument.getNumeroDeLigne());
             preparedStatement.setInt(2,ligneDeDocument.getQte());
-            preparedStatement.setDouble(3,ligneDeDocument.getRemise());
-            preparedStatement.setLong(4,ligneDeDocument.getIdDocument());
-            preparedStatement.setLong(5,ligneDeDocument.getIdArticle());
+            preparedStatement.setDouble(3,ligneDeDocument.getPrixUnitaire());
+            preparedStatement.setDouble(4,ligneDeDocument.getRemise());
+            preparedStatement.setLong(5,ligneDeDocument.getIdDocument());
+            preparedStatement.setLong(6,ligneDeDocument.getIdArticle());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -30,12 +31,19 @@ public class DAOLigneDeDocument {
     public static void modificationLigneDeDocument(LigneDeDocument ligneDeDocument) {
         ConnectionBDD.creerConnection();
         try {
-            String requete = "";
+            String requete = "UPDATE LigneDeDocument " +
+                            "SET " +
+                                "numeroDeLigne = ? " +
+                                ",qte = ? " +
+                                ",prixUnitaire = ? " +
+                                ",remise = ? " +
+                                ",IdArticle = ? " +
+                            "WHERE Id = ?;";
             PreparedStatement preparedStatement = ConnectionBDD.connection.prepareStatement(requete);
             preparedStatement.setLong(1,ligneDeDocument.getNumeroDeLigne());
             preparedStatement.setInt(2,ligneDeDocument.getQte());
-            preparedStatement.setDouble(3,ligneDeDocument.getRemise());
-            preparedStatement.setLong(4,ligneDeDocument.getIdDocument());
+            preparedStatement.setDouble(3,ligneDeDocument.getPrixUnitaire());
+            preparedStatement.setDouble(4,ligneDeDocument.getRemise());
             preparedStatement.setLong(5,ligneDeDocument.getIdArticle());
             preparedStatement.setLong(6,ligneDeDocument.getId());
             preparedStatement.executeUpdate();

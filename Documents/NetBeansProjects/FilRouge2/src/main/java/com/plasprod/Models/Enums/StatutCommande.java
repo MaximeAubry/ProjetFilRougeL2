@@ -11,8 +11,11 @@ package com.plasprod.Models.Enums;
  * @author Maxime
  */
 public enum StatutCommande {
+    ENCOURS("En cours"),
+    EXPEDIEE("Expédiée"),
+    LIVRAISON("Livraison"),
     TERMINEE("Terminée"),
-    LIVRAISON_EN_COURS("Livraison en cours");
+    ANNULEE("Annulée");
     
     /** L'attribut qui contient la valeur associé à l'enum */
     private final String display;

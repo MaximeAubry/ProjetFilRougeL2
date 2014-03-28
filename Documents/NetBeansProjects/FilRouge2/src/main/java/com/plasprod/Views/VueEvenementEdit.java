@@ -122,6 +122,8 @@ public class VueEvenementEdit extends javax.swing.JFrame {
         int selectedIndex = jListHeureDeDebut.getSelectedIndex();
         int dureeMax = 0;
         
+        //jListHeureDeDebut.getCellRenderer().getListCellRendererComponent(jListHeureDeDebut, this, WIDTH, rootPaneCheckingEnabled, rootPaneCheckingEnabled)
+        
         if (selectedIndex > -1) {
             /*Calendar heureSelectionnee = Calendar.getInstance();
             heureSelectionnee.setTime(new Date(((Time)modelListHeureDeDebut.getElementAt(selectedIndex)).getTime()));
@@ -298,6 +300,15 @@ public class VueEvenementEdit extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jDateChooserDateEvenementPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_jDateChooserDateEvenementPropertyChange
+        desactiverHeuresUtilisees();
+        setDureeMax();
+    }//GEN-LAST:event_jDateChooserDateEvenementPropertyChange
+
+    private void jListHeureDeDebutValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_jListHeureDeDebutValueChanged
+        setDureeMax();
+    }//GEN-LAST:event_jListHeureDeDebutValueChanged
+
     private void jButtonEnregistrerMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonEnregistrerMousePressed
         Contact contact = (Contact)jComboBoxContact.getSelectedItem();
 
@@ -345,15 +356,6 @@ public class VueEvenementEdit extends javax.swing.JFrame {
     private void jButtonAnnulerMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonAnnulerMousePressed
         this.dispose();
     }//GEN-LAST:event_jButtonAnnulerMousePressed
-
-    private void jDateChooserDateEvenementPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_jDateChooserDateEvenementPropertyChange
-        desactiverHeuresUtilisees();
-        setDureeMax();
-    }//GEN-LAST:event_jDateChooserDateEvenementPropertyChange
-
-    private void jListHeureDeDebutValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_jListHeureDeDebutValueChanged
-        setDureeMax();
-    }//GEN-LAST:event_jListHeureDeDebutValueChanged
 
     /**
      * @param args the command line arguments

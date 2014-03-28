@@ -29,6 +29,8 @@
                   <Component id="jScrollPane1" pref="780" max="32767" attributes="0"/>
                   <Group type="102" alignment="1" attributes="0">
                       <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                      <Component id="jButtonGenererCommande" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
                       <Component id="jButtonEnregistrer" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="jButtonAnnuler" min="-2" max="-2" attributes="0"/>
@@ -44,13 +46,13 @@
                       <EmptySpace min="10" pref="10" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="jComboBoxContact" alignment="0" max="32767" attributes="0"/>
+                          <Component id="jDateChooserDateDeCreation" max="32767" attributes="0"/>
+                          <Component id="jDateChooserDateDeValidite" max="32767" attributes="0"/>
                           <Group type="102" attributes="0">
                               <Component id="jCheckBoxSigne" min="-2" max="-2" attributes="0"/>
                               <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                           </Group>
-                          <Component id="jDateChooserDateDeCreation" max="32767" attributes="0"/>
-                          <Component id="jDateChooserDateDeValidite" max="32767" attributes="0"/>
-                          <Component id="jTextFieldReference" max="32767" attributes="0"/>
+                          <Component id="jLabelReference" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
@@ -77,6 +79,8 @@
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
                       <Component id="jButtonNouvelleLigne" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="jButtonSupprimerLigne" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                   </Group>
               </Group>
@@ -90,7 +94,7 @@
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jLabel6" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="jTextFieldReference" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jLabelReference" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="1" attributes="0">
@@ -115,7 +119,10 @@
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Component id="jScrollPane1" min="-2" pref="189" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="jButtonNouvelleLigne" min="-2" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="jButtonNouvelleLigne" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jButtonSupprimerLigne" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jLabel11" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -141,10 +148,11 @@
                   <Component id="jLabel15" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="jLabelMontantTotalTTC" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace pref="26" max="32767" attributes="0"/>
+              <EmptySpace pref="32" max="32767" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jButtonAnnuler" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="jButtonEnregistrer" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jButtonGenererCommande" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -156,8 +164,6 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="R&#xe9;f&#xe9;rence"/>
       </Properties>
-    </Component>
-    <Component class="javax.swing.JTextField" name="jTextFieldReference">
     </Component>
     <Component class="javax.swing.JButton" name="jButtonEnregistrer">
       <Properties>
@@ -265,6 +271,9 @@
               <TableHeader reorderingAllowed="true" resizingAllowed="true"/>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="focusGained" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="jTableLigneDeDocumentFocusGained"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>
@@ -293,8 +302,8 @@
         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
           <StringArray count="3">
             <StringItem index="0" value="5.5"/>
-            <StringItem index="1" value="10"/>
-            <StringItem index="2" value="20"/>
+            <StringItem index="1" value="10.0"/>
+            <StringItem index="2" value="20.0"/>
           </StringArray>
         </Property>
       </Properties>
@@ -303,6 +312,9 @@
       </Events>
     </Component>
     <Component class="javax.swing.JCheckBox" name="jCheckBoxSigne">
+      <Events>
+        <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="jCheckBoxSigneStateChanged"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JSpinner" name="jSpinnerRemise">
       <Events>
@@ -348,6 +360,27 @@
       <Properties>
         <Property name="horizontalAlignment" type="int" value="4"/>
         <Property name="text" type="java.lang.String" value="0"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JButton" name="jButtonSupprimerLigne">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Supprimer ligne"/>
+      </Properties>
+      <Events>
+        <EventHandler event="mousePressed" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jButtonSupprimerLigneMousePressed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="jButtonGenererCommande">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="G&#xe9;n&#xe9;rer une commande"/>
+      </Properties>
+      <Events>
+        <EventHandler event="mousePressed" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jButtonGenererCommandeMousePressed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabelReference">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="jLabel1"/>
       </Properties>
     </Component>
   </SubComponents>

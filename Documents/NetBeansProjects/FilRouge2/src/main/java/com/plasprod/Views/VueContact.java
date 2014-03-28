@@ -302,6 +302,12 @@ public class VueContact extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jTableContactsMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableContactsMousePressed
+        int index = jTableContacts.getSelectedRow();
+        Singleton.getCurrent().contact = (Contact)jTableContacts.getValueAt(index, 0);
+        DislayCurrentContact(true);
+    }//GEN-LAST:event_jTableContactsMousePressed
+
     private void jButtonAjouterMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonAjouterMousePressed
         Singleton.getCurrent().contact = new Contact();
         Singleton.getCurrent().editModeContact = EditMode.CREATION;
@@ -311,28 +317,27 @@ public class VueContact extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonAjouterMousePressed
 
     private void jButtonModifierMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonModifierMousePressed
-        Singleton.getCurrent().editModeContact = EditMode.MODIFICATION;
-        
-        VueContactEdit vueContact = new VueContactEdit();
-        vueContact.setVisible(true);
+        if (Singleton.getCurrent().contact != null) {
+            Singleton.getCurrent().editModeContact = EditMode.MODIFICATION;
+            VueContactEdit vueContact = new VueContactEdit();
+            vueContact.setVisible(true);
+        } else {
+            JOptionPane.showMessageDialog(this, "Aucun contact n'a été sélectionné !", "Attention !", JOptionPane.WARNING_MESSAGE);
+        }
     }//GEN-LAST:event_jButtonModifierMousePressed
 
     private void jButtonSupprimerMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonSupprimerMousePressed
-        int retour = JOptionPane.showConfirmDialog(this, "Êtes-vous sur de vouloir supprimer ce contact ?", "Suppression", JOptionPane.YES_NO_OPTION);
-
-        if( retour == JOptionPane.YES_NO_OPTION)
-        {
-            DAOContact.suppressionContact(Singleton.getCurrent().contact);
-            Singleton.getCurrent().contact = null;
-            DislayCurrentContact(true);
+        if (Singleton.getCurrent().contact != null) {
+            int retour = JOptionPane.showConfirmDialog(this, "Êtes-vous sur de vouloir supprimer ce contact ?", "Suppression", JOptionPane.YES_NO_OPTION);
+            if( retour == JOptionPane.YES_NO_OPTION) {
+                DAOContact.suppressionContact(Singleton.getCurrent().contact);
+                Singleton.getCurrent().contact = null;
+                DislayCurrentContact(true);
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Aucun contact n'a été sélectionné !", "Attention !", JOptionPane.WARNING_MESSAGE);
         }
     }//GEN-LAST:event_jButtonSupprimerMousePressed
-
-    private void jTableContactsMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableContactsMousePressed
-        int index = jTableContacts.getSelectedRow();
-        Singleton.getCurrent().contact = (Contact)jTableContacts.getValueAt(index, 0);
-        DislayCurrentContact(true);
-    }//GEN-LAST:event_jTableContactsMousePressed
 
     /**
      * @param args the command line arguments

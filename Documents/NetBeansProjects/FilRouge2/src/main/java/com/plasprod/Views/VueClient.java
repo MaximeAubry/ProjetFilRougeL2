@@ -274,6 +274,12 @@ public class VueClient extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jTableClientsMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableClientsMousePressed
+        int rowIndex = jTableClients.getSelectedRow();
+        Singleton.getCurrent().client = (Client)jTableClients.getValueAt(rowIndex, 0);
+        DislayCurrentClient(false);
+    }//GEN-LAST:event_jTableClientsMousePressed
+
     private void jButtonAjouterMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonAjouterMousePressed
         Singleton.getCurrent().client = new Client();
         Singleton.getCurrent().editModeClient = EditMode.CREATION;
@@ -283,28 +289,27 @@ public class VueClient extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonAjouterMousePressed
 
     private void jButtonModifierMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonModifierMousePressed
-        Singleton.getCurrent().editModeClient = EditMode.MODIFICATION;
-        
-        VueClientEdit vueClient = new VueClientEdit();
-        vueClient.setVisible(true);
+        if (Singleton.getCurrent().client != null) {
+            Singleton.getCurrent().editModeClient = EditMode.MODIFICATION;
+            VueClientEdit vueClient = new VueClientEdit();
+            vueClient.setVisible(true);
+        } else {
+            JOptionPane.showMessageDialog(this, "Aucun client n'a été sélectionné !", "Attention !", JOptionPane.WARNING_MESSAGE);
+        }
     }//GEN-LAST:event_jButtonModifierMousePressed
 
     private void jButtonSupprimerMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonSupprimerMousePressed
-        int retour = JOptionPane.showConfirmDialog(this, "Êtes-vous sur de vouloir supprimer ce client ?", "Suppression", JOptionPane.YES_NO_OPTION);
-        
-        if( retour == JOptionPane.YES_NO_OPTION)
-        {
-            DAOClient.suppressionClient(Singleton.getCurrent().client);
-            Singleton.getCurrent().client = null;
-            DislayCurrentClient(true);
+        if (Singleton.getCurrent().client != null) {
+            int retour = JOptionPane.showConfirmDialog(this, "Êtes-vous sur de vouloir supprimer ce client ?", "Suppression", JOptionPane.YES_NO_OPTION);
+            if( retour == JOptionPane.YES_NO_OPTION) {
+                DAOClient.suppressionClient(Singleton.getCurrent().client);
+                Singleton.getCurrent().client = null;
+                DislayCurrentClient(true);
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Aucun client n'a été sélectionné !", "Attention !", JOptionPane.WARNING_MESSAGE);
         }
     }//GEN-LAST:event_jButtonSupprimerMousePressed
-
-    private void jTableClientsMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableClientsMousePressed
-        int rowIndex = jTableClients.getSelectedRow();
-        Singleton.getCurrent().client = (Client)jTableClients.getValueAt(rowIndex, 0);
-        DislayCurrentClient(false);
-    }//GEN-LAST:event_jTableClientsMousePressed
 
     /**
      * @param args the command line arguments

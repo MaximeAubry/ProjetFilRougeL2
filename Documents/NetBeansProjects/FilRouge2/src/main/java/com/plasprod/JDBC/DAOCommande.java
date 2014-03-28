@@ -2,32 +2,26 @@ package com.plasprod.JDBC;
 
 import com.plasprod.Models.Commande;
 import com.plasprod.Models.Enums.StatutCommande;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class DAOCommande {
-    public static void creationCommande(Commande commande) {
-        // Document
-        long Id = DAODocument.ajoutDocument(commande);
-        commande.setId(Id);
-        
-        // Commande
+    public static void genererCommande(long Id, String reference) {
         ConnectionBDD.creerConnection();
-        String requete = "INSERT INTO Commande " +
-                            "(statutCommande,delaiExpedition,IdDocument) " +
-                        "VALUES " +
-                            "(?,?,?);";
-        PreparedStatement preparedStatement;
-        try{
-            preparedStatement = ConnectionBDD.connection.prepareStatement(requete);
-            preparedStatement.setString(1,commande.getStatutCommande().toString());
-            preparedStatement.setLong(2,commande.getDelaiExpedition());
-            preparedStatement.setLong(3,commande.getId());
+        try {
+            String requete = "EXECUTE [dbo].[GenererCommande] " +
+                                "@Id = ? " +
+                                ",@reference = ? " +
+                                ",@statutCommande = ?;";
+            PreparedStatement preparedStatement = ConnectionBDD.connection.prepareStatement(requete);
+            preparedStatement.setLong(1,Id);
+            preparedStatement.setString(2,reference);
+            preparedStatement.setString(3,StatutCommande.ENCOURS.name());
             preparedStatement.executeUpdate();
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         ConnectionBDD.fermerConnection();
@@ -37,16 +31,15 @@ public class DAOCommande {
         // Document
         DAODocument.modificationDocument(commande);
         
-        // Commande
         ConnectionBDD.creerConnection();
-        String requete = "UPDATE commande " +
-                        "SET " +
-                        "statutCommande = ? " +
-                        ",delaiExpedition = ? " +
-                        "WHERE IdDocument = ?;";
-        PreparedStatement preparedStatement;
         try {
-            preparedStatement = ConnectionBDD.connection.prepareStatement(requete);
+            // Commande
+            String requete = "UPDATE commande " +
+                            "SET " +
+                                "statutCommande = ? " +
+                                ",delaiExpedition = ? " +
+                            "WHERE IdDocument = ?;";
+            PreparedStatement preparedStatement = ConnectionBDD.connection.prepareStatement(requete);
             preparedStatement.setString(1,commande.getStatutCommande().toString());
             preparedStatement.setLong(2,commande.getDelaiExpedition());
             preparedStatement.setLong(3,commande.getId());
@@ -66,7 +59,7 @@ public class DAOCommande {
         ArrayList<Commande> commandes = new ArrayList<Commande>();
         ConnectionBDD.creerConnection();
         try {
-            String requete = "SELECT Document.Id,dateDeCreation,reference,IdCommercial,IdContact,statutCommande,delaiExpedition " +
+            String requete = "SELECT Document.Id,reference,dateDeCreation,IdCommercial,IdContact,statutCommande,delaiExpedition,IdDevis " +
                             "FROM Document " +
                             "INNER JOIN Commande ON Commande.IdDocument = Document.Id;";
             PreparedStatement preparedStatement = ConnectionBDD.connection.prepareStatement(requete);
@@ -75,12 +68,13 @@ public class DAOCommande {
             {
                 Commande commande = new Commande(
                     resultat.getLong("Id"),
-                    resultat.getDate("dateDeCreation"),
                     resultat.getString("referencce"),
+                    new Date(resultat.getTimestamp("dateDeCreation").getTime()),
                     resultat.getLong("IdCommercial"),
-                    resultat.getLong("IdClient"),
+                    resultat.getLong("IdContact"),
                     StatutCommande.valueOf(resultat.getString("statutCommande")),
-                    resultat.getLong("delaiExpedition")
+                    resultat.getLong("delaiExpedition"),
+                    resultat.getLong("IdDevis")
                 );
                 commandes.add(commande);
             }
@@ -95,7 +89,8 @@ public class DAOCommande {
         Commande commande = null;
         ConnectionBDD.creerConnection();
         try {
-            String requete = "SELECT Document.Id,dateDeCreation,reference,IdCommercial,IdContact,statutCommande,delaiExpedition FROM Document " +
+            String requete = "SELECT Document.Id,reference,dateDeCreation,IdCommercial,IdContact,statutCommande,delaiExpedition,IdDevis " +
+                            "FROM Document " +
                             "INNER JOIN Commande ON Commande.IdDocument = Document.Id " +
                             "WHERE Document.Id = ?;";
             PreparedStatement preparedStatement = ConnectionBDD.connection.prepareStatement(requete);
@@ -105,12 +100,13 @@ public class DAOCommande {
             {
                 commande = new Commande(
                     resultat.getLong("Id"),
-                    resultat.getDate("dateDeCreation"),
                     resultat.getString("referencce"),
+                    new Date(resultat.getTimestamp("dateDeCreation").getTime()),
                     resultat.getLong("IdCommercial"),
-                    resultat.getLong("IdClient"),
+                    resultat.getLong("IdContact"),
                     StatutCommande.valueOf(resultat.getString("statutCommande")),
-                    resultat.getLong("delaiExpedition")
+                    resultat.getLong("delaiExpedition"),
+                    resultat.getLong("IdDevis")
                 );
             }
         } catch (SQLException e) {
@@ -124,7 +120,7 @@ public class DAOCommande {
         ArrayList<Commande> commandes = new ArrayList<Commande>();
         ConnectionBDD.creerConnection();
         try {
-            String requete = "SELECT Document.Id,dateDeCreation,reference,IdCommercial,IdContact,statutCommande,delaiExpedition " +
+            String requete = "SELECT Document.Id,reference,dateDeCreation,IdCommercial,IdContact,statutCommande,delaiExpedition,IdDevis " +
                             "FROM Document " +
                             "INNER JOIN Commande ON Commande.IdDocument = Document.Id " +
                             "WHERE IdCommercial = ?;";
@@ -135,12 +131,13 @@ public class DAOCommande {
             {
                 Commande commande = new Commande(
                     resultat.getLong("Id"),
-                    resultat.getDate("dateDeCreation"),
                     resultat.getString("referencce"),
+                    new Date(resultat.getTimestamp("dateDeCreation").getTime()),
                     resultat.getLong("IdCommercial"),
-                    resultat.getLong("IdClient"),
+                    resultat.getLong("IdContact"),
                     StatutCommande.valueOf(resultat.getString("statutCommande")),
-                    resultat.getLong("delaiExpedition")
+                    resultat.getLong("delaiExpedition"),
+                    resultat.getLong("IdDevis")
                 );
                 commandes.add(commande);
             }
