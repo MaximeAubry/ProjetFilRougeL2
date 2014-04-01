@@ -1,17 +1,17 @@
 package com.plasprod.filrouge2;
 
-import com.plasprod.Views.VueGlobale;
+import com.plasprod.Models.Singleton;
+import com.plasprod.Views.VueLogin;
 import com.plasprod.WebService.ImportWebService;
 
 public class FilRouge 
 {
     public static void main( String[] args )
     {
-  //      ImportWebService test = new ImportWebService();
-  //      test.connectionWebService();
+        //ImportWebService test = new ImportWebService();
+        //test.connectionWebService();
         
-        
-        VueGlobale test = new VueGlobale();
-        test.setVisible(true);
+        Singleton.getCurrent().vueLogin = new VueLogin();
+        Singleton.getCurrent().vueLogin.setVisible(true);
     }
 }
