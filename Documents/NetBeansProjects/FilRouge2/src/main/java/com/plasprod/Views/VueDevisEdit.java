@@ -10,7 +10,6 @@ import com.plasprod.JDBC.DAODevis;
 import com.plasprod.JDBC.DAOLigneDeDocument;
 import com.plasprod.Models.Article;
 import com.plasprod.Models.Commande;
-import com.plasprod.Models.Contact;
 import com.plasprod.Models.Commercial;
 import com.plasprod.Models.Contact;
 import com.plasprod.Models.Devis;
@@ -31,11 +30,96 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
 public class VueDevisEdit extends javax.swing.JFrame {
+    // objet de la page
+    Devis devis = null;
     ArrayList<LigneDeDocument> lignesDeDocument = new ArrayList<LigneDeDocument>();
+    
+    // Models pour les composants
     final DefaultComboBoxModel modelComboBoxContact;
     final DefaultTableModel modelTableLignesDeDocument;
     final SpinnerModel modelSpinnerRemise;
     final SpinnerModel modelSpinnerFraisDeTransport;
+    
+    /**
+     * Creates new form VueDevisEdit
+     */
+    public VueDevisEdit() {
+        initComponents();
+        this.setLocationRelativeTo(null);
+        
+        ArrayList<Contact> clients = DAOContact.getListContacts();
+        modelComboBoxContact = (DefaultComboBoxModel)jComboBoxContact.getModel();
+        modelTableLignesDeDocument = (DefaultTableModel)jTableLigneDeDocument.getModel();
+        modelSpinnerRemise = new SpinnerNumberModel(0, 0, 100, 0.5);
+        modelSpinnerFraisDeTransport = new SpinnerNumberModel(0, 0, 100, 0.5);
+        
+        modelComboBoxContact.removeAllElements();
+        modelTableLignesDeDocument.getDataVector().removeAllElements();
+           
+        jTableSettings();
+        
+        for (Contact client : clients) {
+            modelComboBoxContact.addElement(client);
+        }
+        
+        switch (Singleton.getCurrent().editModeDevis) {
+            case CREATION:
+                devis = new Devis();
+                break;
+                
+            case MODIFICATION:
+                devis = Singleton.getCurrent().devis;
+                break;
+        }
+        
+        jLabelReference.setText(devis.getReference());
+        jDateChooserDateDeCreation.setDate(devis.getDateDeCreation());
+        jComboBoxContact.setSelectedItem(devis);
+        jDateChooserDateDeValidite.setDate(devis.getDateDeFinDeValidite());
+        jCheckBoxSigne.setSelected(devis.isSigne());
+        jLabelMontantTotalHT.setText(Double.toString(devis.getMontantTotalHT()));
+        modelSpinnerRemise.setValue(devis.getRemise());
+        modelSpinnerFraisDeTransport.setValue(devis.getFraisDeTransport());
+        jComboBoxTVA.setSelectedItem(Double.toString(devis.getTauxDeTva()));
+        jLabelMontantTotalTTC.setText(Double.toString(devis.getMontantTotalTTC()));
+        
+        if (Singleton.getCurrent().editModeDevis == EditMode.MODIFICATION) {
+            lignesDeDocument = DAOLigneDeDocument.getListLignesDeDocument(devis.getId());
+            for (LigneDeDocument ligneDeDocument : lignesDeDocument) {
+                Article article = DAOArticle.getArticle(ligneDeDocument.getIdArticle());
+                Double Remise = (1 - (ligneDeDocument.getRemise() / 100));
+                Double prixTotal = ((article.getPrixUnitaire() * ligneDeDocument.getQte()) * Remise);
+                Object[] obj = new Object[] { ligneDeDocument, article.getReference(), article.getNom(), article.getQuantiteStock(), ligneDeDocument.getQte(), ligneDeDocument.getRemise(), article.getPrixUnitaire(), prixTotal };
+                modelTableLignesDeDocument.addRow(obj);
+            }
+        }
+        
+        // gèlement du formulaire
+        GelerFormulaire(false);
+        
+        SwingUtilities.invokeLater (new Runnable ()
+        {
+            @Override
+            public void run()
+            {
+                jComboBoxContact.setModel(modelComboBoxContact);
+                jComboBoxContact.revalidate();
+                jComboBoxContact.repaint();
+                
+                jTableLigneDeDocument.setModel(modelTableLignesDeDocument);
+                jTableLigneDeDocument.revalidate();
+                jTableLigneDeDocument.repaint();
+        
+                jSpinnerRemise.setModel(modelSpinnerRemise);
+                jSpinnerRemise.revalidate();
+                jSpinnerRemise.repaint();
+        
+                jSpinnerFraisDeTransport.setModel(modelSpinnerFraisDeTransport);
+                jSpinnerFraisDeTransport.revalidate();
+                jSpinnerFraisDeTransport.repaint();
+            }
+        });
+    }
     
     private void jTableSettings() {
         TableColumn referenceColumn = jTableLigneDeDocument.getColumnModel().getColumn(1);
@@ -135,77 +219,6 @@ public class VueDevisEdit extends javax.swing.JFrame {
         if (nbLignesEpurees > 0) {
             JOptionPane.showMessageDialog(this, "Une ou plusieurs lignes ont été supprimées car aucun article n'a été sélectionné.", "Attention !", JOptionPane.WARNING_MESSAGE);
         }
-    }
-    
-    /**
-     * Creates new form VueDevisEdit
-     */
-    public VueDevisEdit() {
-        initComponents();
-        
-        ArrayList<Contact> clients = DAOContact.getListContacts();
-        modelComboBoxContact = (DefaultComboBoxModel)jComboBoxContact.getModel();
-        modelTableLignesDeDocument = (DefaultTableModel)jTableLigneDeDocument.getModel();
-        modelSpinnerRemise = new SpinnerNumberModel(0, 0, 100, 0.5);
-        modelSpinnerFraisDeTransport = new SpinnerNumberModel(0, 0, 100, 0.5);
-        
-        modelComboBoxContact.removeAllElements();
-        modelTableLignesDeDocument.getDataVector().removeAllElements();
-           
-        jTableSettings();
-        
-        for (Contact client : clients) {
-            modelComboBoxContact.addElement(client);
-        }
-        
-        Devis devis = Singleton.getCurrent().devis;
-        jLabelReference.setText(devis.getReference());
-        jDateChooserDateDeCreation.setDate(devis.getDateDeCreation());
-        jComboBoxContact.setSelectedItem(devis);
-        jDateChooserDateDeValidite.setDate(devis.getDateDeFinDeValidite());
-        jCheckBoxSigne.setSelected(devis.isSigne());
-        jLabelMontantTotalHT.setText(Double.toString(devis.getMontantTotalHT()));
-        modelSpinnerRemise.setValue(devis.getRemise());
-        modelSpinnerFraisDeTransport.setValue(devis.getFraisDeTransport());
-        jComboBoxTVA.setSelectedItem(Double.toString(devis.getTauxDeTva()));
-        jLabelMontantTotalTTC.setText(Double.toString(devis.getMontantTotalTTC()));
-        
-        if (Singleton.getCurrent().editModeDevis == EditMode.MODIFICATION) {
-            lignesDeDocument = DAOLigneDeDocument.getListLignesDeDocument(devis.getId());
-            for (LigneDeDocument ligneDeDocument : lignesDeDocument) {
-                Article article = DAOArticle.getArticle(ligneDeDocument.getIdArticle());
-                Double Remise = (1 - (ligneDeDocument.getRemise() / 100));
-                Double prixTotal = ((article.getPrixUnitaire() * ligneDeDocument.getQte()) * Remise);
-                Object[] obj = new Object[] { ligneDeDocument, article.getReference(), article.getNom(), article.getQuantiteStock(), ligneDeDocument.getQte(), ligneDeDocument.getRemise(), article.getPrixUnitaire(), prixTotal };
-                modelTableLignesDeDocument.addRow(obj);
-            }
-        }
-        
-        // gèlement du formulaire
-        GelerFormulaire(false);
-        
-        SwingUtilities.invokeLater (new Runnable ()
-        {
-            @Override
-            public void run()
-            {
-                jComboBoxContact.setModel(modelComboBoxContact);
-                jComboBoxContact.revalidate();
-                jComboBoxContact.repaint();
-                
-                jTableLigneDeDocument.setModel(modelTableLignesDeDocument);
-                jTableLigneDeDocument.revalidate();
-                jTableLigneDeDocument.repaint();
-        
-                jSpinnerRemise.setModel(modelSpinnerRemise);
-                jSpinnerRemise.revalidate();
-                jSpinnerRemise.repaint();
-        
-                jSpinnerFraisDeTransport.setModel(modelSpinnerFraisDeTransport);
-                jSpinnerFraisDeTransport.revalidate();
-                jSpinnerFraisDeTransport.repaint();
-            }
-        });
     }
     
     private void GelerFormulaire(Boolean signature) {

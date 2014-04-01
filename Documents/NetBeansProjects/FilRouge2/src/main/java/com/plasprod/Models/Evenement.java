@@ -7,6 +7,7 @@
 package com.plasprod.Models;
 
 import java.sql.Date;
+import java.sql.Time;
 import java.util.Calendar;
 
 /**
@@ -68,20 +69,99 @@ public class Evenement {
         this.commentaire = Commentaire;
     }
 
-    public Date getDateDeDebut() {
-        return dateDeDebut;
+    public Date getDateDeDebut(Boolean avecHeure) {
+        Calendar _dateDeDebut = Calendar.getInstance();
+        _dateDeDebut.setTime(this.dateDeDebut);
+        
+        if (!avecHeure) {
+            _dateDeDebut.set(Calendar.HOUR_OF_DAY, 0);
+            _dateDeDebut.set(Calendar.MINUTE, 0);
+            _dateDeDebut.set(Calendar.SECOND, 0);
+            _dateDeDebut.set(Calendar.MILLISECOND, 0);
+        }
+        
+        return new Date(_dateDeDebut.getTimeInMillis());
     }
 
     public void setDateDeDebut(Date dateDeDebut) {
-        this.dateDeDebut = dateDeDebut;
+        Calendar _dateDeDebut = Calendar.getInstance();
+        _dateDeDebut.setTime(dateDeDebut);
+        
+        this.dateDeDebut = new Date(_dateDeDebut.getTimeInMillis());
     }
 
-    public Date getDateDeFin() {
-        return dateDeFin;
+    public Time getHeureDeDebut() {
+        Calendar _dateDeDebut = Calendar.getInstance();
+        _dateDeDebut.setTime(this.getDateDeDebut(true));
+        
+        return new Time((_dateDeDebut.get(Calendar.HOUR_OF_DAY) - 1) * 60 * 60 * 1000);
+    }
+
+    public void setHeureDeDebut(Time heureDeDebut) {
+        Calendar _heureDeDebut = Calendar.getInstance();
+        _heureDeDebut.setTime(heureDeDebut);
+        
+        Calendar _dateDeDebut = Calendar.getInstance();
+        _dateDeDebut.setTime(this.getDateDeDebut(false));
+        _dateDeDebut.set(Calendar.HOUR_OF_DAY, _heureDeDebut.get(Calendar.HOUR_OF_DAY));
+        
+        this.setDateDeDebut(new Date(_dateDeDebut.getTime().getTime()));
+    }
+
+    public int getDuree() {
+        Calendar _dateDeDebut = Calendar.getInstance();
+        _dateDeDebut.setTime(this.getDateDeDebut(true));
+        
+        Calendar _dateDeFin = Calendar.getInstance();
+        _dateDeFin.setTime(this.getDateDeFin(true));
+        
+        return (_dateDeFin.get(Calendar.HOUR_OF_DAY) - _dateDeDebut.get(Calendar.HOUR_OF_DAY));
+    }
+
+    public void setDuree(int duree) {
+        Time _heureDeFin = new Time((duree - 1) * 60 * 60 * 1000);
+        
+        this.setDateDeFin(this.getDateDeDebut(true));
+        this.setHeureDeFin(_heureDeFin);
+    }
+    
+    public Date getDateDeFin(Boolean avecHeure) {
+        Calendar _dateDeFin = Calendar.getInstance();
+        _dateDeFin.setTime(this.dateDeFin);
+        
+        if (!avecHeure) {
+            _dateDeFin.set(Calendar.HOUR_OF_DAY, 0);
+            _dateDeFin.set(Calendar.MINUTE, 0);
+            _dateDeFin.set(Calendar.SECOND, 0);
+            _dateDeFin.set(Calendar.MILLISECOND, 0);
+        }
+        
+        return new Date(_dateDeFin.getTimeInMillis());
     }
 
     public void setDateDeFin(Date dateDeFin) {
-        this.dateDeFin = dateDeFin;
+        Calendar _dateDeFin = Calendar.getInstance();
+        _dateDeFin.setTime(dateDeFin);
+        
+        this.dateDeFin = new Date(_dateDeFin.getTimeInMillis());
+    }
+    
+    public Time getHeureDeFin() {
+        Calendar _dateDeFin = Calendar.getInstance();
+        _dateDeFin.setTime(this.getDateDeFin(true));
+        
+        return new Time((_dateDeFin.get(Calendar.HOUR_OF_DAY) - 1) * 60 * 60 * 1000);
+    }
+    
+    public void setHeureDeFin(Time heureDeFin) {
+        Calendar _heureDeFin = Calendar.getInstance();
+        _heureDeFin.setTime(heureDeFin);
+        
+        Calendar _dateDeFin = Calendar.getInstance();
+        _dateDeFin.setTime(this.getDateDeDebut(false));
+        _dateDeFin.set(Calendar.HOUR_OF_DAY, _heureDeFin.get(Calendar.HOUR_OF_DAY));
+        
+        this.setDateDeFin(new Date(_dateDeFin.getTime().getTime()));
     }
 
     public long getIdContact() {

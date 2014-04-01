@@ -1,6 +1,8 @@
 package com.plasprod.JDBC;
 
+import com.plasprod.CustomLibraries.MD5Generator;
 import com.plasprod.Models.Commercial;
+import com.plasprod.Models.Enums.TypeCommercial;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -12,9 +14,9 @@ public class DAOCommercial{
         ConnectionBDD.creerConnection();
         try {
             String requete = "INSERT INTO commercial " +
-                                "(reference,nom,prenom,email,telephone,identifiant,motDePasse,actif) " +
+                                "(reference,nom,prenom,email,telephone,identifiant,motDePasse,typeCommercial,actif) " +
                             "VALUES " +
-                                "(?,?,?,?,?,?,?,?);";
+                                "(?,?,?,?,?,?,?,?,?);";
             PreparedStatement preparedStatement = ConnectionBDD.connection.prepareStatement(requete);
             preparedStatement.setString(1,commercial.getReference());
             preparedStatement.setString(2,commercial.getNom());
@@ -23,7 +25,8 @@ public class DAOCommercial{
             preparedStatement.setString(5,commercial.getTelephone());
             preparedStatement.setString(6,commercial.getIdentifiant());
             preparedStatement.setString(7,commercial.getMotDePasse());
-            preparedStatement.setBoolean(8,commercial.isActif());
+            preparedStatement.setString(8,commercial.getTypeCommercial().name());
+            preparedStatement.setBoolean(9,commercial.isActif());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
                 e.printStackTrace();
@@ -42,7 +45,7 @@ public class DAOCommercial{
                                 ",email = ? " +
                                 ",telephone = ? " +
                                 ",identifiant = ? " +
-                                ",motDePasse = ? " +
+                                ",typeCommercial = ? " +
                                 ",actif = ? " +
                             "WHERE id = ?;";
             PreparedStatement preparedStatement = ConnectionBDD.connection.prepareStatement(requete);
@@ -52,10 +55,21 @@ public class DAOCommercial{
             preparedStatement.setString(4,commercial.getEmail());
             preparedStatement.setString(5,commercial.getTelephone());
             preparedStatement.setString(6,commercial.getIdentifiant());
-            preparedStatement.setString(7,commercial.getMotDePasse());
+            preparedStatement.setString(7,commercial.getTypeCommercial().name());
             preparedStatement.setBoolean(8,commercial.isActif());
-            preparedStatement.setLong(8,commercial.getId());
+            preparedStatement.setLong(9,commercial.getId());
             preparedStatement.executeUpdate();
+            
+            if (commercial.getMotDePasse() != null) {
+                requete = "UPDATE commercial " +
+                            "SET " +
+                                "motDePasse = ? " +
+                            "WHERE id = ?;";
+                preparedStatement = ConnectionBDD.connection.prepareStatement(requete);
+                preparedStatement.setString(1,commercial.getMotDePasse());
+                preparedStatement.setLong(2,commercial.getId());
+                preparedStatement.executeUpdate();
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -81,7 +95,7 @@ public class DAOCommercial{
         ArrayList<Commercial> commerciaux = new ArrayList<Commercial>();
         ConnectionBDD.creerConnection();
         try {
-            String requete = "SELECT Id,reference,nom,prenom,email,telephone,identifiant,motDePasse,actif " +
+            String requete = "SELECT Id,reference,nom,prenom,email,telephone,identifiant,motDePasse,typeCommercial,actif " +
                             "FROM Commercial;";
             PreparedStatement preparedStatement = ConnectionBDD.connection.prepareStatement(requete);
             ResultSet resultat = preparedStatement.executeQuery();
@@ -95,7 +109,8 @@ public class DAOCommercial{
                     resultat.getString("email"),
                     resultat.getString("telephone"),
                     resultat.getString("identifiant"),
-                    resultat.getString("motDePasse"),
+                    null,
+                    TypeCommercial.valueOf(resultat.getString("typeCommercial")),
                     resultat.getBoolean("actif")
                 );
                 commerciaux.add(commercial);
@@ -111,7 +126,7 @@ public class DAOCommercial{
         Commercial commercial = null;
         ConnectionBDD.creerConnection();
         try {
-            String requete = "SELECT Id,reference,nom,prenom,email,telephone,identifiant,motDePasse,actif " +
+            String requete = "SELECT Id,reference,nom,prenom,email,telephone,identifiant,motDePasse,typeCommercial,actif " +
                             "FROM Commercial " +
                             "WHERE Id = ?;";
             PreparedStatement preparedStatement = ConnectionBDD.connection.prepareStatement(requete);
@@ -127,7 +142,41 @@ public class DAOCommercial{
                     resultat.getString("email"),
                     resultat.getString("telephone"),
                     resultat.getString("identifiant"),
-                    resultat.getString("motDePasse"),
+                    null,
+                    TypeCommercial.valueOf(resultat.getString("typeCommercial")),
+                    resultat.getBoolean("actif")
+                );
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        ConnectionBDD.fermerConnection();
+        return commercial;
+    }
+    
+    public static Commercial login(String identifiant, String motDePasse) {
+        Commercial commercial = null;
+        ConnectionBDD.creerConnection();
+        try {
+            String requete = "SELECT Id,reference,nom,prenom,email,telephone,identifiant,motDePasse,typeCommercial,actif " +
+                            "FROM Commercial " +
+                            "WHERE identifiant = ? AND motDePasse = ?;";
+            PreparedStatement preparedStatement = ConnectionBDD.connection.prepareStatement(requete);
+            preparedStatement.setString(1,identifiant);
+            preparedStatement.setString(2,motDePasse);
+            ResultSet resultat = preparedStatement.executeQuery();
+            while (resultat.next())
+            {
+                commercial = new Commercial(
+                    resultat.getLong("Id"),
+                    resultat.getString("reference"),
+                    resultat.getString("nom"),
+                    resultat.getString("prenom"),
+                    resultat.getString("email"),
+                    resultat.getString("telephone"),
+                    resultat.getString("identifiant"),
+                    null,
+                    TypeCommercial.valueOf(resultat.getString("typeCommercial")),
                     resultat.getBoolean("actif")
                 );
             }

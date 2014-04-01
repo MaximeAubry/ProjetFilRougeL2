@@ -12,6 +12,16 @@ import javax.swing.table.DefaultTableModel;
 public class VueClient extends javax.swing.JFrame {
     ArrayList<Client> clients = new ArrayList<Client>();
     
+    /**
+     * Creates new form VueClient
+     */
+    public VueClient() {
+        initComponents();
+        this.setLocationRelativeTo(null);
+        
+        LoadClients();
+    }
+    
     private void LoadClients() {
         clients = DAOClient.getListClients();
         
@@ -50,14 +60,6 @@ public class VueClient extends javax.swing.JFrame {
         jLabelVille.setText(client.getVille());
         jLabelPays.setText(client.getPays());
         jCheckBoxActif.setSelected(client.isActif());
-    }
-    
-    /**
-     * Creates new form VueClient
-     */
-    public VueClient() {
-        initComponents();
-        LoadClients();
     }
 
     /**
@@ -281,18 +283,18 @@ public class VueClient extends javax.swing.JFrame {
     }//GEN-LAST:event_jTableClientsMousePressed
 
     private void jButtonAjouterMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonAjouterMousePressed
-        Singleton.getCurrent().client = new Client();
         Singleton.getCurrent().editModeClient = EditMode.CREATION;
         
-        VueClientEdit vueClient = new VueClientEdit();
-        vueClient.setVisible(true);
+        VueClientEdit vueClientEdit = new VueClientEdit();
+        vueClientEdit.setVisible(true);
     }//GEN-LAST:event_jButtonAjouterMousePressed
 
     private void jButtonModifierMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonModifierMousePressed
         if (Singleton.getCurrent().client != null) {
             Singleton.getCurrent().editModeClient = EditMode.MODIFICATION;
-            VueClientEdit vueClient = new VueClientEdit();
-            vueClient.setVisible(true);
+            
+            VueClientEdit vueClientEdit = new VueClientEdit();
+            vueClientEdit.setVisible(true);
         } else {
             JOptionPane.showMessageDialog(this, "Aucun client n'a été sélectionné !", "Attention !", JOptionPane.WARNING_MESSAGE);
         }

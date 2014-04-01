@@ -11,6 +11,16 @@ import javax.swing.table.DefaultTableModel;
 
 public class VueCommercial extends javax.swing.JFrame {
     ArrayList<Commercial> commerciaux = new ArrayList<Commercial>();
+
+    /**
+     * Creates new form VueCommercial
+     */
+    public VueCommercial() {
+        initComponents();
+        this.setLocationRelativeTo(null);
+        
+        LoadCommerciaux();
+    }
     
     private void LoadCommerciaux() {
         commerciaux = DAOCommercial.getListCommerciaux();
@@ -50,14 +60,6 @@ public class VueCommercial extends javax.swing.JFrame {
         jLabelTelephone.setText(commercial.getTelephone());
         jLabelIdentifiant.setText(commercial.getIdentifiant());
         jCheckBoxActif.setSelected(commercial.isActif());
-    }
-
-    /**
-     * Creates new form VueCommercial
-     */
-    public VueCommercial() {
-        initComponents();
-        LoadCommerciaux();
     }
 
     /**
@@ -289,18 +291,18 @@ public class VueCommercial extends javax.swing.JFrame {
     }//GEN-LAST:event_jTableCommerciauxMousePressed
 
     private void jButtonAjouterMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonAjouterMousePressed
-        Singleton.getCurrent().commercial = new Commercial();
-        Singleton.getCurrent().editModeClient = EditMode.CREATION;
-
-        VueCommercialEdit vueCommercial = new VueCommercialEdit();
-        vueCommercial.setVisible(true);
+        Singleton.getCurrent().editModeCommercial = EditMode.CREATION;
+        
+        VueCommercialEdit vueCommercialEdit = new VueCommercialEdit();
+        vueCommercialEdit.setVisible(true);
     }//GEN-LAST:event_jButtonAjouterMousePressed
 
     private void jButtonModifierMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonModifierMousePressed
         if (Singleton.getCurrent().commercial != null) {
-            Singleton.getCurrent().editModeClient = EditMode.MODIFICATION;
-            VueCommercialEdit vueCommercial = new VueCommercialEdit();
-            vueCommercial.setVisible(true);
+            Singleton.getCurrent().editModeCommercial = EditMode.MODIFICATION;
+            
+            VueCommercialEdit vueCommercialEdit = new VueCommercialEdit();
+            vueCommercialEdit.setVisible(true);
         } else {
             JOptionPane.showMessageDialog(this, "Aucun commercial n'a été sélectionné !", "Attention !", JOptionPane.WARNING_MESSAGE);
         }

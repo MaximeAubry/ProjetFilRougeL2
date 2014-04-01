@@ -1,25 +1,39 @@
 package com.plasprod.Views;
 
+import com.plasprod.CustomLibraries.MD5Generator;
 import com.plasprod.JDBC.DAOCommercial;
 import com.plasprod.Models.Commercial;
+import com.plasprod.Models.Enums.TypeCommercial;
 import com.plasprod.Models.Singleton;
-import javax.print.ServiceUIFactory;
 
 public class VueCommercialEdit extends javax.swing.JFrame {
+    // objet de la page
+    Commercial commercial = null;
+    
     /**
      * Creates new form VueCommercialEdit
      */
     public VueCommercialEdit() {
         initComponents();
+        this.setLocationRelativeTo(null);
         
-        Commercial commercial = Singleton.getCurrent().commercial;
+        switch (Singleton.getCurrent().editModeCommercial) {
+            case CREATION:
+                commercial = new Commercial();
+                break;
+                
+            case MODIFICATION:
+                commercial = Singleton.getCurrent().commercial;
+                break;
+        }
+        
         jTextFieldReference.setText(commercial.getReference());
         jTextFieldNom.setText(commercial.getNom());
         jTextFieldPrenom.setText(commercial.getPrenom());
         jTextFieldEmail.setText(commercial.getEmail());
         jTextFieldTelephone.setText(commercial.getTelephone());
         jTextFieldIdentifiant.setText(commercial.getIdentifiant());
-        jPasswordFieldMotDePasse.setText(commercial.getMotDePasse());
+        //jPasswordFieldMotDePasse.setText(commercial.getMotDePasse());
         jCheckBoxActif.setSelected(commercial.isActif());
     }
 
@@ -83,8 +97,6 @@ public class VueCommercialEdit extends javax.swing.JFrame {
                 jButtonAnnulerMousePressed(evt);
             }
         });
-
-        jPasswordFieldMotDePasse.setText("jPasswordField1");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -175,18 +187,22 @@ public class VueCommercialEdit extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonEnregistrerMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonEnregistrerMousePressed
-        Commercial commercial = Singleton.getCurrent().commercial;
-        
         commercial.setReference(jTextFieldReference.getText());
         commercial.setNom(jTextFieldNom.getText());
         commercial.setPrenom(jTextFieldPrenom.getText());
         commercial.setEmail(jTextFieldEmail.getText());
         commercial.setTelephone(jTextFieldTelephone.getText());
         commercial.setIdentifiant(jTextFieldIdentifiant.getText());
-        commercial.setMotDePasse(jPasswordFieldMotDePasse.getText());
+        
+        String motDePasse = new String(jPasswordFieldMotDePasse.getPassword());
+        if (!motDePasse.equals("")) {
+            commercial.setMotDePasse(MD5Generator.Generate(motDePasse));
+        }
+        
+        commercial.setTypeCommercial(TypeCommercial.COMMERCIAL);
         commercial.setActif(jCheckBoxActif.isSelected());
 
-        switch (Singleton.getCurrent().editModeClient) {
+        switch (Singleton.getCurrent().editModeCommercial) {
             case CREATION:
                 DAOCommercial.ajoutCommercial(commercial);
                 break;

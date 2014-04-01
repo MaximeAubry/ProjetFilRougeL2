@@ -24,8 +24,10 @@ import javax.swing.SwingUtilities;
  * @author Maxime
  */
 public class VueContactEdit extends javax.swing.JFrame {
-    ArrayList<Client> clients = new ArrayList<Client>();
-    ArrayList<Commercial> commerciaux = new ArrayList<Commercial>();
+    // objet de la page
+    Contact contact = null;
+    
+    // Models pour les composants
     final DefaultComboBoxModel modelComboBoxClient;
     final DefaultComboBoxModel modelComboBoxCommercial;
     
@@ -34,11 +36,21 @@ public class VueContactEdit extends javax.swing.JFrame {
      */
     public VueContactEdit() {
         initComponents();
+        this.setLocationRelativeTo(null);
         
-        clients = DAOClient.getListClients();
-        commerciaux = DAOCommercial.getListCommerciaux();
+        switch (Singleton.getCurrent().editModeContact) {
+            case CREATION:
+                contact = new Contact();
+                break;
+                
+            case MODIFICATION:
+                contact = Singleton.getCurrent().contact;
+                break;
+        }
         
-        Contact contact = Singleton.getCurrent().contact;
+        ArrayList<Client> clients = DAOClient.getListClients();
+        ArrayList<Commercial> commerciaux = DAOCommercial.getListCommerciaux();
+        
         jTextFieldReference.setText(contact.getReference());
         jTextFieldNom.setText(contact.getNom());
         jTextFieldPrenom.setText(contact.getPrenom());
@@ -227,8 +239,6 @@ public class VueContactEdit extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonEnregistrerMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonEnregistrerMousePressed
-        Contact contact = Singleton.getCurrent().contact;
-        
         contact.setReference(jTextFieldReference.getText());
         contact.setNom(jTextFieldNom.getText());
         contact.setPrenom(jTextFieldPrenom.getText());
@@ -253,7 +263,7 @@ public class VueContactEdit extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonEnregistrerMousePressed
 
     private void jButtonAnnulerMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonAnnulerMousePressed
-        // TODO add your handling code here:
+        this.dispose();
     }//GEN-LAST:event_jButtonAnnulerMousePressed
 
     /**

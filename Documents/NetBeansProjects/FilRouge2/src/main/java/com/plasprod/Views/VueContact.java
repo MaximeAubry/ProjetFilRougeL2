@@ -26,8 +26,26 @@ import javax.swing.table.DefaultTableModel;
 public class VueContact extends javax.swing.JFrame {
     ArrayList<Contact> contacts = new ArrayList<Contact>();
     
+    /**
+     * Creates new form VueContact
+     */
+    public VueContact() {
+        initComponents();
+        this.setLocationRelativeTo(null);
+        
+        LoadContacts();
+    }
+    
     private void LoadContacts() {
-        contacts = DAOContact.getListContacts();
+        switch (Singleton.getCurrent().me.getTypeCommercial()) {
+            case DIRECTEURCOMMERCIAL:
+                contacts = DAOContact.getListContacts();
+                break;
+                
+            case COMMERCIAL:
+                contacts = DAOContact.getListContacts(Singleton.getCurrent().me.getId());
+                break;
+        }
         
         final DefaultTableModel model = (DefaultTableModel)jTableContacts.getModel();
         model.getDataVector().removeAllElements();
@@ -67,14 +85,6 @@ public class VueContact extends javax.swing.JFrame {
         jCheckBoxActif.setSelected(contact.isActif());
         jLabelCommercial.setText(commercial.toString());
         jLabelClient.setText(client.toString());
-    }
-    
-    /**
-     * Creates new form VueContact
-     */
-    public VueContact() {
-        initComponents();
-        LoadContacts();
     }
 
     /**
@@ -309,18 +319,18 @@ public class VueContact extends javax.swing.JFrame {
     }//GEN-LAST:event_jTableContactsMousePressed
 
     private void jButtonAjouterMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonAjouterMousePressed
-        Singleton.getCurrent().contact = new Contact();
         Singleton.getCurrent().editModeContact = EditMode.CREATION;
         
-        VueContactEdit vueContact = new VueContactEdit();
-        vueContact.setVisible(true);
+        VueContactEdit vueContactEdit = new VueContactEdit();
+        vueContactEdit.setVisible(true);
     }//GEN-LAST:event_jButtonAjouterMousePressed
 
     private void jButtonModifierMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonModifierMousePressed
         if (Singleton.getCurrent().contact != null) {
             Singleton.getCurrent().editModeContact = EditMode.MODIFICATION;
-            VueContactEdit vueContact = new VueContactEdit();
-            vueContact.setVisible(true);
+            
+            VueContactEdit vueContactEdit = new VueContactEdit();
+            vueContactEdit.setVisible(true);
         } else {
             JOptionPane.showMessageDialog(this, "Aucun contact n'a été sélectionné !", "Attention !", JOptionPane.WARNING_MESSAGE);
         }

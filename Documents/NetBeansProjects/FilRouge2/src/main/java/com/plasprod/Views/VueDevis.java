@@ -17,8 +17,26 @@ import javax.swing.table.DefaultTableModel;
 public class VueDevis extends javax.swing.JFrame {
     ArrayList<Devis> documents = new ArrayList<Devis>();
     
+    /**
+     * Creates new form VueDevis
+     */
+    public VueDevis() {
+        initComponents();
+        this.setLocationRelativeTo(null);
+        
+        LoadDevis();
+    }
+    
     private void LoadDevis() {
-        documents = DAODevis.getListDevis();
+        switch (Singleton.getCurrent().me.getTypeCommercial()) {
+            case DIRECTEURCOMMERCIAL:
+                documents = DAODevis.getListDevis();
+                break;
+                
+            case COMMERCIAL:
+                documents = DAODevis.getListDevis(Singleton.getCurrent().me.getId());
+                break;
+        }
         
         final DefaultTableModel modelTableDevis = (DefaultTableModel)jTableDevis.getModel();
         modelTableDevis.getDataVector().removeAllElements();
@@ -58,13 +76,6 @@ public class VueDevis extends javax.swing.JFrame {
         jLabelContact.setText(contact.toString());
         jLabelDateDeValidite.setText(dateFormat.format(devis.getDateDeFinDeValidite()));
         jCheckBoxSigne.setSelected(devis.isSigne());
-    }
-    /**
-     * Creates new form VueDevis
-     */
-    public VueDevis() {
-        initComponents();
-        LoadDevis();
     }
 
     /**
@@ -270,18 +281,18 @@ public class VueDevis extends javax.swing.JFrame {
     }//GEN-LAST:event_jTableDevisMousePressed
 
     private void jButtonAjouterMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonAjouterMousePressed
-        Singleton.getCurrent().devis = new Devis();
         Singleton.getCurrent().editModeDevis = EditMode.CREATION;
-
-        VueDevisEdit vueDevis = new VueDevisEdit();
-        vueDevis.setVisible(true);
+        
+        VueDevisEdit vueDevisEdit = new VueDevisEdit();
+        vueDevisEdit.setVisible(true);
     }//GEN-LAST:event_jButtonAjouterMousePressed
 
     private void jButtonModifierMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonModifierMousePressed
         if (Singleton.getCurrent().devis != null) {
             Singleton.getCurrent().editModeDevis = EditMode.MODIFICATION;
-            VueDevisEdit vueDevis = new VueDevisEdit();
-            vueDevis.setVisible(true);
+            
+            VueDevisEdit vueDevisEdit = new VueDevisEdit();
+            vueDevisEdit.setVisible(true);
         } else {
             JOptionPane.showMessageDialog(this, "Aucun devis n'a été sélectionné !", "Attention !", JOptionPane.WARNING_MESSAGE);
         }

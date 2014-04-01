@@ -6,6 +6,8 @@
 
 package com.plasprod.Models;
 
+import com.plasprod.Models.Enums.TypeCommercial;
+
 /**
  *
  * @author Maxime
@@ -19,6 +21,7 @@ public class Commercial {
     private String telephone;
     private String identifiant;
     private String motDePasse;
+    private TypeCommercial typeCommercial;
     private Boolean actif;
 
     public Commercial() {
@@ -30,10 +33,11 @@ public class Commercial {
         this.telephone = null;
         this.identifiant = null;
         this.motDePasse = null;
+        this.typeCommercial = null;
         this.actif = false;
     }
     
-    public Commercial(long id, String reference, String nom, String prenom, String email, String telephone, String identifiant, String motDePasse, Boolean actif) {
+    public Commercial(long id, String reference, String nom, String prenom, String email, String telephone, String identifiant, String motDePasse, TypeCommercial typeCommercial, Boolean actif) {
         this.id = id;
         this.reference = reference;
         this.nom = nom;
@@ -42,6 +46,7 @@ public class Commercial {
         this.telephone = telephone;
         this.identifiant = identifiant;
         this.motDePasse = motDePasse;
+        this.typeCommercial = typeCommercial;
         this.actif = actif;
     }
 
@@ -103,6 +108,14 @@ public class Commercial {
 
     public void setMotDePasse(String motDePasse) {
         this.motDePasse = motDePasse;
+    }
+
+    public TypeCommercial getTypeCommercial() {
+        return typeCommercial;
+    }
+
+    public void setTypeCommercial(TypeCommercial typeCommercial) {
+        this.typeCommercial = typeCommercial;
     }
 
     public Boolean isActif() {

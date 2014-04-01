@@ -6,14 +6,14 @@
 
 package com.plasprod.Models;
 
-import com.plasprod.JDBC.DAOCommercial;
 import com.plasprod.Models.Enums.EditMode;
 import com.plasprod.Views.VueEvenement;
 import com.plasprod.Views.VueClient;
-import com.plasprod.Views.VueCommande;
 import com.plasprod.Views.VueCommercial;
 import com.plasprod.Views.VueContact;
 import com.plasprod.Views.VueDevis;
+import com.plasprod.Views.VueGlobale;
+import com.plasprod.Views.VueLogin;
 
 /**
  *
@@ -46,40 +46,42 @@ public class Singleton {
     public LigneDeDocument ligneDeDocument;
     
     public VueClient vueClient;
-    public VueCommande vueCommande;
     public VueCommercial vueCommercial;
     public VueContact vueContact;
     public VueDevis vueDevis;
     public VueEvenement vueEvenement;
+    public VueGlobale vueGlobale;
+    public VueLogin vueLogin;
     
     // mon constructeur
     private Singleton()
     {
-        this.editModeArticle = EditMode.CONSULTATION;
-        this.editModeClient = EditMode.CONSULTATION;
-        this.editModeCommande = EditMode.CONSULTATION;
-        this.editModeCommercial = EditMode.CONSULTATION;
-        this.editModeContact = EditMode.CONSULTATION;
-        this.editModeDevis = EditMode.CONSULTATION;
-        this.editModeDocument = EditMode.CONSULTATION;
-        this.editModeEvenement = EditMode.CONSULTATION;
-        this.editModeSatisfaction = EditMode.CONSULTATION;
-        this.editModeLigneDeDocument = EditMode.CONSULTATION;
+        /*this.editModeArticle = null;
+        this.editModeClient = null;
+        this.editModeCommande = null;
+        this.editModeCommercial = null;
+        this.editModeContact = null;
+        this.editModeDevis = null;
+        this.editModeDocument = null;
+        this.editModeEvenement = null;
+        this.editModeSatisfaction = null;
+        this.editModeLigneDeDocument = null;
         
         this.vueClient = new VueClient();
-        this.vueCommande = new VueCommande();
         this.vueCommercial = new VueCommercial();
         this.vueContact = new VueContact();
         this.vueDevis = new VueDevis();
         this.vueEvenement = new VueEvenement();
-        
-        this.me = DAOCommercial.getCommercial(2);
+        this.vueGlobale = new VueGlobale();
+        this.vueLogin = new VueLogin();*/
     }
 
     private static Singleton _current;
     public static Singleton getCurrent() {
-        if (_current == null)
-                _current = new Singleton();
-            return _current;
+        if (_current == null) {
+            _current = new Singleton();
+        }
+                
+        return _current;
     }
 }

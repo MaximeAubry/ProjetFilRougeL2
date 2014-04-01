@@ -107,6 +107,38 @@ public class DAOContact{
         return contacts;
     }
     
+    public static ArrayList<Contact> getListContacts(long IdCommercial) {
+        ArrayList<Contact> contacts = new ArrayList<Contact>();
+        ConnectionBDD.creerConnection();
+        try {
+            String requete = "SELECT Id,reference,nom,prenom,email,telephone,actif,IdClient,IdCommercial " +
+                            "FROM Contact " +
+                            "WHERE IdCommercial = ?;";
+            PreparedStatement preparedStatement = ConnectionBDD.connection.prepareStatement(requete);
+            preparedStatement.setLong(1,IdCommercial);
+            ResultSet resultat = preparedStatement.executeQuery();
+            while (resultat.next())
+            {
+                Contact contact = new Contact(
+                    resultat.getLong("Id"),
+                    resultat.getString("reference"),
+                    resultat.getString("nom"),
+                    resultat.getString("prenom"),
+                    resultat.getString("email"),
+                    resultat.getString("telephone"),
+                    resultat.getBoolean("actif"),
+                    resultat.getLong("idClient"),
+                    resultat.getLong("idCommercial")
+                );
+                contacts.add(contact);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        ConnectionBDD.fermerConnection();
+        return contacts;
+    }
+    
     public static Contact getContact(long Id) {
         Contact contact = null;
         ConnectionBDD.creerConnection();

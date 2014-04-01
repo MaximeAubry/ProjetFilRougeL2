@@ -16,11 +16,24 @@ public class VueGlobale extends javax.swing.JFrame {
      */
     public VueGlobale() {
         initComponents();
+        
         GraphicsEnvironment graphicsEnvironment=GraphicsEnvironment.getLocalGraphicsEnvironment();
         Rectangle maximumWindowBounds=graphicsEnvironment.getMaximumWindowBounds();
         this.setSize(maximumWindowBounds.getSize());
+        this.setLocationRelativeTo(null);
+        this.setExtendedState(java.awt.Frame.MAXIMIZED_BOTH);
         this.jButton1.setIcon(new ImageIcon("Imgs/add1.ico"));
         
+        // droits
+        switch (Singleton.getCurrent().me.getTypeCommercial()) {
+            case DIRECTEURCOMMERCIAL:
+                
+                break;
+                
+            case COMMERCIAL:
+                jButton5.setEnabled(false);
+                break;
+        }
     }
 
     /**
@@ -135,26 +148,34 @@ public class VueGlobale extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jMenuItem1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuItem1MousePressed
+        Singleton.getCurrent().vueClient = new VueClient();
         Singleton.getCurrent().vueClient.setVisible(true);
     }//GEN-LAST:event_jMenuItem1MousePressed
 
     private void jButton1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MousePressed
+        Singleton.getCurrent().vueClient = new VueClient();
         Singleton.getCurrent().vueClient.setVisible(true);
     }//GEN-LAST:event_jButton1MousePressed
 
     private void jButton2MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton2MousePressed
+        Singleton.getCurrent().vueEvenement = new VueEvenement();
         Singleton.getCurrent().vueEvenement.setVisible(true);
     }//GEN-LAST:event_jButton2MousePressed
 
     private void jButton4MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton4MousePressed
-        Singleton.getCurrent().vueContact.setVisible(true);;
+        Singleton.getCurrent().vueContact = new VueContact();
+        Singleton.getCurrent().vueContact.setVisible(true);
     }//GEN-LAST:event_jButton4MousePressed
 
     private void jButton5MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton5MousePressed
-        Singleton.getCurrent().vueCommercial.setVisible(true);
+        if (jButton5.isEnabled()) {
+            Singleton.getCurrent().vueCommercial = new VueCommercial();
+            Singleton.getCurrent().vueCommercial.setVisible(true);
+        }
     }//GEN-LAST:event_jButton5MousePressed
 
     private void jButton3MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton3MousePressed
+        Singleton.getCurrent().vueDevis = new VueDevis();
         Singleton.getCurrent().vueDevis.setVisible(true);
     }//GEN-LAST:event_jButton3MousePressed
 

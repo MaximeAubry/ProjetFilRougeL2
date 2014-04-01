@@ -80,6 +80,44 @@ public class DAODevis {
         DAODocument.suppressionDocument(devis);
     }
     
+    public static ArrayList<Devis> getListDevis(long IdCommercial) {
+        ArrayList<Devis> devis = new ArrayList<Devis>();
+        ConnectionBDD.creerConnection();
+        try {
+            String requete = "SELECT Document.Id,dateDeCreation,reference,IdCommercial,IdContact,dateDeFinDeValidite,graduationDeDemande,montantTotalHT,signe,remise,fraisDeTransport,tauxDeTva,montantTotalTTC,IdCommande " +
+                            "FROM Document " +
+                            "INNER JOIN Devis ON Devis.IdDocument = Document.Id " +
+                            "WHERE IdCommercial = ?;";
+            PreparedStatement preparedStatement = ConnectionBDD.connection.prepareStatement(requete);
+            preparedStatement.setLong(3,IdCommercial);
+            ResultSet resultat = preparedStatement.executeQuery();
+            while (resultat.next())
+            {
+                Devis _devis = new Devis(
+                    resultat.getLong("Id"),
+                    resultat.getString("reference"),
+                    new Date(resultat.getTimestamp("dateDeCreation").getTime()),
+                    resultat.getLong("IdCommercial"),
+                    resultat.getLong("IdContact"),
+                    new Date(resultat.getTimestamp("dateDeFinDeValidite").getTime()),
+                    resultat.getInt("graduationDeDemande"),
+                    resultat.getBoolean("signe"),
+                    resultat.getDouble("montantTotalHT"),
+                    resultat.getDouble("remise"),
+                    resultat.getDouble("fraisDeTransport"),
+                    resultat.getDouble("tauxDeTva"),
+                    resultat.getDouble("montantTotalTTC"),
+                    resultat.getLong("IdCommande")
+                );
+                devis.add(_devis);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        ConnectionBDD.fermerConnection();
+        return devis;
+    }
+    
     public static ArrayList<Devis> getListDevis() {
         ArrayList<Devis> devis = new ArrayList<Devis>();
         ConnectionBDD.creerConnection();

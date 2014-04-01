@@ -6,19 +6,22 @@
 
 package com.plasprod.Models.CustomObjects;
 
+import com.plasprod.Models.Evenement;
 import java.sql.Time;
 
 /**
  *
  * @author Maxime
  */
-public class CustomTime {
+public class HeureEvenement {
     private Time heure;
     private Boolean enabled;
+    private Evenement evenementActuel;
 
-    public CustomTime(Time heure, Boolean enabled) {
+    public HeureEvenement(Time heure, Boolean enabled, Evenement evenementActuel) {
         this.heure = heure;
         this.enabled = enabled;
+        this.evenementActuel = evenementActuel;
     }
 
     public Time getHeure() {
@@ -35,5 +38,18 @@ public class CustomTime {
 
     public void setEnabled(Boolean enabled) {
         this.enabled = enabled;
+    }
+
+    public Evenement getEvenementActuel() {
+        return evenementActuel;
+    }
+
+    public void setEvenementActuel(Evenement evenementActuel) {
+        this.evenementActuel = evenementActuel;
+    }
+
+    @Override
+    public String toString() {
+        return this.getHeure().toString();
     }
 }

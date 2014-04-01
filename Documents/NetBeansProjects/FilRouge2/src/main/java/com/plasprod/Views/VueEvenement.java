@@ -7,7 +7,9 @@ import com.plasprod.Models.Enums.EditMode;
 import com.plasprod.Models.Evenement;
 import com.plasprod.Models.Singleton;
 import java.sql.Date;
+import java.sql.Time;
 import java.text.SimpleDateFormat;
+import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -16,31 +18,163 @@ import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 
 public class VueEvenement extends javax.swing.JFrame {
+    // objet de la page
     public List<Evenement> evenements = new ArrayList<Evenement>();
     
+    // Models pour les composants
+    final DefaultTableModel modelTableEvenement;
+    
+    /**
+     * Creates new form VueAgenda
+     */
+    public VueEvenement() {
+        initComponents();
+        this.setLocationRelativeTo(null);
+        
+        modelTableEvenement = (DefaultTableModel)jTableEvenements.getModel();
+        jDateChooserDateEvenement.setDate(new Date(Calendar.getInstance().getTimeInMillis()));
+        
+        LoadEvenements();
+    }
+    
     private void LoadEvenements() {
-        evenements = DAOEvenement.getListEvenements(new Date(jDateChooserDateEvenement.getDate().getTime()));
+        Evenement evenementTemp = new Evenement();
+        evenementTemp.setDateDeDebut(new Date(jDateChooserDateEvenement.getDate().getTime()));
+        ArrayList<Evenement> evenementsTemp = new ArrayList<Evenement>();
         
-        final DefaultTableModel model = (DefaultTableModel)jTableEvenements.getModel();
-        model.getDataVector().removeAllElements();
-        
-        for (Evenement evenement : evenements) {
-            Contact contact = DAOContact.getContact(evenement.getIdContact());
-            String nomContact = contact.getPrenom() + " " + contact.getNom();
-            Object[] obj = new Object[] { evenement, nomContact, evenement.getDateDeDebut(), evenement.getDateDeFin() };
-            model.addRow(obj);
+        switch (Singleton.getCurrent().me.getTypeCommercial()) {
+            case DIRECTEURCOMMERCIAL:
+                evenementsTemp = DAOEvenement.getListEvenements(evenementTemp.getDateDeDebut(false));
+                break;
+                
+            case COMMERCIAL:
+                evenementsTemp = DAOEvenement.getListEvenements(evenementTemp.getDateDeDebut(false), Singleton.getCurrent().me.getId());
+                break;
         }
         
-        SwingUtilities.invokeLater (new Runnable ()
-        {
+        PopullerTableEvenements(evenementsTemp);
+        
+        modelTableEvenement.getDataVector().removeAllElements();
+        
+        for (Evenement evenement : evenements) {
+            if (evenement != null) {
+                Contact contact = DAOContact.getContact(evenement.getIdContact());
+                String nomContact = contact.getPrenom() + " " + contact.getNom();
+                Object[] obj = new Object[] { evenement, nomContact };
+                modelTableEvenement.addRow(obj);
+            } else {
+                Object[] obj = new Object[] { null, null };
+                modelTableEvenement.addRow(obj);
+            }
+        }
+        
+        SwingUtilities.invokeLater (new Runnable () {
             @Override
-            public void run()
-            {
-                jTableEvenements.setModel(model);
+            public void run() {
+                jTableEvenements.setModel(modelTableEvenement);
                 jTableEvenements.revalidate();
                 jTableEvenements.repaint();
+                
+                // réagrandissement des lignes
+                for (int i = 0; i < modelTableEvenement.getRowCount(); i++) {
+                    Evenement evenement = (Evenement)modelTableEvenement.getValueAt(i, 0);
+                    int duree = (evenement == null) ? 1 : evenement.getDuree();
+                    int height = (20 * duree);
+                    jTableEvenements.setRowHeight(i, height);
+                }
             }
         });
+    }
+    
+    private void PopullerTableEvenements(List<Evenement> evenementsTemp) {
+        evenements = new ArrayList<Evenement>();
+        
+        Time debutDeJournee = new Time((8 - 1) * 60 * 60 * 1000);
+        Time finDeJournee = new Time((22 - 1) * 60 * 60 * 1000);
+        
+        if (evenementsTemp.size() > 0) {
+            for (Evenement evenement : evenementsTemp) {
+                // le premier de la liste. S'il ne commence pas à 8h, on rempli avant
+
+                // le reste, on détecte l'heure de debut et de fin de l'événement précédent,
+                // l'heure de debut et de fin de l'événement actuel, et on rempli avant et après l'événement actuel
+
+                // le dernier de la liste, s'il ne finit pas à 21h, on rempli la fin du tableau
+
+                Boolean premierDeLaListe = (evenementsTemp.indexOf(evenement) == 0);
+                Boolean dernierDeLaListe = (evenementsTemp.indexOf(evenement) == (evenementsTemp.size() - 1));
+                Boolean evenementAjoute = false;
+
+                if (premierDeLaListe) {
+                    Boolean commenceEnDebutDeJournee = (evenement.getHeureDeDebut().getTime() == debutDeJournee.getTime());
+
+                    if (!commenceEnDebutDeJournee) {
+                        Calendar heureDeDebut = Calendar.getInstance();
+                        heureDeDebut.setTime(evenement.getHeureDeDebut());
+
+                        for (int i = 8; i < heureDeDebut.get(Calendar.HOUR_OF_DAY); i++) {
+                            evenements.add(null);
+                        }
+                    }
+
+                    if (!evenementAjoute) {
+                        evenements.add(evenement);
+                        evenementAjoute = true;
+                    }
+                }
+
+                if (!premierDeLaListe && !dernierDeLaListe) {
+                    int indexEvenementActuel = evenementsTemp.indexOf(evenement);
+                    Evenement evenementPrecedent = evenementsTemp.get(indexEvenementActuel - 1);
+                    Evenement evenementSuivant = evenementsTemp.get(indexEvenementActuel - 1);
+
+                    Calendar heureDeFinEvenementPrecedent = Calendar.getInstance();
+                    Calendar heureDeDebutEvenementActuel = Calendar.getInstance();
+                    Calendar heureDeFinEvenementActuel = Calendar.getInstance();
+                    Calendar heureDeDebutEvenementSuivant = Calendar.getInstance();
+
+                    heureDeFinEvenementPrecedent.setTime(evenementPrecedent.getHeureDeFin());
+                    heureDeDebutEvenementActuel.setTime(evenement.getHeureDeDebut());
+                    heureDeFinEvenementActuel.setTime(evenement.getHeureDeFin());
+                    heureDeDebutEvenementSuivant.setTime(evenementSuivant.getHeureDeDebut());
+
+                    for (int i = heureDeFinEvenementPrecedent.get(Calendar.HOUR_OF_DAY); i < heureDeDebutEvenementActuel.get(Calendar.HOUR_OF_DAY); i++) {
+                        evenements.add(null);
+                    }
+
+                    if (!evenementAjoute) {
+                        evenements.add(evenement);
+                        evenementAjoute = true;
+                    }
+
+                    for (int j = heureDeFinEvenementActuel.get(Calendar.HOUR_OF_DAY); j < heureDeDebutEvenementSuivant.get(Calendar.HOUR_OF_DAY); j++) {
+                        evenements.add(null);
+                    }
+                }
+
+                if (dernierDeLaListe) {
+                    Boolean finitEnDebutDeJournee = (evenement.getHeureDeFin().getTime() == finDeJournee.getTime());
+
+                    if (!evenementAjoute) {
+                        evenements.add(evenement);
+                        evenementAjoute = true;
+                    }
+
+                    if (!finitEnDebutDeJournee) {
+                        Calendar heureDeFin = Calendar.getInstance();
+                        heureDeFin.setTime(evenement.getHeureDeFin());
+
+                        for (int i = heureDeFin.get(Calendar.HOUR_OF_DAY); i < 22; i++) {
+                            evenements.add(null);
+                        }
+                    }
+                }
+            }
+        } else {
+            for (int i = 8; i < 22; i++) {
+                evenements.add(null);
+            }
+        }
     }
     
     public void DislayCurrentEvenement(Boolean refreshJtable) {
@@ -54,23 +188,20 @@ public class VueEvenement extends javax.swing.JFrame {
         
         // raffraichissement du bloc de droite
         Evenement evenement = Singleton.getCurrent().evenement;
-        jLabelType.setText(evenement.getTypeRDV().toString());
-        jLabelDate.setText(dateFormat.format(evenement.getDateDeDebut()));
-        jLabelHeureDeDebut.setText(timeFormat.format(evenement.getDateDeDebut()));
-        jLabelHeureDeFin.setText(timeFormat.format(evenement.getDateDeFin()));
-        jLabelCommentaire.setText(evenement.getCommentaire());
-    }
-    
-    /**
-     * Creates new form VueAgenda
-     */
-    public VueEvenement() {
-        initComponents();
         
-        Calendar today = Calendar.getInstance();
-        jDateChooserDateEvenement.setDate(new Date(today.getTimeInMillis()));
-        
-        LoadEvenements();
+        if (evenement == null) {
+            jLabelType.setText(null);
+            jLabelDate.setText(null);
+            jLabelHeureDeDebut.setText(null);
+            jLabelHeureDeFin.setText(null);
+            jLabelCommentaire.setText(null);
+        } else {
+            jLabelType.setText(evenement.getTypeRDV().toString());
+            jLabelDate.setText(dateFormat.format(evenement.getDateDeDebut(false)));
+            jLabelHeureDeDebut.setText(timeFormat.format(evenement.getHeureDeDebut()));
+            jLabelHeureDeFin.setText(timeFormat.format(evenement.getHeureDeFin()));
+            jLabelCommentaire.setText(evenement.getCommentaire());
+        }
     }
 
     /**
@@ -104,19 +235,8 @@ public class VueEvenement extends javax.swing.JFrame {
         jButtonAjouter = new javax.swing.JButton();
         jButtonModifier = new javax.swing.JButton();
         jButtonSupprimer = new javax.swing.JButton();
-        jLabel11 = new javax.swing.JLabel();
-        jLabel16 = new javax.swing.JLabel();
-        jLabel17 = new javax.swing.JLabel();
-        jLabel18 = new javax.swing.JLabel();
-        jLabel19 = new javax.swing.JLabel();
-        jLabel20 = new javax.swing.JLabel();
-        jLabel21 = new javax.swing.JLabel();
-        jLabel22 = new javax.swing.JLabel();
-        jLabel23 = new javax.swing.JLabel();
-        jLabel24 = new javax.swing.JLabel();
-        jLabel25 = new javax.swing.JLabel();
-        jLabel26 = new javax.swing.JLabel();
-        jLabel27 = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -125,14 +245,14 @@ public class VueEvenement extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Type", "Contact", "Date de début", "Date de fin"
+                "Type", "Contact"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false
+                false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -153,8 +273,6 @@ public class VueEvenement extends javax.swing.JFrame {
         if (jTableEvenements.getColumnModel().getColumnCount() > 0) {
             jTableEvenements.getColumnModel().getColumn(0).setResizable(false);
             jTableEvenements.getColumnModel().getColumn(1).setResizable(false);
-            jTableEvenements.getColumnModel().getColumn(2).setResizable(false);
-            jTableEvenements.getColumnModel().getColumn(3).setResizable(false);
         }
 
         jPanel1.setPreferredSize(new java.awt.Dimension(350, 200));
@@ -170,6 +288,12 @@ public class VueEvenement extends javax.swing.JFrame {
             }
         });
 
+        jDateChooserDateEvenement.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                jDateChooserDateEvenementPropertyChange(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -180,7 +304,7 @@ public class VueEvenement extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jDateChooserDateEvenement, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(jDateChooserDateEvenement, javax.swing.GroupLayout.DEFAULT_SIZE, 335, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel3)
@@ -252,7 +376,7 @@ public class VueEvenement extends javax.swing.JFrame {
                         .addComponent(jButtonModifier)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButtonSupprimer)
-                        .addGap(0, 116, Short.MAX_VALUE))
+                        .addGap(0, 208, Short.MAX_VALUE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -303,44 +427,37 @@ public class VueEvenement extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        jLabel11.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel11.setText("8h - 9h");
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {"8h - 9h"},
+                {"9h - 10h"},
+                {"10h - 11h"},
+                {"11h - 12h"},
+                {"12h - 13h"},
+                {"13h - 14h"},
+                {"14h - 15h"},
+                {"15h - 16h"},
+                {"16h - 17h"},
+                {"17h - 18h"},
+                {"18h - 19h"},
+                {"19h - 20h"},
+                {"20h - 21h"},
+                {"21h - 22h"}
+            },
+            new String [] {
+                "Horaires"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class
+            };
 
-        jLabel16.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel16.setText("9h - 10h");
-
-        jLabel17.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel17.setText("10h - 11h");
-
-        jLabel18.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel18.setText("11h - 12h");
-
-        jLabel19.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel19.setText("12h - 13h");
-
-        jLabel20.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel20.setText("13h - 14h");
-
-        jLabel21.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel21.setText("14h - 15h");
-
-        jLabel22.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel22.setText("15h - 16h");
-
-        jLabel23.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel23.setText("16h - 17h");
-
-        jLabel24.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel24.setText("17h - 18h");
-
-        jLabel25.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel25.setText("18h - 19h");
-
-        jLabel26.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel26.setText("19h - 20h");
-
-        jLabel27.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel27.setText("21h - 22h");
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        });
+        jTable1.setRowHeight(20);
+        jScrollPane2.setViewportView(jTable1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -348,68 +465,30 @@ public class VueEvenement extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(jLabel26, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel25, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel24, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel23, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel20, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel19, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel18, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel17, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel11, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel16, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel21, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel22, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel27, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 443, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 335, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 369, Short.MAX_VALUE)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 369, Short.MAX_VALUE))
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 461, Short.MAX_VALUE)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 461, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(39, 39, 39)
-                        .addComponent(jLabel11)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel16)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel17)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel18)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel19)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel20)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel21)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel22)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel23)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel24)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel25)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel26)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel27))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 271, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 11, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 271, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addContainerGap())
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                        .addContainerGap())))
         );
 
         pack();
@@ -426,18 +505,18 @@ public class VueEvenement extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonRechercherMousePressed
 
     private void jButtonAjouterMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonAjouterMousePressed
-        Singleton.getCurrent().evenement = new Evenement();
         Singleton.getCurrent().editModeEvenement = EditMode.CREATION;
         
-        VueEvenementEdit vueAgenda = new VueEvenementEdit();
-        vueAgenda.setVisible(true);
+        VueEvenementEdit vueEvenementEdit = new VueEvenementEdit();
+        vueEvenementEdit.setVisible(true);
     }//GEN-LAST:event_jButtonAjouterMousePressed
 
     private void jButtonModifierMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonModifierMousePressed
         if (Singleton.getCurrent().evenement != null) {
             Singleton.getCurrent().editModeEvenement = EditMode.MODIFICATION;
-            VueEvenementEdit vueAgenda = new VueEvenementEdit();
-            vueAgenda.setVisible(true);
+            
+            VueEvenementEdit vueEvenementEdit = new VueEvenementEdit();
+            vueEvenementEdit.setVisible(true);
         } else {
             JOptionPane.showMessageDialog(this, "Aucun événement n'a été sélectionné !", "Attention !", JOptionPane.WARNING_MESSAGE);
         }
@@ -455,6 +534,20 @@ public class VueEvenement extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Aucun événement n'a été sélectionné !", "Attention !", JOptionPane.WARNING_MESSAGE);
         }
     }//GEN-LAST:event_jButtonSupprimerMousePressed
+
+    private void jDateChooserDateEvenementPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_jDateChooserDateEvenementPropertyChange
+        if (this.isActive()) {
+            LoadEvenements();
+            
+            if (jTableEvenements.getRowCount() > 0) {
+                Singleton.getCurrent().evenement = (Evenement)jTableEvenements.getValueAt(0, 0);
+            } else {
+                Singleton.getCurrent().evenement = null;
+            }
+            
+            DislayCurrentEvenement(true);
+        }
+    }//GEN-LAST:event_jDateChooserDateEvenementPropertyChange
 
     /**
      * @param args the command line arguments
@@ -498,20 +591,7 @@ public class VueEvenement extends javax.swing.JFrame {
     private javax.swing.JButton jButtonSupprimer;
     private com.toedter.calendar.JDateChooser jDateChooserDateEvenement;
     private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel16;
-    private javax.swing.JLabel jLabel17;
-    private javax.swing.JLabel jLabel18;
-    private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel20;
-    private javax.swing.JLabel jLabel21;
-    private javax.swing.JLabel jLabel22;
-    private javax.swing.JLabel jLabel23;
-    private javax.swing.JLabel jLabel24;
-    private javax.swing.JLabel jLabel25;
-    private javax.swing.JLabel jLabel26;
-    private javax.swing.JLabel jLabel27;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -526,6 +606,8 @@ public class VueEvenement extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JTable jTable1;
     private javax.swing.JTable jTableEvenements;
     // End of variables declaration//GEN-END:variables
 }

@@ -5,13 +5,26 @@ import com.plasprod.Models.Client;
 import com.plasprod.Models.Singleton;
 
 public class VueClientEdit extends javax.swing.JFrame {
+    // objet de la page
+    Client client = null;
+    
     /**
      * Creates new form VueClientEdit
      */
     public VueClientEdit() {
         initComponents();
+        this.setLocationRelativeTo(null);
         
-        Client client = Singleton.getCurrent().client;
+        switch (Singleton.getCurrent().editModeClient) {
+            case CREATION:
+                client = new Client();
+                break;
+                
+            case MODIFICATION:
+                client = Singleton.getCurrent().client;
+                break;
+        }
+        
         jTextFieldReference.setText(client.getReference());
         jTextFieldRaisonSociale.setText(client.getRaisonSociale());
         jTextFieldAdresse.setText(client.getAdresse());
@@ -161,8 +174,6 @@ public class VueClientEdit extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonEnregistrerMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonEnregistrerMousePressed
-        Client client = Singleton.getCurrent().client;
-        
         client.setReference(jTextFieldReference.getText());
         client.setRaisonSociale(jTextFieldRaisonSociale.getText());
         client.setAdresse(jTextFieldAdresse.getText());
@@ -174,6 +185,7 @@ public class VueClientEdit extends javax.swing.JFrame {
         switch (Singleton.getCurrent().editModeClient) {
             case CREATION:
                 DAOClient.ajoutClient(client);
+                Singleton.getCurrent().client = client;
                 break;
                 
             case MODIFICATION:
