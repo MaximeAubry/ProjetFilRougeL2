@@ -6,18 +6,66 @@
 
 package com.plasprod.Models;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 /**
  *
  * @author Antoine Demarly
  */
 public class Client {
+    @NotNull
     private long id;
+    
+    @NotNull
+    @Size(
+        min = 7,
+        max = 17,
+        message = "La référence doit comporter entre 7 et 17 caractères."
+    )
     private String reference;
+    
+    @NotNull
+    @Size(
+        min = 1,
+        max = 50,
+        message = "La raison sociale doit comporter entre 1 et 50 caractères."
+    )
     private String raisonSociale;
+    
+    @NotNull
+    @Size(
+        min = 1,
+        max = 50,
+        message = "Une adresse doit comporter entre 1 et 50 caractères."
+    )
     private String adresse;
+    
+    @NotNull
+    @Size(
+        min = 5,
+        max = 5,
+        message = "Un code postal doit comporter 5 caractères."
+    )
     private String codePostal;
+    
+    @NotNull
+    @Size(
+        min = 1,
+        max = 50,
+        message = "Une ville doit comporter entre 1 et 50 caractères."
+    )
     private String ville;
+    
+    @NotNull
+    @Size(
+        min = 1,
+        max = 50,
+        message = "Un pays doit comporter entre 1 et 50 caractères."
+    )
     private String pays;
+    
+    @NotNull
     private Boolean actif;
 
     public Client() {

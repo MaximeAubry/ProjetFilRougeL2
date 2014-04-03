@@ -143,6 +143,7 @@ public class VueDevis extends javax.swing.JFrame {
             jTableDevis.getColumnModel().getColumn(3).setResizable(false);
         }
 
+        jLabel4.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel4.setText("Votre devis");
 
         jButtonAjouter.setText("Ajouter");

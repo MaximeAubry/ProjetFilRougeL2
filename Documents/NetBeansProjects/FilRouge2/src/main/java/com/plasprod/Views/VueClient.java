@@ -132,6 +132,7 @@ public class VueClient extends javax.swing.JFrame {
 
         jPanel2.setPreferredSize(new java.awt.Dimension(350, 200));
 
+        jLabel4.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel4.setText("Votre client");
 
         jLabel5.setText("Référence");

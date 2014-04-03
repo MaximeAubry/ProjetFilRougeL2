@@ -26,24 +26,15 @@
           <Group type="102" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" attributes="0">
-                      <Component id="jLabel13" min="-2" pref="104" max="-2" attributes="0"/>
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace min="0" pref="322" max="32767" attributes="0"/>
+                      <Component id="jButtonEnregistrer" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" attributes="0">
-                              <EmptySpace min="0" pref="218" max="32767" attributes="0"/>
-                              <Component id="jButtonEnregistrer" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="jButtonAnnuler" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <Group type="102" alignment="0" attributes="0">
-                              <Component id="jCheckBoxActif" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                          </Group>
-                      </Group>
+                      <Component id="jButtonAnnuler" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" attributes="0">
                       <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                          <Component id="jLabel13" alignment="0" max="32767" attributes="0"/>
                           <Component id="jLabel12" pref="96" max="32767" attributes="0"/>
                           <Component id="jLabel11" max="32767" attributes="0"/>
                           <Component id="jLabel10" max="32767" attributes="0"/>
@@ -51,16 +42,22 @@
                           <Component id="jLabel8" max="32767" attributes="0"/>
                           <Component id="jLabel6" alignment="0" max="32767" attributes="0"/>
                           <Component id="jLabel7" alignment="0" max="32767" attributes="0"/>
+                          <Component id="jLabel14" max="32767" attributes="0"/>
                       </Group>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="jPasswordFieldMotDePasse" alignment="1" max="32767" attributes="0"/>
-                          <Component id="jTextFieldNom" alignment="1" max="32767" attributes="0"/>
                           <Component id="jTextFieldPrenom" alignment="1" max="32767" attributes="0"/>
                           <Component id="jTextFieldEmail" alignment="1" max="32767" attributes="0"/>
-                          <Component id="jTextFieldTelephone" max="32767" attributes="0"/>
+                          <Component id="jTextFieldTelephone" alignment="0" max="32767" attributes="0"/>
                           <Component id="jTextFieldIdentifiant" alignment="1" max="32767" attributes="0"/>
                           <Component id="jTextFieldReference" alignment="1" max="32767" attributes="0"/>
+                          <Component id="jTextFieldNom" alignment="1" max="32767" attributes="0"/>
+                          <Component id="jComboBoxTypeCommercial" alignment="0" max="32767" attributes="0"/>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Component id="jCheckBoxActif" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                          </Group>
                       </Group>
                   </Group>
               </Group>
@@ -106,24 +103,22 @@
                   <Component id="jLabel12" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="jPasswordFieldMotDePasse" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" alignment="1" attributes="0">
-                      <EmptySpace pref="179" max="32767" attributes="0"/>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="jButtonAnnuler" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="jButtonEnregistrer" alignment="3" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace max="-2" attributes="0"/>
-                  </Group>
-                  <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="1" attributes="0">
-                          <Component id="jCheckBoxActif" min="-2" max="-2" attributes="0"/>
-                          <Component id="jLabel13" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace max="32767" attributes="0"/>
-                  </Group>
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                  <Component id="jComboBoxTypeCommercial" max="32767" attributes="0"/>
+                  <Component id="jLabel14" max="32767" attributes="0"/>
               </Group>
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="jLabel13" min="-2" max="-2" attributes="0"/>
+                  <Component id="jCheckBoxActif" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace pref="126" max="32767" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="jButtonAnnuler" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jButtonEnregistrer" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -201,6 +196,18 @@
       </Events>
     </Component>
     <Component class="javax.swing.JPasswordField" name="jPasswordFieldMotDePasse">
+    </Component>
+    <Component class="javax.swing.JComboBox" name="jComboBoxTypeCommercial">
+      <Properties>
+        <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+          <StringArray count="0"/>
+        </Property>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabel14">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Mot de passe"/>
+      </Properties>
     </Component>
   </SubComponents>
 </Form>

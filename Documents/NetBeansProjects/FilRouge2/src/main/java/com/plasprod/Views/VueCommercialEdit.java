@@ -3,12 +3,18 @@ package com.plasprod.Views;
 import com.plasprod.CustomLibraries.MD5Generator;
 import com.plasprod.JDBC.DAOCommercial;
 import com.plasprod.Models.Commercial;
+import com.plasprod.Models.Enums.EditMode;
 import com.plasprod.Models.Enums.TypeCommercial;
 import com.plasprod.Models.Singleton;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.SwingUtilities;
 
 public class VueCommercialEdit extends javax.swing.JFrame {
     // objet de la page
     Commercial commercial = null;
+    
+    // Models pour les composants
+    final DefaultComboBoxModel modelComboBoxTypeCommercial;
     
     /**
      * Creates new form VueCommercialEdit
@@ -27,14 +33,33 @@ public class VueCommercialEdit extends javax.swing.JFrame {
                 break;
         }
         
+        modelComboBoxTypeCommercial = (DefaultComboBoxModel)jComboBoxTypeCommercial.getModel();
+        modelComboBoxTypeCommercial.removeAllElements();
+        for (TypeCommercial typeCommercial : TypeCommercial.values()) {
+            modelComboBoxTypeCommercial.addElement(typeCommercial);
+        }
+        
         jTextFieldReference.setText(commercial.getReference());
         jTextFieldNom.setText(commercial.getNom());
         jTextFieldPrenom.setText(commercial.getPrenom());
         jTextFieldEmail.setText(commercial.getEmail());
         jTextFieldTelephone.setText(commercial.getTelephone());
         jTextFieldIdentifiant.setText(commercial.getIdentifiant());
-        //jPasswordFieldMotDePasse.setText(commercial.getMotDePasse());
         jCheckBoxActif.setSelected(commercial.isActif());
+        
+        if (Singleton.getCurrent().editModeCommercial == EditMode.MODIFICATION) {
+            TypeCommercial typeCommercial = TypeCommercial.valueOf(commercial.getTypeCommercial().name());
+            jComboBoxTypeCommercial.setSelectedItem(typeCommercial);
+        }
+        
+        SwingUtilities.invokeLater (new Runnable () {
+            @Override
+            public void run() {
+                jComboBoxTypeCommercial.setModel(modelComboBoxTypeCommercial);
+                jComboBoxTypeCommercial.revalidate();
+                jComboBoxTypeCommercial.repaint();
+            }
+        });
     }
 
     /**
@@ -64,6 +89,8 @@ public class VueCommercialEdit extends javax.swing.JFrame {
         jButtonEnregistrer = new javax.swing.JButton();
         jButtonAnnuler = new javax.swing.JButton();
         jPasswordFieldMotDePasse = new javax.swing.JPasswordField();
+        jComboBoxTypeCommercial = new javax.swing.JComboBox();
+        jLabel14 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -98,6 +125,8 @@ public class VueCommercialEdit extends javax.swing.JFrame {
             }
         });
 
+        jLabel14.setText("Mot de passe");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -106,35 +135,34 @@ public class VueCommercialEdit extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 322, Short.MAX_VALUE)
+                        .addComponent(jButtonEnregistrer)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(0, 218, Short.MAX_VALUE)
-                                .addComponent(jButtonEnregistrer)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButtonAnnuler))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jCheckBoxActif)
-                                .addGap(0, 0, Short.MAX_VALUE))))
+                        .addComponent(jButtonAnnuler))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(jLabel13, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jLabel12, javax.swing.GroupLayout.DEFAULT_SIZE, 96, Short.MAX_VALUE)
                             .addComponent(jLabel11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jLabel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jLabel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel14, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jPasswordFieldMotDePasse, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jTextFieldNom, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jTextFieldPrenom, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jTextFieldEmail, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jTextFieldTelephone)
                             .addComponent(jTextFieldIdentifiant, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jTextFieldReference, javax.swing.GroupLayout.Alignment.TRAILING))))
+                            .addComponent(jTextFieldReference, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jTextFieldNom, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jComboBoxTypeCommercial, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jCheckBoxActif)
+                                .addGap(0, 0, Short.MAX_VALUE)))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -168,19 +196,19 @@ public class VueCommercialEdit extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel12)
                     .addComponent(jPasswordFieldMotDePasse, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jComboBoxTypeCommercial)
+                    .addComponent(jLabel14, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 179, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jButtonAnnuler)
-                            .addComponent(jButtonEnregistrer))
-                        .addContainerGap())
-                    .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jCheckBoxActif)
-                            .addComponent(jLabel13))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                    .addComponent(jLabel13)
+                    .addComponent(jCheckBoxActif))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 126, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButtonAnnuler)
+                    .addComponent(jButtonEnregistrer))
+                .addContainerGap())
         );
 
         pack();
@@ -199,7 +227,7 @@ public class VueCommercialEdit extends javax.swing.JFrame {
             commercial.setMotDePasse(MD5Generator.Generate(motDePasse));
         }
         
-        commercial.setTypeCommercial(TypeCommercial.COMMERCIAL);
+        commercial.setTypeCommercial((TypeCommercial)jComboBoxTypeCommercial.getSelectedItem());
         commercial.setActif(jCheckBoxActif.isSelected());
 
         switch (Singleton.getCurrent().editModeCommercial) {
@@ -259,10 +287,12 @@ public class VueCommercialEdit extends javax.swing.JFrame {
     private javax.swing.JButton jButtonAnnuler;
     private javax.swing.JButton jButtonEnregistrer;
     private javax.swing.JCheckBox jCheckBoxActif;
+    private javax.swing.JComboBox jComboBoxTypeCommercial;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;

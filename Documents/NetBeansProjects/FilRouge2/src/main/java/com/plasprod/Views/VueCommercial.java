@@ -59,6 +59,7 @@ public class VueCommercial extends javax.swing.JFrame {
         jLabelEmail.setText(commercial.getEmail());
         jLabelTelephone.setText(commercial.getTelephone());
         jLabelIdentifiant.setText(commercial.getIdentifiant());
+        jLabelTypeCommercial.setText(commercial.getTypeCommercial().toString());
         jCheckBoxActif.setSelected(commercial.isActif());
     }
 
@@ -92,6 +93,8 @@ public class VueCommercial extends javax.swing.JFrame {
         jButtonAjouter = new javax.swing.JButton();
         jButtonModifier = new javax.swing.JButton();
         jButtonSupprimer = new javax.swing.JButton();
+        jLabel13 = new javax.swing.JLabel();
+        jLabelTypeCommercial = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setResizable(false);
@@ -133,6 +136,7 @@ public class VueCommercial extends javax.swing.JFrame {
 
         jPanel2.setPreferredSize(new java.awt.Dimension(350, 200));
 
+        jLabel4.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel4.setText("Votre commercial");
 
         jLabel5.setText("Référence");
@@ -173,6 +177,8 @@ public class VueCommercial extends javax.swing.JFrame {
             }
         });
 
+        jLabel13.setText("Type de compte");
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -180,18 +186,14 @@ public class VueCommercial extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addComponent(jLabel12, javax.swing.GroupLayout.DEFAULT_SIZE, 146, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jCheckBoxActif)
-                        .addGap(284, 284, 284))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jButtonAjouter)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButtonModifier)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButtonSupprimer)
-                        .addGap(174, 174, 174))
+                        .addGap(174, 224, Short.MAX_VALUE))
+                    .addComponent(jLabel12, javax.swing.GroupLayout.DEFAULT_SIZE, 457, Short.MAX_VALUE)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -210,7 +212,15 @@ public class VueCommercial extends javax.swing.JFrame {
                                     .addComponent(jLabelPrenom, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(jLabelEmail, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(jLabelTelephone, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jLabelIdentifiant, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                                    .addComponent(jLabelIdentifiant, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel2Layout.createSequentialGroup()
+                                        .addComponent(jCheckBoxActif)
+                                        .addGap(0, 0, Short.MAX_VALUE))
+                                    .addComponent(jLabelTypeCommercial, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                         .addContainerGap())))
         );
         jPanel2Layout.setVerticalGroup(
@@ -243,17 +253,18 @@ public class VueCommercial extends javax.swing.JFrame {
                     .addComponent(jLabel11)
                     .addComponent(jLabelIdentifiant, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel13)
+                    .addComponent(jLabelTypeCommercial, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jLabel12)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jButtonAjouter)
-                            .addComponent(jButtonModifier)
-                            .addComponent(jButtonSupprimer)))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jCheckBoxActif)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                    .addComponent(jLabel12)
+                    .addComponent(jCheckBoxActif))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButtonAjouter)
+                    .addComponent(jButtonModifier)
+                    .addComponent(jButtonSupprimer))
                 .addContainerGap())
         );
 
@@ -364,6 +375,7 @@ public class VueCommercial extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel7;
@@ -375,6 +387,7 @@ public class VueCommercial extends javax.swing.JFrame {
     private javax.swing.JLabel jLabelPrenom;
     private javax.swing.JLabel jLabelReference;
     private javax.swing.JLabel jLabelTelephone;
+    private javax.swing.JLabel jLabelTypeCommercial;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTableCommerciaux;

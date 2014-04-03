@@ -53,6 +53,7 @@ public class VueEvenementEdit extends javax.swing.JFrame {
         modelComboBoxTypeRdv = (DefaultComboBoxModel)jComboBoxType.getModel();
         modelListHeureDeDebut = (DefaultListModel)jListHeureDeDebut.getModel();
         modelComboBoxContact.removeAllElements();
+        modelComboBoxTypeRdv.removeAllElements();
         modelListHeureDeDebut.removeAllElements();
         
         for (Contact contact : contacts) {
@@ -72,11 +73,9 @@ public class VueEvenementEdit extends javax.swing.JFrame {
             jListHeureDeDebut.setSelectedValue(evenement.getHeureDeDebut(), true);
         }
         
-        SwingUtilities.invokeLater (new Runnable ()
-        {
+        SwingUtilities.invokeLater (new Runnable () {
             @Override
-            public void run()
-            {
+            public void run() {
                 jComboBoxContact.setModel(modelComboBoxContact);
                 jComboBoxContact.revalidate();
                 jComboBoxContact.repaint();
