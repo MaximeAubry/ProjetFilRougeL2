@@ -79,7 +79,7 @@ public class VueGlobale extends javax.swing.JFrame {
             }
         });
 
-        jButton5.setText("Commercial");
+        jButton5.setText("Commerciaux");
         jButton5.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 jButton5MousePressed(evt);
