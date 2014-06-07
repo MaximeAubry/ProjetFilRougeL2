@@ -9,6 +9,7 @@ package com.plasprod.Models;
 import com.plasprod.Models.Enums.EditMode;
 import com.plasprod.Views.VueEvenement;
 import com.plasprod.Views.VueClient;
+import com.plasprod.Views.VueCommande;
 import com.plasprod.Views.VueCommercial;
 import com.plasprod.Views.VueContact;
 import com.plasprod.Views.VueDevis;
@@ -46,6 +47,7 @@ public class Singleton {
     public LigneDeDocument ligneDeDocument;
     
     public VueClient vueClient;
+    public VueCommande vueCommande;
     public VueCommercial vueCommercial;
     public VueContact vueContact;
     public VueDevis vueDevis;

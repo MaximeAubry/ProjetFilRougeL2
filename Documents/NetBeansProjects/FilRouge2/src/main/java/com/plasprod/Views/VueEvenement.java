@@ -2,9 +2,11 @@ package com.plasprod.Views;
 
 import com.plasprod.JDBC.DAOContact;
 import com.plasprod.JDBC.DAOEvenement;
+import com.plasprod.JDBC.DAOSatisfaction;
 import com.plasprod.Models.Contact;
 import com.plasprod.Models.Enums.EditMode;
 import com.plasprod.Models.Evenement;
+import com.plasprod.Models.Satisfaction;
 import com.plasprod.Models.Singleton;
 import java.sql.Date;
 import java.sql.Time;

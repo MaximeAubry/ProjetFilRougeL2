@@ -6,71 +6,28 @@
 
 package com.plasprod.Models;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import com.plasprod.Models.IValidation.IValidation;
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  *
  * @author Antoine Demarly
  */
-public class Client {
-    @NotNull
+public class Client implements IValidation {
     private long id;
-    
-    @NotNull
-    @Size(
-        min = 7,
-        max = 17,
-        message = "La référence doit comporter entre 7 et 17 caractères."
-    )
     private String reference;
-    
-    @NotNull
-    @Size(
-        min = 1,
-        max = 50,
-        message = "La raison sociale doit comporter entre 1 et 50 caractères."
-    )
     private String raisonSociale;
-    
-    @NotNull
-    @Size(
-        min = 1,
-        max = 50,
-        message = "Une adresse doit comporter entre 1 et 50 caractères."
-    )
     private String adresse;
-    
-    @NotNull
-    @Size(
-        min = 5,
-        max = 5,
-        message = "Un code postal doit comporter 5 caractères."
-    )
     private String codePostal;
-    
-    @NotNull
-    @Size(
-        min = 1,
-        max = 50,
-        message = "Une ville doit comporter entre 1 et 50 caractères."
-    )
     private String ville;
-    
-    @NotNull
-    @Size(
-        min = 1,
-        max = 50,
-        message = "Un pays doit comporter entre 1 et 50 caractères."
-    )
     private String pays;
-    
-    @NotNull
     private Boolean actif;
 
     public Client() {
         this.id = 0;
-        this.reference = null;
+        this.reference = "CLIENT-" + Calendar.getInstance().getTime().getTime();
         this.raisonSociale = null;
         this.adresse = null;
         this.codePostal = null;
@@ -81,7 +38,7 @@ public class Client {
     
     public Client(long id, String reference, String raisonSociale, String adresse, String codePostal, String ville, String pays, Boolean actif) {
         this.id = id;
-        this.reference = reference;
+        this.reference = "CLIENT-" + Calendar.getInstance().getTime().getTime();
         this.raisonSociale = raisonSociale;
         this.adresse = adresse;
         this.codePostal = codePostal;
@@ -153,5 +110,71 @@ public class Client {
     @Override
     public String toString() {
         return this.getRaisonSociale();
+    }
+    
+    /***************************************************************************
+     * IValidation
+     **************************************************************************/
+    private Map<String, String> constraintViolations;
+    
+    @Override
+    public Boolean isValid() {
+        constraintViolations = new HashMap<String, String>();
+        
+        // raisonSociale
+        if (this.raisonSociale.isEmpty()) {
+            constraintViolations.put("RaisonSocialeIsValid", "La raison sociale est obligatoire.");
+        } else {
+            if (this.raisonSociale.length() > 50) {
+                constraintViolations.put("RaisonSocialeIsValid", "La raison sociale doit comporter 50 caractères maximum.");
+            }
+        }
+            
+        // adresse
+        if (this.adresse.isEmpty()) {
+            constraintViolations.put("AdresseIsValid", "L'adresse est obligatoire.");
+        } else {
+            if (this.adresse.length() > 50) {
+                constraintViolations.put("AdresseIsValid", "L'adresse doit comporter 50 caractères maximum.");
+            }
+        }
+        
+        // codePostal
+        if (this.codePostal.isEmpty()) {
+            constraintViolations.put("CodePostalIsValid", "Le code postal est obligatoire.");
+        } else {
+            if (this.codePostal.matches("^.*[^a-zA-Z0-9 ].*$")) {
+                constraintViolations.put("CodePostalIsValid", "Le code postal doit être de type alphanumérique.");
+            } else {
+                if (this.codePostal.length() != 5) {
+                    constraintViolations.put("CodePostalIsValid", "Le code postal doit comporter 5 caractères.");
+                }
+            }
+        }
+        
+        // ville
+        if (this.ville.isEmpty()) {
+            constraintViolations.put("VilleIsValid", "La ville est obligatoire.");
+        } else {
+            if (this.ville.length() > 50) {
+                constraintViolations.put("VilleIsValid", "La ville doit comporter 50 caractères maximum.");
+            }
+        }
+        
+        // pays
+        if (this.pays.isEmpty()) {
+            constraintViolations.put("PaysIsValid", "Le pays est obligatoire.");
+        } else {
+            if (this.pays.length() > 50) {
+                constraintViolations.put("PaysIsValid", "Le pays doit comporter 50 caractères maximum.");
+            }
+        }
+        
+        return constraintViolations.isEmpty();
+    }
+
+    @Override
+    public Map<String, String> getConstraintViolations() {
+        return constraintViolations;
     }
 }

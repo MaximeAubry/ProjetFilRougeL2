@@ -6,9 +6,11 @@ import com.plasprod.JDBC.DAOEvenement;
 import com.plasprod.Models.Contact;
 import com.plasprod.Models.CustomObjects.HeureEvenement;
 import com.plasprod.Models.Enums.EditMode;
+import com.plasprod.Models.Enums.NiveauSatisfaction;
 import com.plasprod.Models.Evenement;
 import com.plasprod.Models.Singleton;
 import com.plasprod.Models.Enums.TypeRdv;
+import com.plasprod.Models.Satisfaction;
 import java.sql.Date;
 import java.sql.Time;
 import java.util.ArrayList;
@@ -141,6 +143,17 @@ public class VueEvenementEdit extends javax.swing.JFrame {
         }
     }
     
+    private void DisplayErrors() {
+        // date
+        if (evenement.getConstraintViolations().containsKey("DateEvenementnIsValid")) {
+            jLabelDateEvenementnIsValid.setIcon(new javax.swing.ImageIcon("C:\\Users\\Maxime\\Desktop\\ProjetFilRougeL2\\Documents\\NetBeansProjects\\FilRouge2\\src\\main\\java\\com\\plasprod\\Images\\deny-icon.png"));
+            jLabelDateEvenementnIsValid.setToolTipText(evenement.getConstraintViolations().get("DateEvenementnIsValid"));
+        } else {
+            jLabelDateEvenementnIsValid.setIcon(new javax.swing.ImageIcon("C:\\Users\\Maxime\\Desktop\\ProjetFilRougeL2\\Documents\\NetBeansProjects\\FilRouge2\\src\\main\\java\\com\\plasprod\\Images\\Accept-icon.png"));
+            jLabelDateEvenementnIsValid.setToolTipText(null);
+        }
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -218,18 +231,20 @@ public class VueEvenementEdit extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 96, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 374, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, 96, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jDateChooserDateEvenement, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 374, Short.MAX_VALUE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 95, Short.MAX_VALUE)
+                                .addGap(5, 5, 5))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, 96, Short.MAX_VALUE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane1)
+                            .addComponent(jDateChooserDateEvenement, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 380, Short.MAX_VALUE)
                             .addComponent(jComboBoxType, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jComboBoxContact, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jScrollPaneDuree)))
@@ -264,11 +279,11 @@ public class VueEvenementEdit extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPaneDuree, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel5))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 75, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButtonAnnuler)
                     .addComponent(jButtonEnregistrer))
-                .addContainerGap())
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -289,24 +304,28 @@ public class VueEvenementEdit extends javax.swing.JFrame {
         evenement.setCommentaire(jTextAreaCommentaire.getText());
         evenement.setDateDeDebut(new Date(jDateChooserDateEvenement.getDate().getTime()));
         evenement.setHeureDeDebut(heureDeDebut);
-        evenement.setDateDeFin(evenement.getDateDeDebut(rootPaneCheckingEnabled));
+        evenement.setDateDeFin(evenement.getDateDeDebut(true));
         evenement.setHeureDeFin(heureDeFin);
         evenement.setIdCommercial(Singleton.getCurrent().me.getId());
         evenement.setIdContact(contact.getId());
         
-        switch (Singleton.getCurrent().editModeEvenement) {
-            case CREATION:
-                DAOEvenement.ajoutEvenement(evenement);
-                Singleton.getCurrent().evenement = evenement;
-                break;
-                
-            case MODIFICATION:
-                DAOEvenement.modificationEvenement(evenement);
-                break;
-        }
+        Boolean isValid = contact.isValid();
+        DisplayErrors();
         
-        this.dispose();
-        Singleton.getCurrent().vueEvenement.DislayCurrentEvenement(true);
+        if (isValid) {
+            switch (Singleton.getCurrent().editModeEvenement) {
+                case CREATION:
+                    //DAOEvenement.ajoutEvenement(evenement);
+                    break;
+
+                case MODIFICATION:
+                    //DAOEvenement.modificationEvenement(evenement);
+                    break;
+            }
+
+            this.dispose();
+            Singleton.getCurrent().vueEvenement.DislayCurrentEvenement(true);
+        }
     }//GEN-LAST:event_jButtonEnregistrerMousePressed
 
     private void jButtonAnnulerMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonAnnulerMousePressed

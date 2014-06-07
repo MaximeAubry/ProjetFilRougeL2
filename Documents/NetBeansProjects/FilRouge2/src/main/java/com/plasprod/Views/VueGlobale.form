@@ -64,6 +64,7 @@
                           <Component id="jButton4" min="-2" pref="100" max="-2" attributes="0"/>
                           <Component id="jButton2" alignment="0" min="-2" pref="100" max="-2" attributes="0"/>
                           <Component id="jButton5" alignment="0" min="-2" pref="100" max="-2" attributes="0"/>
+                          <Component id="jButton6" min="-2" pref="100" max="-2" attributes="0"/>
                           <Component id="jButton3" alignment="0" min="-2" pref="100" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
@@ -84,8 +85,10 @@
               <EmptySpace max="-2" attributes="0"/>
               <Component id="jButton2" min="-2" pref="100" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
+              <Component id="jButton6" min="-2" pref="100" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
               <Component id="jButton3" min="-2" pref="100" max="-2" attributes="0"/>
-              <EmptySpace pref="44" max="32767" attributes="0"/>
+              <EmptySpace pref="20" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -125,10 +128,18 @@
     </Component>
     <Component class="javax.swing.JButton" name="jButton3">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Devis"/>
+        <Property name="text" type="java.lang.String" value="Commandes"/>
       </Properties>
       <Events>
         <EventHandler event="mousePressed" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jButton3MousePressed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="jButton6">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Devis"/>
+      </Properties>
+      <Events>
+        <EventHandler event="mousePressed" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jButton6MousePressed"/>
       </Events>
     </Component>
   </SubComponents>

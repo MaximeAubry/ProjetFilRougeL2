@@ -6,15 +6,18 @@
 
 package com.plasprod.Models;
 
+import com.plasprod.Models.IValidation.IValidation;
 import java.sql.Date;
 import java.sql.Time;
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  *
  * @author Maxime AUBRY
  */
-public class Evenement {
+public class Evenement implements IValidation {
     private long id;
     private Enum typeRDV;
     private String commentaire;
@@ -183,5 +186,29 @@ public class Evenement {
     @Override
     public String toString() {
         return this.getTypeRDV().toString();
+    }
+    
+    /***************************************************************************
+     * IValidation
+     **************************************************************************/
+    private Map<String, String> constraintViolations;
+    
+    @Override
+    public Boolean isValid() {
+        constraintViolations = new HashMap<String, String>();
+        
+        // dateDeDebut
+        if (this.dateDeDebut == null) {
+            constraintViolations.put("DateEvenementIsValid", "La date de l'évènement est obligatoire.");
+        } else if (this.dateDeDebut.getTime() < Calendar.getInstance().getTime().getTime()) {
+            constraintViolations.put("DateEvenementIsValid", "La date de l'évènement est inférieure au jour actuel.");
+        }
+        
+        return constraintViolations.isEmpty();
+    }
+
+    @Override
+    public Map<String, String> getConstraintViolations() {
+        return constraintViolations;
     }
 }

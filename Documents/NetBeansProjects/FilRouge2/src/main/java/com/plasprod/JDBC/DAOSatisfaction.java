@@ -1,5 +1,6 @@
 package com.plasprod.JDBC;
 
+import com.plasprod.Models.Enums.NiveauSatisfaction;
 import com.plasprod.Models.Satisfaction;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -11,15 +12,14 @@ public class DAOSatisfaction {
         ConnectionBDD.creerConnection();
         try {
             String requete = "INSERT INTO Satisfaction " +
-                                "(note,commentaire,dateSatisfaction,IdDocument,IdEvenement) " +
+                                "(niveauSatisfaction,commentaire,dateSatisfaction,IdCommande) " +
                             "VALUES " +
                                 "(?,?,?,?,?);";
             PreparedStatement preparedStatement = ConnectionBDD.connection.prepareStatement(requete);
-            preparedStatement.setLong(1,satisfaction.getNote());
+            preparedStatement.setString(1,satisfaction.getNiveauSatisfaction().name());
             preparedStatement.setString(2,satisfaction.getCommentaire());
             preparedStatement.setDate(3,satisfaction.getDateSatisfaction());
-            preparedStatement.setLong(4,satisfaction.getIdDocument());
-            preparedStatement.setLong(5,satisfaction.getIdEvenement());
+            preparedStatement.setLong(4,satisfaction.getIdCommande());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -32,19 +32,15 @@ public class DAOSatisfaction {
         try {
             String requete = "UPDATE Satisfaction " +
                             "SET " +
-                                "note = ? " +
+                                "niveauSatisfaction = ? " +
                                 ",commentaire = ? " +
                                 ",dateSatisfaction = ? " +
-                                ",IdDocument = ? " +
-                                ",IdEvenement = ? " +
                             "WHERE Id = ?;";
             PreparedStatement preparedStatement = ConnectionBDD.connection.prepareStatement(requete);
-            preparedStatement.setInt(1,satisfaction.getNote());
+            preparedStatement.setString(1,satisfaction.getNiveauSatisfaction().name());
             preparedStatement.setString(2,satisfaction.getCommentaire());
             preparedStatement.setDate(3,satisfaction.getDateSatisfaction());
-            preparedStatement.setLong(4,satisfaction.getIdDocument());
-            preparedStatement.setLong(5,satisfaction.getIdEvenement());
-            preparedStatement.setLong(6,satisfaction.getId());
+            preparedStatement.setLong(4,satisfaction.getId());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -71,7 +67,7 @@ public class DAOSatisfaction {
         ArrayList<Satisfaction> satisfactions = new ArrayList<Satisfaction>();
         ConnectionBDD.creerConnection();
         try {
-            String requete = "SELECT Id,note,commentaire,dateSatisfaction,IdDocument,IdEvenement " +
+            String requete = "SELECT Id,niveauSatisfaction,commentaire,dateSatisfaction,IdCommande " +
                             "FROM Satisfaction;";
             PreparedStatement preparedStatement = ConnectionBDD.connection.prepareStatement(requete);
             ResultSet resultat = preparedStatement.executeQuery();
@@ -79,11 +75,10 @@ public class DAOSatisfaction {
             {
                 Satisfaction satisfaction = new Satisfaction(
                     resultat.getLong("Id"),
-                    resultat.getInt("Note"),
+                    NiveauSatisfaction.valueOf(resultat.getString("niveauSatisfaction")),
                     resultat.getString("commentaire"),
                     resultat.getDate("dateSatisfaction"),
-                    resultat.getLong("IdDocument"),
-                    resultat.getLong("IdEvenement")
+                    resultat.getLong("IdCommande")
                 );
                 satisfactions.add(satisfaction);
             }
@@ -98,9 +93,9 @@ public class DAOSatisfaction {
         Satisfaction satisfaction = null;
         ConnectionBDD.creerConnection();
         try {
-            String requete = "SELECT Id,note,commentaire,dateSatisfaction,IdDocument,IdEvenement " +
+            String requete = "SELECT Id,niveauSatisfaction,commentaire,dateSatisfaction,IdDocument " +
                             "FROM Satisfaction " +
-                            "WHERE Id = ?;";
+                            "WHERE IdEvenement = ?;";
             PreparedStatement preparedStatement = ConnectionBDD.connection.prepareStatement(requete);
             preparedStatement.setLong(1, Id);
             ResultSet resultat = preparedStatement.executeQuery();
@@ -108,11 +103,10 @@ public class DAOSatisfaction {
             {
                 satisfaction = new Satisfaction(
                     resultat.getLong("Id"),
-                    resultat.getInt("Note"),
+                    NiveauSatisfaction.valueOf(resultat.getString("niveauSatisfaction")),
                     resultat.getString("commentaire"),
                     resultat.getDate("dateSatisfaction"),
-                    resultat.getLong("IdDocument"),
-                    resultat.getLong("IdEvenement")
+                    resultat.getLong("IdCommande")
                 );
             }
         } catch (SQLException e) {

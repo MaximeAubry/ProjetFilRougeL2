@@ -3,6 +3,7 @@ package com.plasprod.Views;
 import com.plasprod.JDBC.DAOClient;
 import com.plasprod.Models.Client;
 import com.plasprod.Models.Singleton;
+import java.util.Map;
 
 public class VueClientEdit extends javax.swing.JFrame {
     // objet de la page
@@ -34,6 +35,53 @@ public class VueClientEdit extends javax.swing.JFrame {
         jCheckBoxActif.setSelected(client.isActif());
     }
     
+    private void DisplayErrors() {
+        // raison sociale
+        if (client.getConstraintViolations().containsKey("RaisonSocialeIsValid")) {
+            jLabelRaisonSocialeIsValid.setIcon(new javax.swing.ImageIcon("C:\\Users\\Maxime\\Desktop\\ProjetFilRougeL2\\Documents\\NetBeansProjects\\FilRouge2\\src\\main\\java\\com\\plasprod\\Images\\deny-icon.png"));
+            jLabelRaisonSocialeIsValid.setToolTipText(client.getConstraintViolations().get("RaisonSocialeIsValid"));
+        } else {
+            jLabelRaisonSocialeIsValid.setIcon(new javax.swing.ImageIcon("C:\\Users\\Maxime\\Desktop\\ProjetFilRougeL2\\Documents\\NetBeansProjects\\FilRouge2\\src\\main\\java\\com\\plasprod\\Images\\Accept-icon.png"));
+            jLabelRaisonSocialeIsValid.setToolTipText(null);
+        }
+
+        // adresse
+        if (client.getConstraintViolations().containsKey("AdresseIsValid")) {
+            jLabelAdresseIsValid.setIcon(new javax.swing.ImageIcon("C:\\Users\\Maxime\\Desktop\\ProjetFilRougeL2\\Documents\\NetBeansProjects\\FilRouge2\\src\\main\\java\\com\\plasprod\\Images\\deny-icon.png"));
+            jLabelAdresseIsValid.setToolTipText(client.getConstraintViolations().get("AdresseIsValid"));
+        } else {
+            jLabelRaisonSocialeIsValid.setIcon(new javax.swing.ImageIcon("C:\\Users\\Maxime\\Desktop\\ProjetFilRougeL2\\Documents\\NetBeansProjects\\FilRouge2\\src\\main\\java\\com\\plasprod\\Images\\Accept-icon.png"));
+            jLabelRaisonSocialeIsValid.setToolTipText(null);
+        }
+
+        // code postzl
+        if (client.getConstraintViolations().containsKey("CodePostalIsValid")) {
+            jLabelCodePostalIsValid.setIcon(new javax.swing.ImageIcon("C:\\Users\\Maxime\\Desktop\\ProjetFilRougeL2\\Documents\\NetBeansProjects\\FilRouge2\\src\\main\\java\\com\\plasprod\\Images\\deny-icon.png"));
+            jLabelCodePostalIsValid.setToolTipText(client.getConstraintViolations().get("CodePostalIsValid"));
+        } else {
+            jLabelCodePostalIsValid.setIcon(new javax.swing.ImageIcon("C:\\Users\\Maxime\\Desktop\\ProjetFilRougeL2\\Documents\\NetBeansProjects\\FilRouge2\\src\\main\\java\\com\\plasprod\\Images\\Accept-icon.png"));
+            jLabelCodePostalIsValid.setToolTipText(null);
+        }
+
+        // ville
+        if (client.getConstraintViolations().containsKey("VilleIsValid")) {
+            jLabelVilleIsValid.setIcon(new javax.swing.ImageIcon("C:\\Users\\Maxime\\Desktop\\ProjetFilRougeL2\\Documents\\NetBeansProjects\\FilRouge2\\src\\main\\java\\com\\plasprod\\Images\\deny-icon.png"));
+            jLabelVilleIsValid.setToolTipText(client.getConstraintViolations().get("VilleIsValid"));
+        } else {
+            jLabelVilleIsValid.setIcon(new javax.swing.ImageIcon("C:\\Users\\Maxime\\Desktop\\ProjetFilRougeL2\\Documents\\NetBeansProjects\\FilRouge2\\src\\main\\java\\com\\plasprod\\Images\\Accept-icon.png"));
+            jLabelVilleIsValid.setToolTipText(null);
+        }
+
+        // pays
+        if (client.getConstraintViolations().containsKey("PaysIsValid")) {
+            jLabelPaysIsValid.setIcon(new javax.swing.ImageIcon("C:\\Users\\Maxime\\Desktop\\ProjetFilRougeL2\\Documents\\NetBeansProjects\\FilRouge2\\src\\main\\java\\com\\plasprod\\Images\\deny-icon.png"));
+            jLabelPaysIsValid.setToolTipText(client.getConstraintViolations().get("PaysIsValid"));
+        } else {
+            jLabelPaysIsValid.setIcon(new javax.swing.ImageIcon("C:\\Users\\Maxime\\Desktop\\ProjetFilRougeL2\\Documents\\NetBeansProjects\\FilRouge2\\src\\main\\java\\com\\plasprod\\Images\\Accept-icon.png"));
+            jLabelPaysIsValid.setToolTipText(null);
+        }
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -59,6 +107,11 @@ public class VueClientEdit extends javax.swing.JFrame {
         jTextFieldPays = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
         jCheckBoxActif = new javax.swing.JCheckBox();
+        jLabelRaisonSocialeIsValid = new javax.swing.JLabel();
+        jLabelAdresseIsValid = new javax.swing.JLabel();
+        jLabelCodePostalIsValid = new javax.swing.JLabel();
+        jLabelVilleIsValid = new javax.swing.JLabel();
+        jLabelPaysIsValid = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -89,6 +142,8 @@ public class VueClientEdit extends javax.swing.JFrame {
 
         jLabel6.setText("Référence");
 
+        jTextFieldReference.setEnabled(false);
+
         jLabel7.setText("Actif");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -99,38 +154,43 @@ public class VueClientEdit extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 322, Short.MAX_VALUE)
                         .addComponent(jButtonEnregistrer)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButtonAnnuler))
+                        .addComponent(jButtonAnnuler)
+                        .addContainerGap())
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 96, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jTextFieldRaisonSociale, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 374, Short.MAX_VALUE)
-                            .addComponent(jTextFieldAdresse, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jTextFieldCodePostal, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jTextFieldReference)))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 96, Short.MAX_VALUE)
+                                .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 96, Short.MAX_VALUE))
+                            .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, 96, Short.MAX_VALUE)
+                            .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED))
+                                .addComponent(jCheckBoxActif)
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 96, Short.MAX_VALUE))
-                                .addGap(10, 10, 10)))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jTextFieldVille, javax.swing.GroupLayout.DEFAULT_SIZE, 374, Short.MAX_VALUE)
-                            .addComponent(jTextFieldPays)
-                            .addComponent(jCheckBoxActif))))
-                .addContainerGap())
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                        .addComponent(jTextFieldVille, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 380, Short.MAX_VALUE)
+                                        .addComponent(jTextFieldCodePostal, javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jTextFieldAdresse, javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jTextFieldRaisonSociale, javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jTextFieldReference, javax.swing.GroupLayout.Alignment.LEADING))
+                                    .addComponent(jTextFieldPays, javax.swing.GroupLayout.PREFERRED_SIZE, 380, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(10, 10, 10)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabelPaysIsValid)
+                                    .addComponent(jLabelVilleIsValid)
+                                    .addComponent(jLabelCodePostalIsValid)
+                                    .addComponent(jLabelAdresseIsValid)
+                                    .addComponent(jLabelRaisonSocialeIsValid))
+                                .addGap(0, 0, Short.MAX_VALUE))))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -139,31 +199,44 @@ public class VueClientEdit extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
                     .addComponent(jTextFieldReference, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel1)
+                        .addComponent(jTextFieldRaisonSociale, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabelRaisonSocialeIsValid, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(jTextFieldRaisonSociale, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jTextFieldAdresse, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabelAdresseIsValid, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextFieldAdresse, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel3)
+                        .addComponent(jTextFieldCodePostal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabelCodePostalIsValid))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(jTextFieldCodePostal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4)
-                    .addComponent(jTextFieldVille, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel5)
-                    .addComponent(jTextFieldPays, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabelVilleIsValid)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel4)
+                        .addComponent(jTextFieldVille, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel5)
+                            .addComponent(jTextFieldPays, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(10, 10, 10)
+                        .addComponent(jLabelPaysIsValid)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel7)
                     .addComponent(jCheckBoxActif))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 178, Short.MAX_VALUE)
+                .addGap(178, 178, 178)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButtonAnnuler)
                     .addComponent(jButtonEnregistrer))
@@ -182,19 +255,24 @@ public class VueClientEdit extends javax.swing.JFrame {
         client.setPays(jTextFieldPays.getText());
         client.setActif(jCheckBoxActif.isSelected());
         
-        switch (Singleton.getCurrent().editModeClient) {
-            case CREATION:
-                DAOClient.ajoutClient(client);
-                Singleton.getCurrent().client = client;
-                break;
-                
-            case MODIFICATION:
-                DAOClient.modificationClient(client);
-                break;
-        }
+        Boolean isValid = client.isValid();
+        DisplayErrors();
         
-        this.dispose();
-        Singleton.getCurrent().vueClient.DislayCurrentClient(true);
+        if (isValid) {
+            switch (Singleton.getCurrent().editModeClient) {
+                case CREATION:
+                    DAOClient.ajoutClient(client);
+                    Singleton.getCurrent().client = client;
+                    break;
+
+                case MODIFICATION:
+                    DAOClient.modificationClient(client);
+                    break;
+            }
+
+            this.dispose();
+            Singleton.getCurrent().vueClient.DislayCurrentClient(true);
+        }
     }//GEN-LAST:event_jButtonEnregistrerMousePressed
 
     private void jButtonAnnulerMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonAnnulerMousePressed
@@ -247,6 +325,11 @@ public class VueClientEdit extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabelAdresseIsValid;
+    private javax.swing.JLabel jLabelCodePostalIsValid;
+    private javax.swing.JLabel jLabelPaysIsValid;
+    private javax.swing.JLabel jLabelRaisonSocialeIsValid;
+    private javax.swing.JLabel jLabelVilleIsValid;
     private javax.swing.JTextField jTextFieldAdresse;
     private javax.swing.JTextField jTextFieldCodePostal;
     private javax.swing.JTextField jTextFieldPays;

@@ -6,11 +6,15 @@
 
 package com.plasprod.Models;
 
+import com.plasprod.Models.IValidation.IValidation;
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  *
  * @author Maxime
  */
-public class LigneDeDocument {
+public class LigneDeDocument implements IValidation {
     private long id;
     private int numeroDeLigne;
     private int qte;
@@ -98,5 +102,22 @@ public class LigneDeDocument {
     @Override
     public String toString() {
         return new Integer(this.getNumeroDeLigne()).toString();
+    }
+    
+    /***************************************************************************
+     * IValidation
+     **************************************************************************/
+    private Map<String, String> constraintViolations;
+    
+    @Override
+    public Boolean isValid() {
+        constraintViolations = new HashMap<String, String>();
+        
+        return constraintViolations.isEmpty();
+    }
+
+    @Override
+    public Map<String, String> getConstraintViolations() {
+        return constraintViolations;
     }
 }

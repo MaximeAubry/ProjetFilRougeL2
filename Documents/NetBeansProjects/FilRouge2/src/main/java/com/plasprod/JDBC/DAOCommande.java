@@ -38,11 +38,13 @@ public class DAOCommande {
                             "SET " +
                                 "statutCommande = ? " +
                                 ",delaiExpedition = ? " +
+                                ",idSatisfaction = ? " +
                             "WHERE IdDocument = ?;";
             PreparedStatement preparedStatement = ConnectionBDD.connection.prepareStatement(requete);
             preparedStatement.setString(1,commande.getStatutCommande().toString());
             preparedStatement.setLong(2,commande.getDelaiExpedition());
-            preparedStatement.setLong(3,commande.getId());
+            preparedStatement.setLong(3,commande.getIdSatisfaction());
+            preparedStatement.setLong(4,commande.getId());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -59,7 +61,7 @@ public class DAOCommande {
         ArrayList<Commande> commandes = new ArrayList<Commande>();
         ConnectionBDD.creerConnection();
         try {
-            String requete = "SELECT Document.Id,reference,dateDeCreation,IdCommercial,IdContact,statutCommande,delaiExpedition,IdDevis " +
+            String requete = "SELECT Document.Id,reference,dateDeCreation,IdCommercial,IdContact,statutCommande,delaiExpedition,IdDevis,IdSatisfaction " +
                             "FROM Document " +
                             "INNER JOIN Commande ON Commande.IdDocument = Document.Id;";
             PreparedStatement preparedStatement = ConnectionBDD.connection.prepareStatement(requete);
@@ -74,7 +76,8 @@ public class DAOCommande {
                     resultat.getLong("IdContact"),
                     StatutCommande.valueOf(resultat.getString("statutCommande")),
                     resultat.getLong("delaiExpedition"),
-                    resultat.getLong("IdDevis")
+                    resultat.getLong("IdDevis"),
+                    resultat.getLong("IdSatisfaction")
                 );
                 commandes.add(commande);
             }
@@ -89,7 +92,7 @@ public class DAOCommande {
         Commande commande = null;
         ConnectionBDD.creerConnection();
         try {
-            String requete = "SELECT Document.Id,reference,dateDeCreation,IdCommercial,IdContact,statutCommande,delaiExpedition,IdDevis " +
+            String requete = "SELECT Document.Id,reference,dateDeCreation,IdCommercial,IdContact,statutCommande,delaiExpedition,IdDevis,IdSatisfaction " +
                             "FROM Document " +
                             "INNER JOIN Commande ON Commande.IdDocument = Document.Id " +
                             "WHERE Document.Id = ?;";
@@ -106,7 +109,8 @@ public class DAOCommande {
                     resultat.getLong("IdContact"),
                     StatutCommande.valueOf(resultat.getString("statutCommande")),
                     resultat.getLong("delaiExpedition"),
-                    resultat.getLong("IdDevis")
+                    resultat.getLong("IdDevis"),
+                    resultat.getLong("IdSatisfaction")
                 );
             }
         } catch (SQLException e) {
@@ -120,7 +124,7 @@ public class DAOCommande {
         ArrayList<Commande> commandes = new ArrayList<Commande>();
         ConnectionBDD.creerConnection();
         try {
-            String requete = "SELECT Document.Id,reference,dateDeCreation,IdCommercial,IdContact,statutCommande,delaiExpedition,IdDevis " +
+            String requete = "SELECT Document.Id,reference,dateDeCreation,IdCommercial,IdContact,statutCommande,delaiExpedition,IdDevis,IdSatisfaction " +
                             "FROM Document " +
                             "INNER JOIN Commande ON Commande.IdDocument = Document.Id " +
                             "WHERE IdCommercial = ?;";
@@ -137,7 +141,8 @@ public class DAOCommande {
                     resultat.getLong("IdContact"),
                     StatutCommande.valueOf(resultat.getString("statutCommande")),
                     resultat.getLong("delaiExpedition"),
-                    resultat.getLong("IdDevis")
+                    resultat.getLong("IdDevis"),
+                    resultat.getLong("IdSatisfaction")
                 );
                 commandes.add(commande);
             }

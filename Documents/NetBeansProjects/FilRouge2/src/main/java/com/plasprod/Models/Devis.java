@@ -1,13 +1,16 @@
 package com.plasprod.Models;
 
+import com.plasprod.Models.IValidation.IValidation;
 import java.sql.Date;
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  *
  * @author Maxime
  */
-public class Devis extends Document {
+public class Devis extends Document implements IValidation {
     private Date dateDeFinDeValidite;
     private int graduationDeDemande;
     private Boolean signe;
@@ -129,5 +132,22 @@ public class Devis extends Document {
     @Override
     public String toString() {
         return this.getReference();
+    }
+    
+    /***************************************************************************
+     * IValidation
+     **************************************************************************/
+    private Map<String, String> constraintViolations;
+    
+    @Override
+    public Boolean isValid() {
+        constraintViolations = new HashMap<String, String>();
+        
+        return constraintViolations.isEmpty();
+    }
+
+    @Override
+    public Map<String, String> getConstraintViolations() {
+        return constraintViolations;
     }
 }

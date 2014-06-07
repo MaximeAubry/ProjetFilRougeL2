@@ -61,6 +61,62 @@ public class VueCommercialEdit extends javax.swing.JFrame {
             }
         });
     }
+    
+    private void DisplayErrors() {
+        // nom
+        if (commercial.getConstraintViolations().containsKey("NomIsValid")) {
+            jLabelNomIsValid.setIcon(new javax.swing.ImageIcon("C:\\Users\\Maxime\\Desktop\\ProjetFilRougeL2\\Documents\\NetBeansProjects\\FilRouge2\\src\\main\\java\\com\\plasprod\\Images\\deny-icon.png"));
+            jLabelNomIsValid.setToolTipText(commercial.getConstraintViolations().get("NomIsValid"));
+        } else {
+            jLabelNomIsValid.setIcon(new javax.swing.ImageIcon("C:\\Users\\Maxime\\Desktop\\ProjetFilRougeL2\\Documents\\NetBeansProjects\\FilRouge2\\src\\main\\java\\com\\plasprod\\Images\\Accept-icon.png"));
+            jLabelNomIsValid.setToolTipText(null);
+        }
+        
+        // prénom
+        if (commercial.getConstraintViolations().containsKey("PrenomIsValid")) {
+            jLabelPrenomIsValid.setIcon(new javax.swing.ImageIcon("C:\\Users\\Maxime\\Desktop\\ProjetFilRougeL2\\Documents\\NetBeansProjects\\FilRouge2\\src\\main\\java\\com\\plasprod\\Images\\deny-icon.png"));
+            jLabelPrenomIsValid.setToolTipText(commercial.getConstraintViolations().get("PrenomIsValid"));
+        } else {
+            jLabelPrenomIsValid.setIcon(new javax.swing.ImageIcon("C:\\Users\\Maxime\\Desktop\\ProjetFilRougeL2\\Documents\\NetBeansProjects\\FilRouge2\\src\\main\\java\\com\\plasprod\\Images\\Accept-icon.png"));
+            jLabelPrenomIsValid.setToolTipText(null);
+        }
+        
+        // email
+        if (commercial.getConstraintViolations().containsKey("EmailIsValid")) {
+            jLabelEmailIsValid.setIcon(new javax.swing.ImageIcon("C:\\Users\\Maxime\\Desktop\\ProjetFilRougeL2\\Documents\\NetBeansProjects\\FilRouge2\\src\\main\\java\\com\\plasprod\\Images\\deny-icon.png"));
+            jLabelEmailIsValid.setToolTipText(commercial.getConstraintViolations().get("EmailIsValid"));
+        } else {
+            jLabelEmailIsValid.setIcon(new javax.swing.ImageIcon("C:\\Users\\Maxime\\Desktop\\ProjetFilRougeL2\\Documents\\NetBeansProjects\\FilRouge2\\src\\main\\java\\com\\plasprod\\Images\\Accept-icon.png"));
+            jLabelEmailIsValid.setToolTipText(null);
+        }
+        
+        // téléphone
+        if (commercial.getConstraintViolations().containsKey("TelephoneIsValid")) {
+            jLabelTelephoneIsValid.setIcon(new javax.swing.ImageIcon("C:\\Users\\Maxime\\Desktop\\ProjetFilRougeL2\\Documents\\NetBeansProjects\\FilRouge2\\src\\main\\java\\com\\plasprod\\Images\\deny-icon.png"));
+            jLabelTelephoneIsValid.setToolTipText(commercial.getConstraintViolations().get("TelephoneIsValid"));
+        } else {
+            jLabelTelephoneIsValid.setIcon(new javax.swing.ImageIcon("C:\\Users\\Maxime\\Desktop\\ProjetFilRougeL2\\Documents\\NetBeansProjects\\FilRouge2\\src\\main\\java\\com\\plasprod\\Images\\Accept-icon.png"));
+            jLabelTelephoneIsValid.setToolTipText(null);
+        }
+        
+        // identifiant
+        if (commercial.getConstraintViolations().containsKey("IdentifiantIsValid")) {
+            jLabelIdentifiantIsValid.setIcon(new javax.swing.ImageIcon("C:\\Users\\Maxime\\Desktop\\ProjetFilRougeL2\\Documents\\NetBeansProjects\\FilRouge2\\src\\main\\java\\com\\plasprod\\Images\\deny-icon.png"));
+            jLabelIdentifiantIsValid.setToolTipText(commercial.getConstraintViolations().get("IdentifiantIsValid"));
+        } else {
+            jLabelIdentifiantIsValid.setIcon(new javax.swing.ImageIcon("C:\\Users\\Maxime\\Desktop\\ProjetFilRougeL2\\Documents\\NetBeansProjects\\FilRouge2\\src\\main\\java\\com\\plasprod\\Images\\Accept-icon.png"));
+            jLabelIdentifiantIsValid.setToolTipText(null);
+        }
+        
+        // mot de passe
+        if (commercial.getConstraintViolations().containsKey("MotDePasseIsValid")) {
+            jLabelMotDePasseIsValid.setIcon(new javax.swing.ImageIcon("C:\\Users\\Maxime\\Desktop\\ProjetFilRougeL2\\Documents\\NetBeansProjects\\FilRouge2\\src\\main\\java\\com\\plasprod\\Images\\deny-icon.png"));
+            jLabelMotDePasseIsValid.setToolTipText(commercial.getConstraintViolations().get("MotDePasseIsValid"));
+        } else {
+            jLabelMotDePasseIsValid.setIcon(new javax.swing.ImageIcon("C:\\Users\\Maxime\\Desktop\\ProjetFilRougeL2\\Documents\\NetBeansProjects\\FilRouge2\\src\\main\\java\\com\\plasprod\\Images\\Accept-icon.png"));
+            jLabelMotDePasseIsValid.setToolTipText(null);
+        }
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -71,6 +127,7 @@ public class VueCommercialEdit extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jLabelReferenceIsValid6 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jTextFieldReference = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
@@ -91,10 +148,18 @@ public class VueCommercialEdit extends javax.swing.JFrame {
         jPasswordFieldMotDePasse = new javax.swing.JPasswordField();
         jComboBoxTypeCommercial = new javax.swing.JComboBox();
         jLabel14 = new javax.swing.JLabel();
+        jLabelNomIsValid = new javax.swing.JLabel();
+        jLabelPrenomIsValid = new javax.swing.JLabel();
+        jLabelEmailIsValid = new javax.swing.JLabel();
+        jLabelTelephoneIsValid = new javax.swing.JLabel();
+        jLabelIdentifiantIsValid = new javax.swing.JLabel();
+        jLabelMotDePasseIsValid = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jLabel6.setText("Référence");
+
+        jTextFieldReference.setEnabled(false);
 
         jLabel7.setText("Nom");
 
@@ -125,7 +190,7 @@ public class VueCommercialEdit extends javax.swing.JFrame {
             }
         });
 
-        jLabel14.setText("Mot de passe");
+        jLabel14.setText("Type");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -133,37 +198,48 @@ public class VueCommercialEdit extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(jLabel13, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel12, javax.swing.GroupLayout.DEFAULT_SIZE, 96, Short.MAX_VALUE)
+                    .addComponent(jLabel11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel14, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 322, Short.MAX_VALUE)
-                        .addComponent(jButtonEnregistrer)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButtonAnnuler))
+                        .addComponent(jCheckBoxActif)
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(jLabel13, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel12, javax.swing.GroupLayout.DEFAULT_SIZE, 96, Short.MAX_VALUE)
-                            .addComponent(jLabel11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel14, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jPasswordFieldMotDePasse, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jTextFieldPrenom, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jTextFieldEmail, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jTextFieldTelephone)
-                            .addComponent(jTextFieldIdentifiant, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jTextFieldReference, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jTextFieldNom, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jComboBoxTypeCommercial, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addGap(0, 226, Short.MAX_VALUE)
+                                .addComponent(jButtonEnregistrer)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jButtonAnnuler))
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jCheckBoxActif)
-                                .addGap(0, 0, Short.MAX_VALUE)))))
-                .addContainerGap())
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addComponent(jTextFieldReference)
+                                    .addComponent(jComboBoxTypeCommercial, javax.swing.GroupLayout.Alignment.LEADING, 0, 380, Short.MAX_VALUE)
+                                    .addComponent(jPasswordFieldMotDePasse, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jTextFieldIdentifiant, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jTextFieldTelephone, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jTextFieldEmail, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jTextFieldPrenom, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jTextFieldNom, javax.swing.GroupLayout.Alignment.LEADING))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabelNomIsValid)
+                                    .addComponent(jLabelPrenomIsValid)
+                                    .addComponent(jLabelEmailIsValid)
+                                    .addComponent(jLabelTelephoneIsValid)
+                                    .addComponent(jLabelIdentifiantIsValid)
+                                    .addComponent(jLabelMotDePasseIsValid))
+                                .addGap(0, 0, Short.MAX_VALUE)))
+                        .addContainerGap())))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -172,30 +248,47 @@ public class VueCommercialEdit extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
                     .addComponent(jTextFieldReference, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel7)
-                    .addComponent(jTextFieldNom, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextFieldPrenom, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel8))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextFieldEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel9))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextFieldTelephone, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel10))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel11)
-                    .addComponent(jTextFieldIdentifiant, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel12)
-                    .addComponent(jPasswordFieldMotDePasse, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                    .addComponent(jLabel7)
+                                                    .addComponent(jTextFieldNom, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                .addGap(6, 6, 6)
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                                        .addComponent(jTextFieldPrenom, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                        .addComponent(jLabel8))
+                                                    .addComponent(jLabelPrenomIsValid, javax.swing.GroupLayout.Alignment.TRAILING))
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                                    .addComponent(jTextFieldEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                    .addComponent(jLabel9)))
+                                            .addComponent(jLabelEmailIsValid, javax.swing.GroupLayout.Alignment.TRAILING)
+                                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                                .addComponent(jLabelNomIsValid)
+                                                .addGap(52, 52, 52)))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                            .addComponent(jTextFieldTelephone, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(jLabel10)))
+                                    .addComponent(jLabelTelephoneIsValid, javax.swing.GroupLayout.Alignment.TRAILING))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel11)
+                                    .addComponent(jTextFieldIdentifiant, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(jLabelIdentifiantIsValid, javax.swing.GroupLayout.Alignment.TRAILING))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel12)
+                            .addComponent(jPasswordFieldMotDePasse, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jLabelMotDePasseIsValid, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jComboBoxTypeCommercial)
@@ -204,7 +297,7 @@ public class VueCommercialEdit extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel13)
                     .addComponent(jCheckBoxActif))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 126, Short.MAX_VALUE)
+                .addGap(156, 156, 156)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButtonAnnuler)
                     .addComponent(jButtonEnregistrer))
@@ -223,25 +316,32 @@ public class VueCommercialEdit extends javax.swing.JFrame {
         commercial.setIdentifiant(jTextFieldIdentifiant.getText());
         
         String motDePasse = new String(jPasswordFieldMotDePasse.getPassword());
-        if (!motDePasse.equals("")) {
+        if (!motDePasse.isEmpty()) {
             commercial.setMotDePasse(MD5Generator.Generate(motDePasse));
+        } else {
+            commercial.setMotDePasse("");
         }
         
         commercial.setTypeCommercial((TypeCommercial)jComboBoxTypeCommercial.getSelectedItem());
         commercial.setActif(jCheckBoxActif.isSelected());
 
-        switch (Singleton.getCurrent().editModeCommercial) {
-            case CREATION:
-                DAOCommercial.ajoutCommercial(commercial);
-                break;
+        Boolean isValid = commercial.isValid();
+        DisplayErrors();
+        
+        if (isValid) {
+            switch (Singleton.getCurrent().editModeCommercial) {
+                case CREATION:
+                    //DAOCommercial.ajoutCommercial(commercial);
+                    break;
 
-            case MODIFICATION:
-                DAOCommercial.modificationCommercial(commercial);
-                break;
+                case MODIFICATION:
+                    //DAOCommercial.modificationCommercial(commercial);
+                    break;
+            }
+
+            this.dispose();
+            Singleton.getCurrent().vueCommercial.DislayCurrentCommercial(true);
         }
-
-        this.dispose();
-        Singleton.getCurrent().vueCommercial.DislayCurrentCommercial(true);
     }//GEN-LAST:event_jButtonEnregistrerMousePressed
 
     private void jButtonAnnulerMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonAnnulerMousePressed
@@ -297,6 +397,13 @@ public class VueCommercialEdit extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
+    private javax.swing.JLabel jLabelEmailIsValid;
+    private javax.swing.JLabel jLabelIdentifiantIsValid;
+    private javax.swing.JLabel jLabelMotDePasseIsValid;
+    private javax.swing.JLabel jLabelNomIsValid;
+    private javax.swing.JLabel jLabelPrenomIsValid;
+    private javax.swing.JLabel jLabelReferenceIsValid6;
+    private javax.swing.JLabel jLabelTelephoneIsValid;
     private javax.swing.JPasswordField jPasswordFieldMotDePasse;
     private javax.swing.JTextField jTextFieldEmail;
     private javax.swing.JTextField jTextFieldIdentifiant;

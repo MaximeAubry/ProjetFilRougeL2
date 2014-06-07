@@ -7,12 +7,16 @@
 package com.plasprod.Models;
 
 import com.plasprod.Models.Enums.TypeCommercial;
+import com.plasprod.Models.IValidation.IValidation;
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  *
  * @author Maxime
  */
-public class Commercial {
+public class Commercial implements IValidation {
     private long id;
     private String reference;
     private String nom;
@@ -26,7 +30,7 @@ public class Commercial {
 
     public Commercial() {
         this.id = 0;
-        this.reference = null;
+        this.reference = "COMMERCIAL-" + Calendar.getInstance().getTime().getTime();
         this.nom = null;
         this.prenom = null;
         this.email = null;
@@ -129,5 +133,76 @@ public class Commercial {
     @Override
     public String toString() {
         return this.getPrenom() + " " + this.getNom();
+    }
+    
+    /***************************************************************************
+     * IValidation
+     **************************************************************************/
+    private Map<String, String> constraintViolations;
+    
+    @Override
+    public Boolean isValid() {
+        constraintViolations = new HashMap<String, String>();
+        
+        // nom
+        if (this.nom.isEmpty()) {
+            constraintViolations.put("NomIsValid", "Le nom est obligatoire.");
+        } else {
+            if (this.nom.length() > 50) {
+                constraintViolations.put("NomIsValid", "Le nom doit comporter 50 caractères maximum.");
+            }
+        }
+        
+        // prénom
+        if (this.prenom.isEmpty()) {
+            constraintViolations.put("PrenomIsValid", "Le prénom est obligatoire.");
+        } else {
+            if (this.prenom.length() > 50) {
+                constraintViolations.put("PrenomIsValid", "Le prénom doit comporter 50 caractères maximum.");
+            }
+        }
+        
+        // email
+        if (!this.email.isEmpty()) {
+            if (this.email.matches("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$")) {
+                constraintViolations.put("EmailIsValid", "Le format de l'email n'est pas valide.");
+            } else {
+                if (this.email.length() > 50) {
+                    constraintViolations.put("EmailIsValid", "L'email doit comporter 50 caractères maximum.");
+                }
+            }
+        }
+        
+        // téléphone
+        if (!this.telephone.isEmpty()) {
+            if (this.telephone.matches("^[0-9].[0-9].[0-9].[0-9].[0-9]$")) {
+                constraintViolations.put("TelephoneIsValid", "Le format de téléphone n'est pas valide.");
+            }
+        }
+        
+        // identifiant
+        if (this.identifiant.isEmpty()) {
+            constraintViolations.put("IdentifiantIsValid", "L'identifiant est obligatoire.");
+        } else {
+            if (this.prenom.length() > 50) {
+                constraintViolations.put("IdentifiantIsValid", "L'identifiant doit comporter 50 caractères maximum.");
+            }
+        }
+        
+        // mot de passe
+        if (this.motDePasse.isEmpty()) {
+            constraintViolations.put("MotDePasseIsValid", "Le mot de passe est obligatoire.");
+        } else {
+            if (this.prenom.length() > 50) {
+                constraintViolations.put("MotDePasseIsValid", "Le mot de passe doit comporter 50 caractères maximum.");
+            }
+        }
+        
+        return constraintViolations.isEmpty();
+    }
+
+    @Override
+    public Map<String, String> getConstraintViolations() {
+        return constraintViolations;
     }
 }

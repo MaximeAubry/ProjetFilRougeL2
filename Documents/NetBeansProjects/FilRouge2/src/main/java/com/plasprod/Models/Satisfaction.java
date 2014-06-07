@@ -6,36 +6,36 @@
 
 package com.plasprod.Models;
 
+import com.plasprod.Models.IValidation.IValidation;
 import java.sql.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  *
  * @author Maxime
  */
-public class Satisfaction {
+public class Satisfaction implements IValidation {
     private long id;
-    private int note;
+    private Enum niveauSatisfaction;
     private String commentaire;
     private Date dateSatisfaction;
-    private long idDocument;
-    private long idEvenement;
+    private long idCommande;
 
     public Satisfaction() {
         this.id = 0;
-        this.note = 0;
+        this.niveauSatisfaction = null;
         this.commentaire = null;
         this.dateSatisfaction = null;
-        this.idDocument = 0;
-        this.idEvenement = 0;
+        this.idCommande = 0;
     }
 
-    public Satisfaction(long id, int note, String commentaire, Date dateSatisfaction, long idDocument, long idEvenement) {
+    public Satisfaction(long id, Enum niveauSatisfaction, String commentaire, Date dateSatisfaction, long idCommande) {
         this.id = id;
-        this.note = note;
+        this.niveauSatisfaction = niveauSatisfaction;
         this.commentaire = commentaire;
         this.dateSatisfaction = dateSatisfaction;
-        this.idDocument = idDocument;
-        this.idEvenement = idEvenement;
+        this.idCommande = idCommande;
     }
 
     public long getId() {
@@ -46,12 +46,12 @@ public class Satisfaction {
         this.id = id;
     }
 
-    public int getNote() {
-        return note;
+    public Enum getNiveauSatisfaction() {
+        return niveauSatisfaction;
     }
 
-    public void setNote(int note) {
-        this.note = note;
+    public void setNiveauSatisfaction(Enum niveauSatisfaction) {
+        this.niveauSatisfaction = niveauSatisfaction;
     }
 
     public String getCommentaire() {
@@ -70,24 +70,37 @@ public class Satisfaction {
         this.dateSatisfaction = dateSatisfaction;
     }
 
-    public long getIdDocument() {
-        return idDocument;
+    public long getIdCommande() {
+        return idCommande;
     }
 
-    public void setIdDocument(long idDocument) {
-        this.idDocument = idDocument;
+    public void setIdCommande(long idCommande) {
+        this.idCommande = idCommande;
     }
-
-    public long getIdEvenement() {
-        return idEvenement;
-    }
-
-    public void setIdEvenement(long idEvenement) {
-        this.idEvenement = idEvenement;
+    
+    /***************************************************************************
+     * IValidation
+     **************************************************************************/
+    private Map<String, String> constraintViolations;
+    
+    @Override
+    public Boolean isValid() {
+        constraintViolations = new HashMap<String, String>();
+            
+        // adresse
+        if (this.commentaire.isEmpty()) {
+            constraintViolations.put("CommentaireIsValid", "Le commentaire est obligatoire.");
+        } else {
+            if (this.commentaire.length() > 50) {
+                constraintViolations.put("CommentaireIsValid", "Le commentaire doit comporter 50 caractères maximum.");
+            }
+        }
+        
+        return constraintViolations.isEmpty();
     }
 
     @Override
-    public String toString() {
-        return "Satisfaction{" + "id=" + id + ", note=" + note + ", commentaire=" + commentaire + ", dateSatisfaction=" + dateSatisfaction + ", idDocument=" + idDocument + ", idEvenement=" + idEvenement + '}';
+    public Map<String, String> getConstraintViolations() {
+        return constraintViolations;
     }
 }
