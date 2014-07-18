@@ -314,11 +314,11 @@ public class VueContactEdit extends javax.swing.JFrame {
         if (isValid) {
             switch (Singleton.getCurrent().editModeContact) {
                 case CREATION:
-                    //DAOContact.ajoutContact(contact);
+                    DAOContact.ajoutContact(contact);
                     break;
 
                 case MODIFICATION:
-                    //DAOContact.modificationContact(contact);
+                    DAOContact.modificationContact(contact);
                     break;
             }
             

@@ -331,11 +331,11 @@ public class VueCommercialEdit extends javax.swing.JFrame {
         if (isValid) {
             switch (Singleton.getCurrent().editModeCommercial) {
                 case CREATION:
-                    //DAOCommercial.ajoutCommercial(commercial);
+                    DAOCommercial.ajoutCommercial(commercial);
                     break;
 
                 case MODIFICATION:
-                    //DAOCommercial.modificationCommercial(commercial);
+                    DAOCommercial.modificationCommercial(commercial);
                     break;
             }
 
